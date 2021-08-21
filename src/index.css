@@ -1,0 +1,68 @@
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
+div#root {
+  height: 100%;
+  /* font-family: 'Tenali Ramakrishna'; */
+  font-family: 'Urbanist';
+}
+
+h1 {
+  font-size: 64px;
+  margin: 8px;
+  line-height: 64px;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 56px;
+  margin: 8px;
+  line-height: 56px;
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 48px;
+  margin: 8px;
+  line-height: 48px;
+  font-weight: 700;
+
+}
+
+h4 {
+  font-size: 36px;
+  margin: 4px;
+  line-height: 36px;
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 32px;
+  margin: 4px;
+  line-height: 32px;
+  font-weight: 700;
+}
+
+h4 {
+  font-size: 24px;
+  margin: 4px;
+  line-height: 24px;
+  font-weight: 700;
+}
+
+h5 {
+  font-size: 20px;
+  margin: 4px;
+  line-height: 20px;
+  font-weight: 500;
+
+}
+
+p, span {
+  font-size: 18px;
+  margin: 4px;
+  line-height: 12px;
+  font-weight: 400;
+}
