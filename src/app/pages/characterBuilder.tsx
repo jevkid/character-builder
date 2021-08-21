@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import styled from 'styled-components';
-import { useAppDispatch } from '../../helpers/hooks';
-import { commonActions } from '../../store/slices/common';
-import { useAllRaces } from '../../store/selectors/common';
 import { TEXT_COLOR_PRIMARY, TEXT_COLOR_SECONDARY } from '../styles';
+import { Race } from '../components/race';
+import { Class } from '../components/class';
 
 const StyledCharacterBuilderContainer = styled.div`
   display: flex;
@@ -26,23 +25,6 @@ const StyledCharacterBuilderTitleContainer = styled.div`
 
 const StyledStepsContainer = styled.div``;
 
-const StyledStepsHeader = styled.h3`
-  text-align: center;
-  margin: 12px 0;
-`;
-
-const StyledStepsSubheader = styled.h5`
-  text-align: center;
-  margin: 12px 0;
-`;
-
-const StyledSelect = styled.select`
-  width: 200px;
-  height: 30px;
-  border-radius: 5px;
-  margin: 12px 0;
-`;
-
 const StyledRandomiseButton = styled.a`
   font-size: inherit;
   color: ${TEXT_COLOR_SECONDARY};
@@ -62,40 +44,27 @@ const StyledP = styled.p`
   margin: 12px 0;
 `;
 
-type Inputs = {
+interface FormInputs {
   race: string;
-  raceRequired: string;
-};
+  subRace: string;
+  class: string;
+  subClass: string;
+}
 
 export const CharacterBuilder: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const [displayRandom, setDisplayRandom] = React.useState(false);
-  const allRaces = useAllRaces();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
-  const [selectedRace, setSelectedRace] = React.useState<string>('');
-
-  const getRandomInt = (maxInt: number) => {
-    return Math.floor(Math.random() * maxInt);
-  };
-
-  const handleRandomise = (arr: Array<any>) => {
-    const randomInt = getRandomInt(arr.length);
-    return arr[randomInt];
-  };
-
-  const handleRandomRace = () => {
-    const randomRace = handleRandomise(allRaces);
-    setSelectedRace(randomRace.name);
-  };
-
-  React.useEffect(() => {
-    dispatch(commonActions.getAllRaces());
-  }, [dispatch]);
+  } = useForm<FormInputs>({
+    defaultValues: {
+      race: '',
+      subRace: '',
+      class: '',
+      subClass: '',
+    },
+  });
+  const onSubmit: SubmitHandler<FormInputs> = (data) => console.log(data);
 
   return (
     <StyledCharacterBuilderContainer>
@@ -108,40 +77,14 @@ export const CharacterBuilder: React.FC = () => {
           <StyledRandomiseButton>randomise</StyledRandomiseButton>.
         </StyledP>
       </StyledCharacterBuilderTitleContainer>
-      {!displayRandom ? (
-        <StyledStepsContainer>
-          <StyledStepsHeader>Step One: Race</StyledStepsHeader>
-          <StyledStepsSubheader>
-            Select a race or{' '}
-            <StyledRandomiseButton onClick={() => handleRandomRace()}>
-              randomise
-            </StyledRandomiseButton>{' '}
-            it.
-          </StyledStepsSubheader>
-          <StyledForm onSubmit={handleSubmit(onSubmit)}>
-            {/* register your input into the hook by invoking the "register" function */}
-            <StyledSelect
-              value={selectedRace}
-              {...register('race')}
-              onChange={(e) => {
-                setSelectedRace(e.target.value);
-              }}
-            >
-              <option value="" selected disabled>
-                - - - -
-              </option>
-              {allRaces &&
-                allRaces.map((race) => (
-                  <option key={race.index}>{race.name}</option>
-                ))}
-            </StyledSelect>
-            {/* errors will return when field validation fails  */}
-            {errors.raceRequired && <span>This field is required</span>}
-          </StyledForm>
-        </StyledStepsContainer>
-      ) : (
-        <h2>Random</h2>
-      )}
+      <StyledStepsContainer>
+        <StyledForm onSubmit={handleSubmit(onSubmit)}>
+          <Race register={register} errors={errors} />
+          <Class register={register} errors={errors} />
+          {/* Set ability scores */}
+          {/* Select a background */}
+        </StyledForm>
+      </StyledStepsContainer>
     </StyledCharacterBuilderContainer>
   );
 };
