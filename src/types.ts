@@ -100,6 +100,7 @@ export interface Backgrounds {
   flaws: Flaws;
 }
 
+export type AbilityOptions = 'CON' | 'DEX' | 'STR' | 'INT' | 'WIS' | 'CHA';
 
 // At some point would be good to re-type these to hold the specific traits they can be...
 export interface CommonModel {
@@ -120,8 +121,22 @@ export interface Spells {
   spell: CommonModel;
 }
 export interface AbilityBonus {
-  ability_score: CommonModel;
+  ability_score: {
+    name: AbilityOptions;
+    index: string;
+    url: string;
+  };
   bonus: number;
+}
+
+
+export enum AbilityMapEnum {
+  CON = 'Constitution',
+  DEX = 'Dexterity',
+  STR = 'Strength',
+  INT = 'Intelligence',
+  WIS = 'Wisdom',
+  CHA = 'Charisma',
 }
 
 export interface StartingEquipment {

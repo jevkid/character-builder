@@ -8,7 +8,6 @@ import { Class } from '../components/class';
 const StyledCharacterBuilderContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   height: 100%;
   color: ${TEXT_COLOR_PRIMARY};
@@ -19,6 +18,9 @@ const StyledCharacterBuilderTitle = styled.h1`
 `;
 
 const StyledCharacterBuilderTitleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
   margin-bottom: 32px;
 `;
@@ -37,11 +39,16 @@ const StyledRandomiseButton = styled.a`
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
-  align-items: center;
 `;
 
 const StyledP = styled.p`
   margin: 12px 0;
+`;
+
+const StyledSelectedOptions = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 interface FormInputs {
@@ -56,15 +63,17 @@ export const CharacterBuilder: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
+    getValues,
   } = useForm<FormInputs>({
     defaultValues: {
       race: '',
-      subRace: '',
       class: '',
-      subClass: '',
     },
   });
+  const selectedRace = getValues('race');
+  const selectedClass = getValues('class');
   const onSubmit: SubmitHandler<FormInputs> = (data) => console.log(data);
+  const [stepNum, setStepNum] = React.useState(1);
 
   return (
     <StyledCharacterBuilderContainer>
@@ -76,11 +85,29 @@ export const CharacterBuilder: React.FC = () => {
           Build your character step by step or completely{' '}
           <StyledRandomiseButton>randomise</StyledRandomiseButton>.
         </StyledP>
+        <StyledSelectedOptions>
+          {selectedRace !== '' && `Race: ${selectedRace}`}{' '}
+          {selectedClass !== '' && `| Class: ${selectedClass}`}
+        </StyledSelectedOptions>
       </StyledCharacterBuilderTitleContainer>
       <StyledStepsContainer>
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
-          <Race register={register} errors={errors} />
-          <Class register={register} errors={errors} />
+          {stepNum === 1 && (
+            <Race
+              register={register}
+              errors={errors}
+              handleStepForward={() => setStepNum(stepNum + 1)}
+              handleStepBack={() => setStepNum(stepNum - 1)}
+            />
+          )}
+          {stepNum === 2 && (
+            <Class
+              register={register}
+              errors={errors}
+              handleStepForward={() => setStepNum(stepNum + 1)}
+              handleStepBack={() => setStepNum(stepNum - 1)}
+            />
+          )}
           {/* Set ability scores */}
           {/* Select a background */}
         </StyledForm>

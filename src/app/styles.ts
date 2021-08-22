@@ -10,6 +10,5 @@ export const StyledAppContainer = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${APP_BACKGROUND_COLOUR_PRIMARY};
-  height: 100%;
   padding: ${APP_PADDING};
 `;

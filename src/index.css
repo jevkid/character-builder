@@ -7,6 +7,8 @@ div#root {
   height: 100%;
   /* font-family: 'Tenali Ramakrishna'; */
   font-family: 'Urbanist';
+  background-color: #eaeaea;
+
 }
 
 h1 {
@@ -63,6 +65,6 @@ h5 {
 p, span {
   font-size: 18px;
   margin: 4px;
-  line-height: 12px;
+  line-height: 19px;
   font-weight: 400;
 }
