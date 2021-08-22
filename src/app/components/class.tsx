@@ -27,6 +27,13 @@ const StyledStepsHeader = styled.h3`
   margin: 12px 0;
 `;
 
+const StyledDetailHeader = styled.h4`
+  text-align: center;
+  margin: 12px 0;
+  text-decoration: underline;
+  align-self: center;
+`;
+
 const StyledStepsSubheader = styled.h5`
   text-align: center;
   margin: 12px 0;
@@ -50,21 +57,42 @@ const StyledRandomiseButton = styled.a`
 
 const StyledClassContainer = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
+`;
+
+const StyledRow = styled.div`
+  display: flex;
+  margin-top: 12px;
+`;
+
+const StyledColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 32px;
 `;
 
 const StyledDetails = styled.div`
   display: flex;
   flex-direction: column;
-  width: 45%;
-  margin-left: 48px;
+  align-items: flex-start;
+  text-align: left;
+  padding: 0 32px;
 `;
 
 const StyledP = styled.p``;
 
-const StyledList = styled.ul``;
+const StyledList = styled.ul`
+  text-align: left;
+  margin-top: 4px;
+`;
 
 const StyledListItem = styled.li``;
+
+const StyledButtonContainer = styled.div`
+  display: flex;
+  margin-top: 32px;
+`;
 
 const StyledStepButton = styled.button`
   border: 0;
@@ -73,6 +101,7 @@ const StyledStepButton = styled.button`
   color: #ffffff;
   border-radius: 5px;
   padding: 12px;
+  margin: 0 12px;
   &:hover {
     cursor: pointer;
   }
@@ -191,31 +220,106 @@ export const Class: React.FC<ClassProps> = (props) => {
             {props.errors.subClass && <span>This field is required</span>}
           </>
         )}
-        <StyledStepButton onClick={props.handleStepForward}>
-          Next step
-        </StyledStepButton>
+        <StyledButtonContainer>
+          <StyledStepButton onClick={props.handleStepBack}>
+            &#8592; Previous: Race
+          </StyledStepButton>
+          <StyledStepButton onClick={props.handleStepForward}>
+            Next: Ability scores &#8594;
+          </StyledStepButton>
+        </StyledButtonContainer>
       </StyledStep>
       {detailedClass && displayClassDetails && (
-        <StyledDetails>
-          <StyledStepsHeader>{detailedClass.name}</StyledStepsHeader>
-          <StyledP>
-            <strong>Hit points: {detailedClass.hit_die}</strong>
-          </StyledP>
-          {detailedClass.proficiencies.length > 0 && (
-            <>
+        <StyledColumn>
+          <StyledDetailHeader>{detailedClass.name}</StyledDetailHeader>
+          <StyledRow>
+            <StyledDetails>
               <StyledP>
-                <strong>Proficiencies</strong>:
+                <strong>Hit points: </strong>
+                {detailedClass.hit_die}
+              </StyledP>
+              {detailedClass.proficiencies.length > 0 && (
+                <>
+                  <StyledP>
+                    <strong>Proficiencies</strong>:
+                  </StyledP>
+                  <StyledList>
+                    {detailedClass.proficiencies.map((proficiency) => (
+                      <StyledListItem key={proficiency.index}>
+                        {proficiency.name}
+                      </StyledListItem>
+                    ))}
+                  </StyledList>
+                </>
+              )}
+              <StyledP>
+                <strong>Proficiency choices:</strong>
+              </StyledP>
+              {detailedClass.proficiency_choices.length > 0 &&
+                detailedClass.proficiency_choices.map((choice) => (
+                  <>
+                    <StyledP>
+                      <i>Choose {choice.choose}:</i>
+                    </StyledP>
+                    <StyledList>
+                      {choice.from.map((item) => (
+                        <StyledListItem>{item.name}</StyledListItem>
+                      ))}
+                    </StyledList>
+                  </>
+                ))}
+            </StyledDetails>
+            <StyledDetails>
+              {detailedClass.starting_equipment.length > 0 && (
+                <>
+                  <StyledP>
+                    <strong>Starting equipment</strong>:
+                  </StyledP>
+                  <StyledList>
+                    {detailedClass.starting_equipment.map((item) => (
+                      <StyledListItem key={item.equipment.index}>
+                        {item.equipment.name}
+                      </StyledListItem>
+                    ))}
+                  </StyledList>
+                </>
+              )}
+              <StyledP>
+                <strong>Starting equipment choices:</strong>
+              </StyledP>
+              <StyledP>
+                <i>Choose 1:</i>
               </StyledP>
               <StyledList>
-                {detailedClass.proficiencies.map((proficiency) => (
-                  <StyledListItem key={proficiency.index}>
-                    {proficiency.name}
-                  </StyledListItem>
-                ))}
+                {detailedClass.starting_equipment_options.length > 0 &&
+                  detailedClass.starting_equipment_options.map((option) =>
+                    option.from.map(
+                      (item) =>
+                        item?.equipment?.name && (
+                          <StyledListItem>
+                            {item?.equipment?.name}
+                          </StyledListItem>
+                        )
+                    )
+                  )}
               </StyledList>
-            </>
-          )}
-        </StyledDetails>
+              {detailedClass.saving_throws.length > 0 && (
+                <>
+                  <StyledP>
+                    <strong>Saving throws</strong>:
+                  </StyledP>
+                  <StyledList>
+                    {detailedClass.saving_throws.map((item) => (
+                      <StyledListItem key={item.index}>
+                        {item.name}
+                      </StyledListItem>
+                    ))}
+                  </StyledList>
+                </>
+              )}
+            </StyledDetails>
+          </StyledRow>
+        </StyledColumn>
       )}
     </StyledClassContainer>
   );

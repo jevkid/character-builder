@@ -32,6 +32,13 @@ const StyledStepsHeader = styled.h3`
   margin: 12px 0;
 `;
 
+const StyledDetailHeader = styled.h4`
+  text-align: center;
+  margin: 12px 0;
+  text-decoration: underline;
+  align-self: center;
+`;
+
 const StyledStepsSubheader = styled.h5`
   text-align: center;
   margin: 12px 0;
@@ -55,21 +62,32 @@ const StyledRandomiseButton = styled.a`
 
 const StyledRaceContainer = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
 `;
 
 const StyledDetails = styled.div`
   display: flex;
   flex-direction: column;
-  width: 45%;
-  margin-left: 48px;
+  align-items: flex-start;
+  text-align: left;
+  max-width: 500px;
+  margin-top: 32px;
 `;
 
 const StyledP = styled.p``;
 
-const StyledList = styled.ul``;
+const StyledList = styled.ul`
+  text-align: left;
+  margin-top: 4px;
+`;
 
 const StyledListItem = styled.li``;
+
+const StyledButtonContainer = styled.div`
+  display: flex;
+  margin-top: 32px;
+`;
 
 const StyledStepButton = styled.button`
   border: 0;
@@ -194,13 +212,15 @@ export const Race: React.FC<RaceProps> = (props) => {
             {props.errors.subRace && <span>This field is required</span>}
           </>
         )}
-        <StyledStepButton onClick={props.handleStepForward}>
-          Next step
-        </StyledStepButton>
+        <StyledButtonContainer>
+          <StyledStepButton onClick={props.handleStepForward}>
+            Next: Class &#8594;
+          </StyledStepButton>
+        </StyledButtonContainer>
       </StyledStep>
       {detailedRace && displayRaceDetails && (
         <StyledDetails>
-          <StyledStepsHeader>{detailedRace.name}</StyledStepsHeader>
+          <StyledDetailHeader>{detailedRace.name}</StyledDetailHeader>
           <StyledP>
             <strong>Ability score increase</strong>:
           </StyledP>

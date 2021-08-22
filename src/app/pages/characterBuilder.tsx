@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { TEXT_COLOR_PRIMARY, TEXT_COLOR_SECONDARY } from '../styles';
 import { Race } from '../components/race';
 import { Class } from '../components/class';
+import { ClassEnum, Classes, RaceEnum, Races } from '../../types';
 
 const StyledCharacterBuilderContainer = styled.div`
   display: flex;
@@ -11,6 +12,7 @@ const StyledCharacterBuilderContainer = styled.div`
   align-items: center;
   height: 100%;
   color: ${TEXT_COLOR_PRIMARY};
+  margin-top: 32px;
 `;
 
 const StyledCharacterBuilderTitle = styled.h1`
@@ -70,8 +72,8 @@ export const CharacterBuilder: React.FC = () => {
       class: '',
     },
   });
-  const selectedRace = getValues('race');
-  const selectedClass = getValues('class');
+  const selectedRace = getValues('race') as Races;
+  const selectedClass = getValues('class') as Classes;
   const onSubmit: SubmitHandler<FormInputs> = (data) => console.log(data);
   const [stepNum, setStepNum] = React.useState(1);
 
@@ -86,8 +88,8 @@ export const CharacterBuilder: React.FC = () => {
           <StyledRandomiseButton>randomise</StyledRandomiseButton>.
         </StyledP>
         <StyledSelectedOptions>
-          {selectedRace !== '' && `Race: ${selectedRace}`}{' '}
-          {selectedClass !== '' && `| Class: ${selectedClass}`}
+          {selectedRace !== '' && `Race: ${RaceEnum[selectedRace]}`}{' '}
+          {selectedClass !== '' && `| Class: ${ClassEnum[selectedClass]}`}
         </StyledSelectedOptions>
       </StyledCharacterBuilderTitleContainer>
       <StyledStepsContainer>

@@ -129,6 +129,36 @@ export interface AbilityBonus {
   bonus: number;
 }
 
+export type Races = 'dragonborn' | 'dwarf' | 'elf' | 'gnome' | 'half-elf' | 'half-orc' | 'halfling' | 'human' | 'tiefling' | '';
+
+export type Classes = "barbarian" | "bard" | "cleric" | "druid" | "fighter" | "monk" | "paladin" | "ranger" | "rogue" | "sorcerer" | "warlock" | "wizard" | "";
+
+export enum RaceEnum {
+  dragonborn = 'Dragonborn',
+  dwarf = 'Dwarf',
+  elf = 'Elf',
+  gnome = 'Gnome',
+  'half-elf' = 'Half-Elf',
+  'half-orc' = 'Half-Orc',
+  halfling = 'Halfling',
+  human = 'Human',
+  tiefling = 'Tiefling',
+}
+
+export enum ClassEnum {
+  barbarian = "Barbarian",
+  bard = "Bard",
+  cleric = "Cleric",
+  druid = "Druid",
+  fighter = "Fighter",
+  monk = "Monk",
+  paladin = "Paladin",
+  ranger = "Ranger",
+  rogue = "Rogue",
+  sorcerer = "Sorcerer",
+  warlock = "Warlock",
+  wizard = "Wizard",
+}
 
 export enum AbilityMapEnum {
   CON = 'Constitution',
@@ -148,8 +178,10 @@ export interface StartingEquipmentOptions {
   choose: number;
   type: "equipment";
   from: [
-    StartingEquipment[],
-    StartingEquipmentOptions,
+    {
+      equipment: CommonModel;
+      quantity: number;
+    }
   ]
 }
 
