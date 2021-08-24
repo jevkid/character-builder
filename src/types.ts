@@ -225,6 +225,14 @@ export interface FormInputs {
   subRace: string;
   class: string;
   subClass: string;
+  abilityScores: {
+    constitution: number;
+    dexterity: number;
+    strength: number;
+    intelligence: number;
+    wisdom: number;
+    charisma: number;
+  };
 }
 
 export interface APIReference {

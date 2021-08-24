@@ -1,10 +1,23 @@
 import * as React from 'react';
-import styled from 'styled-components';
 import { DeepMap, FieldError, UseFormRegister } from 'react-hook-form';
 import { useAppDispatch } from '../../helpers/hooks';
 import { commonActions } from '../../store/slices/common';
 import { useAllRaces, useDetailedRace } from '../../store/selectors/common';
-import { TEXT_COLOR_PRIMARY, TEXT_COLOR_SECONDARY } from '../styles';
+import {
+  StyledContainer,
+  StyledStepsHeader,
+  StyledDetailHeader,
+  StyledStepsSubheader,
+  StyledSelect,
+  StyledRandomiseButton,
+  StyledStepContainer,
+  StyledDetails,
+  StyledP,
+  StyledList,
+  StyledListItem,
+  StyledButtonContainer,
+  StyledStepButton,
+} from '../styles';
 import { handleRandomise } from '../../helpers/randomise';
 import {
   AbilityMapEnum,
@@ -19,87 +32,6 @@ interface RaceProps {
   handleStepForward: () => void;
   handleStepBack: () => void;
 }
-
-const StyledStep = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-`;
-
-const StyledStepsHeader = styled.h3`
-  text-align: center;
-  margin: 12px 0;
-`;
-
-const StyledDetailHeader = styled.h4`
-  text-align: center;
-  margin: 12px 0;
-  text-decoration: underline;
-  align-self: center;
-`;
-
-const StyledStepsSubheader = styled.h5`
-  text-align: center;
-  margin: 12px 0;
-`;
-
-const StyledSelect = styled.select`
-  width: 200px;
-  height: 30px;
-  border-radius: 5px;
-  margin: 12px 0;
-`;
-
-const StyledRandomiseButton = styled.a`
-  font-size: inherit;
-  color: ${TEXT_COLOR_SECONDARY};
-  &:hover {
-    cursor: pointer;
-    color: ${TEXT_COLOR_PRIMARY};
-  }
-`;
-
-const StyledRaceContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-
-const StyledDetails = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  max-width: 500px;
-  margin-top: 32px;
-`;
-
-const StyledP = styled.p``;
-
-const StyledList = styled.ul`
-  text-align: left;
-  margin-top: 4px;
-`;
-
-const StyledListItem = styled.li``;
-
-const StyledButtonContainer = styled.div`
-  display: flex;
-  margin-top: 32px;
-`;
-
-const StyledStepButton = styled.button`
-  border: 0;
-  outline: 0;
-  background-color: ${TEXT_COLOR_SECONDARY};
-  color: #ffffff;
-  border-radius: 5px;
-  padding: 12px;
-  &:hover {
-    cursor: pointer;
-  }
-`;
 
 export const Race: React.FC<RaceProps> = (props) => {
   const dispatch = useAppDispatch();
@@ -163,8 +95,8 @@ export const Race: React.FC<RaceProps> = (props) => {
   }, [detailedRace]);
 
   return (
-    <StyledRaceContainer>
-      <StyledStep>
+    <StyledStepContainer>
+      <StyledContainer>
         <StyledStepsHeader>Step One: Race</StyledStepsHeader>
         <StyledStepsSubheader>
           Select a race or{' '}
@@ -217,7 +149,7 @@ export const Race: React.FC<RaceProps> = (props) => {
             Next: Class &#8594;
           </StyledStepButton>
         </StyledButtonContainer>
-      </StyledStep>
+      </StyledContainer>
       {detailedRace && displayRaceDetails && (
         <StyledDetails>
           <StyledDetailHeader>{detailedRace.name}</StyledDetailHeader>
@@ -283,6 +215,6 @@ export const Race: React.FC<RaceProps> = (props) => {
           )}
         </StyledDetails>
       )}
-    </StyledRaceContainer>
+    </StyledStepContainer>
   );
 };

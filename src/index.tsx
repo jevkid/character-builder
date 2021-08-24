@@ -15,11 +15,24 @@ import {
 } from './app/styles';
 import './index.css';
 
-const StyledNavigation = styled.nav`
+const StyledDesktopNavigation = styled.nav`
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
   position: relative;
+  @media only screen and (max-width: 480px) {
+    display: none;
+  }
+`;
+
+const StyledMobileNavigation = styled.nav`
+  @media only screen and (min-width: 481px) {
+    display: none;
+  }
+  @media only screen and (max-width: 480px) {
+    display: flex;
+    justify-content: center;
+  }
 `;
 
 const StyledNavLink = styled(NavLink)`
@@ -37,6 +50,13 @@ const StyledNavLink = styled(NavLink)`
     cursor: pointer;
     color: ${TEXT_COLOR_PRIMARY};
   }
+  @media only screen and (max-width: 480px) {
+    justify-content: center;
+    &:first-child {
+      left: 0;
+      position: relative;
+    }
+  }
 `;
 
 ReactDOM.render(
@@ -44,11 +64,14 @@ ReactDOM.render(
     <Provider store={store}>
       <BrowserRouter>
         <StyledAppContainer>
-          <StyledNavigation>
+          <StyledDesktopNavigation>
             <StyledNavLink to="/">Randomi5E</StyledNavLink>
             <StyledNavLink to="/glossary">Glossary</StyledNavLink>
             <StyledNavLink to="/builder">Character builder</StyledNavLink>
-          </StyledNavigation>
+          </StyledDesktopNavigation>
+          <StyledMobileNavigation>
+            <StyledNavLink to="/">Randomi5e</StyledNavLink>
+          </StyledMobileNavigation>
           <Switch>
             <Route exact path={['/']}>
               <Home />

@@ -1,5 +1,9 @@
 import styled from 'styled-components';
-import { APP_BACKGROUND_COLOUR_PRIMARY, TEXT_COLOR_PRIMARY } from '../styles';
+import {
+  APP_BACKGROUND_COLOUR_PRIMARY,
+  APP_BORDER_RADIUS,
+  TEXT_COLOR_PRIMARY,
+} from '../styles';
 
 const StyledTitlePage = styled.div`
   display: flex;
@@ -19,7 +23,7 @@ const StyledTitle = styled.h1`
 
 const StyledBeginButton = styled.a`
   padding: 12px;
-  border-radius: 10px;
+  border-radius: ${APP_BORDER_RADIUS};
   background-color: ${TEXT_COLOR_PRIMARY};
   color: ${APP_BACKGROUND_COLOUR_PRIMARY};
   text-decoration: none;

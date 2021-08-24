@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import { TEXT_COLOR_PRIMARY, TEXT_COLOR_SECONDARY } from '../styles';
 import { Race } from '../components/race';
 import { Class } from '../components/class';
-import { ClassEnum, Classes, RaceEnum, Races } from '../../types';
+import { ClassEnum, Classes, FormInputs, RaceEnum, Races } from '../../types';
+import { AbilityScores } from '../components/abilityScores';
 
 const StyledCharacterBuilderContainer = styled.div`
   display: flex;
@@ -52,13 +53,6 @@ const StyledSelectedOptions = styled.div`
   align-items: center;
   justify-content: space-between;
 `;
-
-interface FormInputs {
-  race: string;
-  subRace: string;
-  class: string;
-  subClass: string;
-}
 
 export const CharacterBuilder: React.FC = () => {
   const {
@@ -110,7 +104,14 @@ export const CharacterBuilder: React.FC = () => {
               handleStepBack={() => setStepNum(stepNum - 1)}
             />
           )}
-          {/* Set ability scores */}
+          {stepNum === 3 && (
+            <AbilityScores
+              register={register}
+              errors={errors}
+              handleStepForward={() => setStepNum(stepNum + 1)}
+              handleStepBack={() => setStepNum(stepNum - 1)}
+            />
+          )}
           {/* Select a background */}
         </StyledForm>
       </StyledStepsContainer>
