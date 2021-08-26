@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { DeepMap, FieldError, UseFormRegister } from 'react-hook-form';
 import { useAppDispatch } from '../../helpers/hooks';
 import { commonActions } from '../../store/slices/common';
 import { useAllClasses, useDetailedClass } from '../../store/selectors/common';
@@ -21,16 +20,9 @@ import {
   StyledColumn,
 } from '../styles';
 import { handleRandomise } from '../../helpers/randomise';
-import { APIReference, CommonModel, FormInputs } from '../../types';
+import { APIReference, CommonModel, GenericComponentProps } from '../../types';
 
-interface ClassProps {
-  register: UseFormRegister<FormInputs>;
-  errors: DeepMap<FormInputs, FieldError>;
-  handleStepForward: () => void;
-  handleStepBack: () => void;
-}
-
-export const Class: React.FC<ClassProps> = (props) => {
+export const Class: React.FC<GenericComponentProps> = (props) => {
   const dispatch = useAppDispatch();
   const allClasses = useAllClasses();
   const detailedClass = useDetailedClass();
@@ -62,6 +54,7 @@ export const Class: React.FC<ClassProps> = (props) => {
     if (allClasses?.results) {
       const randomClass = handleRandomise(allClasses?.results);
       setSelectedClass({ index: randomClass.index, name: randomClass.name });
+      props.setFieldValue('class', randomClass.index);
       dispatch(commonActions.getClassDetails({ index: randomClass.index }));
     }
   };
@@ -147,7 +140,10 @@ export const Class: React.FC<ClassProps> = (props) => {
           <StyledStepButton onClick={props.handleStepBack}>
             &#8592; Previous: Race
           </StyledStepButton>
-          <StyledStepButton onClick={props.handleStepForward}>
+          <StyledStepButton
+            onClick={props.handleStepForward}
+            disabled={!selectedClass || selectedClass.index === ''}
+          >
             Next: Ability scores &#8594;
           </StyledStepButton>
         </StyledButtonContainer>
@@ -179,17 +175,19 @@ export const Class: React.FC<ClassProps> = (props) => {
                 <strong>Proficiency choices:</strong>
               </StyledP>
               {detailedClass.proficiency_choices.length > 0 &&
-                detailedClass.proficiency_choices.map((choice) => (
-                  <>
+                detailedClass.proficiency_choices.map((choice, index) => (
+                  <div key={`${choice.type}-${index}`}>
                     <StyledP>
                       <i>Choose {choice.choose}:</i>
                     </StyledP>
                     <StyledList>
                       {choice.from.map((item) => (
-                        <StyledListItem>{item.name}</StyledListItem>
+                        <StyledListItem key={item.index}>
+                          {item.name}
+                        </StyledListItem>
                       ))}
                     </StyledList>
-                  </>
+                  </div>
                 ))}
             </StyledDetails>
             <StyledDetails>
@@ -219,7 +217,7 @@ export const Class: React.FC<ClassProps> = (props) => {
                     option.from.map(
                       (item) =>
                         item?.equipment?.name && (
-                          <StyledListItem>
+                          <StyledListItem key={item.equipment.index}>
                             {item?.equipment?.name}
                           </StyledListItem>
                         )

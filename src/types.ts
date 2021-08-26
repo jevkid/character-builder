@@ -1,3 +1,41 @@
+import { DeepMap, FieldError, UseFormRegister, UseFormSetValue, UseFormGetValues } from 'react-hook-form';
+
+export interface FormInputs {
+  race: string;
+  subRace: string;
+  class: string;
+  subClass: string;
+  abilityScores: AbilityOptions;
+  background: {
+    parents: {
+      knowledge: APIReference;
+      race: APIReference;
+    },
+    birthplace?: APIReference;
+    siblings?: {
+      occupation?: APIReference;
+      alignment?: APIReference;
+      status?: APIReference;
+      relationship?: APIReference;
+      number?: APIReference;
+      birthOrder?: APIReference;
+      details?: APIReference;
+    }
+  };
+}
+
+export interface ParentsBackground {
+
+}
+export interface GenericComponentProps {
+  register: UseFormRegister<FormInputs>;
+  errors: DeepMap<FormInputs, FieldError>;
+  handleStepForward: () => void;
+  handleStepBack: () => void;
+  setFieldValue: UseFormSetValue<FormInputs>;
+  getFieldValue: UseFormGetValues<FormInputs>
+}
+
 export interface Race {
   index: string;
   name: string;
@@ -83,7 +121,7 @@ export interface SubClass {
   url: string;
 }
 
-export interface Backgrounds {
+export interface Background {
   index: string;
   name: string;
   starting_proficiencies: CommonModel[];
@@ -99,8 +137,6 @@ export interface Backgrounds {
   bonds: Bonds;
   flaws: Flaws;
 }
-
-export type AbilityOptions = 'CON' | 'DEX' | 'STR' | 'INT' | 'WIS' | 'CHA';
 
 // At some point would be good to re-type these to hold the specific traits they can be...
 export interface CommonModel {
@@ -122,7 +158,7 @@ export interface Spells {
 }
 export interface AbilityBonus {
   ability_score: {
-    name: AbilityOptions;
+    name: AbilityOptionsShort;
     index: string;
     url: string;
   };
@@ -132,6 +168,19 @@ export interface AbilityBonus {
 export type Races = 'dragonborn' | 'dwarf' | 'elf' | 'gnome' | 'half-elf' | 'half-orc' | 'halfling' | 'human' | 'tiefling' | '';
 
 export type Classes = "barbarian" | "bard" | "cleric" | "druid" | "fighter" | "monk" | "paladin" | "ranger" | "rogue" | "sorcerer" | "warlock" | "wizard" | "";
+
+export type AbilityOptionsShort = 'CON' | 'DEX' | 'STR' | 'INT' | 'WIS' | 'CHA';
+
+export type AbilityOptionsFull = 'constitution' | 'dexterity' | 'strength' | 'intelligence' | 'wisdom' | 'charisma';
+
+export type AbilityOptions = {
+  constitution: number;
+  dexterity: number;
+  strength: number;
+  intelligence: number;
+  wisdom: number;
+  charisma: number;
+};
 
 export enum RaceEnum {
   dragonborn = 'Dragonborn',
@@ -167,6 +216,15 @@ export enum AbilityMapEnum {
   INT = 'Intelligence',
   WIS = 'Wisdom',
   CHA = 'Charisma',
+}
+
+export enum AbilityMapEnumShort {
+  constitution = 'CON',
+  dexterity = 'DEX',
+  strength = 'STR',
+  intelligence = 'INT',
+  wisdom = 'WIS',
+  charisma = 'CHA',
 }
 
 export interface StartingEquipment {
@@ -219,21 +277,6 @@ export interface PersonalityTraits {
   choose: number;
   type: 'personality_traits'
 };
-
-export interface FormInputs {
-  race: string;
-  subRace: string;
-  class: string;
-  subClass: string;
-  abilityScores: {
-    constitution: number;
-    dexterity: number;
-    strength: number;
-    intelligence: number;
-    wisdom: number;
-    charisma: number;
-  };
-}
 
 export interface APIReference {
   index: string;

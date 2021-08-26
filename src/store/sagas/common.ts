@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 import { call, put } from 'redux-saga/effects';
-import { getAllRaces, getAllSubRaces, getAllClasses, getAllSubClasses, getRaceDetails, getClassDetails } from '../../api';
-import { APIAllRacesResponse, APIAllSubRacesResponse, APIAllClassesResponse, APIAllSubClassesResponse, APIRacesResponse, APIClassesResponse } from '../../api/types';
+import { getAllRaces, getAllSubRaces, getAllClasses, getAllSubClasses, getRaceDetails, getClassDetails, getAllBackgrounds, getBackgroundDetails } from '../../api';
+import { APIAllRacesResponse, APIAllSubRacesResponse, APIAllClassesResponse, APIAllSubClassesResponse, APIRacesResponse, APIClassesResponse, APIAllBackgroundsResponse, APIBackgroundsResponse } from '../../api/types';
 import { commonActions } from '../slices/common';
 
 export function* returnRaceDetails(action: ReturnType<typeof commonActions.getRaceDetails>) {
@@ -68,5 +68,27 @@ export function* returnAllSubClasses(action: ReturnType<typeof commonActions.get
     yield put(commonActions.getAllSubClassesSuccess(response.data));
   } else {
     yield put(commonActions.getAllSubClassesFailure());
+  }
+}
+
+export function* returnAllBackgrounds() {
+  const response: AxiosResponse<APIAllBackgroundsResponse> = yield call(getAllBackgrounds);
+  yield put(commonActions.getAllBackgroundsLoading());
+
+  if (response.data) {
+    yield put(commonActions.getAllBackgroundsSuccess(response.data));
+  } else {
+    yield put(commonActions.getAllBackgroundsFailure());
+  }
+}
+
+export function* returnBackgroundDetails(action: ReturnType<typeof commonActions.getBackgroundDetails>) {
+  const response: AxiosResponse<APIBackgroundsResponse> = yield call(getBackgroundDetails, action.payload.index);
+  yield put(commonActions.getDetailedBackgroundLoading());
+
+  if (response.data) {
+    yield put(commonActions.getDetailedBackgroundSuccess(response.data));
+  } else {
+    yield put(commonActions.getDetailedBackgroundFailure());
   }
 }

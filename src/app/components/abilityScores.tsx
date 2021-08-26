@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { DeepMap, FieldError, UseFormRegister } from 'react-hook-form';
-import { FormInputs } from '../../types';
+import { GenericComponentProps } from '../../types';
 import {
   APP_BORDER_RADIUS,
   StyledContainer,
@@ -13,13 +12,6 @@ import {
   StyledStepButton,
 } from '../styles';
 import { getRandomInt } from '../../helpers/randomise';
-
-interface AbilityScoresProps {
-  register: UseFormRegister<FormInputs>;
-  errors: DeepMap<FormInputs, FieldError>;
-  handleStepForward: () => void;
-  handleStepBack: () => void;
-}
 
 export const MIN_SCORE = 5;
 export const MAX_SCORE = 18;
@@ -56,7 +48,7 @@ const StyledFieldContainer = styled.fieldset`
   }
 `;
 
-export const AbilityScores: React.FC<AbilityScoresProps> = (props) => {
+export const AbilityScores: React.FC<GenericComponentProps> = (props) => {
   const [strength, setStrength] = React.useState<number | undefined>(undefined);
   const [dexterity, setDexterity] = React.useState<number | undefined>(
     undefined
@@ -71,12 +63,29 @@ export const AbilityScores: React.FC<AbilityScoresProps> = (props) => {
   const [charisma, setCharisma] = React.useState<number | undefined>(undefined);
 
   const handleRandomScores = () => {
-    setStrength(getRandomInt(MAX_SCORE, MIN_SCORE));
-    setDexterity(getRandomInt(MAX_SCORE, MIN_SCORE));
-    setConstitution(getRandomInt(MAX_SCORE, MIN_SCORE));
-    setIntelligence(getRandomInt(MAX_SCORE, MIN_SCORE));
-    setWisdom(getRandomInt(MAX_SCORE, MIN_SCORE));
-    setCharisma(getRandomInt(MAX_SCORE, MIN_SCORE));
+    const randomStrength = getRandomInt(MAX_SCORE, MIN_SCORE);
+    setStrength(randomStrength);
+    props.setFieldValue('abilityScores.strength', randomStrength);
+
+    const randomDexterity = getRandomInt(MAX_SCORE, MIN_SCORE);
+    setDexterity(randomDexterity);
+    props.setFieldValue('abilityScores.dexterity', randomDexterity);
+
+    const randomConstitution = getRandomInt(MAX_SCORE, MIN_SCORE);
+    setConstitution(randomConstitution);
+    props.setFieldValue('abilityScores.constitution', randomConstitution);
+
+    const randomIntelligence = getRandomInt(MAX_SCORE, MIN_SCORE);
+    setIntelligence(randomIntelligence);
+    props.setFieldValue('abilityScores.intelligence', randomIntelligence);
+
+    const randomWisdom = getRandomInt(MAX_SCORE, MIN_SCORE);
+    setWisdom(randomWisdom);
+    props.setFieldValue('abilityScores.wisdom', randomWisdom);
+
+    const randomCharisma = getRandomInt(MAX_SCORE, MIN_SCORE);
+    setCharisma(randomCharisma);
+    props.setFieldValue('abilityScores.charisma', randomCharisma);
   };
 
   const handleScoreUpdate = (score: string, fieldName: string) => {
@@ -114,84 +123,88 @@ export const AbilityScores: React.FC<AbilityScoresProps> = (props) => {
           <StyledFieldContainer>
             <StyledLabel>Strength</StyledLabel>
             <StyledInput
-              value={strength}
+              defaultValue={strength}
+              type="number"
               {...props.register('abilityScores.strength')}
               onChange={(e) => {
                 handleScoreUpdate(e.target.value, 'strength');
               }}
             />
             {props.errors.abilityScores?.strength && (
-              <span>This field is required</span>
+              <span>Please select a</span>
             )}
           </StyledFieldContainer>
 
           <StyledFieldContainer>
             <StyledLabel>Dexterity</StyledLabel>
             <StyledInput
-              value={dexterity}
+              defaultValue={dexterity}
+              type="number"
               {...props.register('abilityScores.dexterity')}
               onChange={(e) => {
                 handleScoreUpdate(e.target.value, 'dexterity');
               }}
             />
             {props.errors.abilityScores?.dexterity && (
-              <span>This field is required</span>
+              <span>Please select a</span>
             )}
           </StyledFieldContainer>
 
           <StyledFieldContainer>
             <StyledLabel>Constitution</StyledLabel>
             <StyledInput
-              value={constitution}
+              defaultValue={constitution}
+              type="number"
               {...props.register('abilityScores.constitution')}
               onChange={(e) => {
                 handleScoreUpdate(e.target.value, 'constitution');
               }}
             />
             {props.errors.abilityScores?.constitution && (
-              <span>This field is required</span>
+              <span>Please select a</span>
             )}
           </StyledFieldContainer>
 
           <StyledFieldContainer>
             <StyledLabel>Intelligence</StyledLabel>
             <StyledInput
-              value={intelligence}
+              defaultValue={intelligence}
+              type="number"
               {...props.register('abilityScores.intelligence')}
               onChange={(e) => {
                 handleScoreUpdate(e.target.value, 'intelligence');
               }}
             />
             {props.errors.abilityScores?.intelligence && (
-              <span>This field is required</span>
+              <span>Please select a</span>
             )}
           </StyledFieldContainer>
 
           <StyledFieldContainer>
             <StyledLabel>Wisdom</StyledLabel>
             <StyledInput
-              value={wisdom}
+              defaultValue={wisdom}
+              type="number"
               {...props.register('abilityScores.wisdom')}
               onChange={(e) => {
                 handleScoreUpdate(e.target.value, 'wisdom');
               }}
             />
-            {props.errors.abilityScores?.wisdom && (
-              <span>This field is required</span>
-            )}
+            {props.errors.abilityScores?.wisdom && <span>Please select a</span>}
           </StyledFieldContainer>
 
           <StyledFieldContainer>
             <StyledLabel>Charisma</StyledLabel>
             <StyledInput
-              value={charisma}
+              defaultValue={charisma}
+              type="number"
               {...props.register('abilityScores.charisma')}
               onChange={(e) => {
                 handleScoreUpdate(e.target.value, 'charisma');
               }}
             />
             {props.errors.abilityScores?.charisma && (
-              <span>This field is required</span>
+              <span>Please select a</span>
             )}
           </StyledFieldContainer>
         </StyledScoresContainer>
@@ -199,7 +212,17 @@ export const AbilityScores: React.FC<AbilityScoresProps> = (props) => {
           <StyledStepButton onClick={props.handleStepBack}>
             &#8592; Previous: Class
           </StyledStepButton>
-          <StyledStepButton onClick={props.handleStepForward}>
+          <StyledStepButton
+            onClick={props.handleStepForward}
+            disabled={
+              !strength ||
+              !charisma ||
+              !intelligence ||
+              !wisdom ||
+              !dexterity ||
+              !constitution
+            }
+          >
             Next: Background &#8594;
           </StyledStepButton>
         </StyledButtonContainer>

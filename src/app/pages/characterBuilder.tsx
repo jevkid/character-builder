@@ -4,8 +4,16 @@ import styled from 'styled-components';
 import { TEXT_COLOR_PRIMARY, TEXT_COLOR_SECONDARY } from '../styles';
 import { Race } from '../components/race';
 import { Class } from '../components/class';
-import { ClassEnum, Classes, FormInputs, RaceEnum, Races } from '../../types';
+import {
+  AbilityOptions,
+  ClassEnum,
+  Classes,
+  FormInputs,
+  RaceEnum,
+  Races,
+} from '../../types';
 import { AbilityScores } from '../components/abilityScores';
+import { Background } from '../components/background';
 
 const StyledCharacterBuilderContainer = styled.div`
   display: flex;
@@ -60,15 +68,17 @@ export const CharacterBuilder: React.FC = () => {
     handleSubmit,
     formState: { errors },
     getValues,
+    setValue,
   } = useForm<FormInputs>({
     defaultValues: {
       race: '',
       class: '',
     },
   });
+  const onSubmit: SubmitHandler<FormInputs> = (data) => console.log(data);
   const selectedRace = getValues('race') as Races;
   const selectedClass = getValues('class') as Classes;
-  const onSubmit: SubmitHandler<FormInputs> = (data) => console.log(data);
+  const selectedAbilities = getValues('abilityScores') as AbilityOptions;
   const [stepNum, setStepNum] = React.useState(1);
 
   return (
@@ -82,8 +92,48 @@ export const CharacterBuilder: React.FC = () => {
           <StyledRandomiseButton>randomise</StyledRandomiseButton>.
         </StyledP>
         <StyledSelectedOptions>
-          {selectedRace !== '' && `Race: ${RaceEnum[selectedRace]}`}{' '}
-          {selectedClass !== '' && `| Class: ${ClassEnum[selectedClass]}`}
+          {selectedRace !== '' && (
+            <span>
+              <strong>Race</strong>: {RaceEnum[selectedRace]}
+            </span>
+          )}
+          {selectedClass !== '' && (
+            <span>
+              | <strong>Class</strong>: {ClassEnum[selectedClass]}
+            </span>
+          )}
+        </StyledSelectedOptions>
+        <StyledSelectedOptions>
+          {selectedAbilities?.strength && (
+            <span>
+              <strong>STR</strong>: {selectedAbilities.strength}
+            </span>
+          )}
+          {selectedAbilities?.dexterity && (
+            <span>
+              <strong>DEX</strong>: {selectedAbilities.dexterity}
+            </span>
+          )}
+          {selectedAbilities?.constitution && (
+            <span>
+              <strong>CON</strong>: {selectedAbilities.constitution}
+            </span>
+          )}
+          {selectedAbilities?.intelligence && (
+            <span>
+              <strong>INT</strong>: {selectedAbilities.intelligence}
+            </span>
+          )}
+          {selectedAbilities?.wisdom && (
+            <span>
+              <strong>WIS</strong>: {selectedAbilities.wisdom}
+            </span>
+          )}
+          {selectedAbilities?.charisma && (
+            <span>
+              <strong>CHA</strong>: {selectedAbilities.charisma}
+            </span>
+          )}
         </StyledSelectedOptions>
       </StyledCharacterBuilderTitleContainer>
       <StyledStepsContainer>
@@ -94,6 +144,8 @@ export const CharacterBuilder: React.FC = () => {
               errors={errors}
               handleStepForward={() => setStepNum(stepNum + 1)}
               handleStepBack={() => setStepNum(stepNum - 1)}
+              setFieldValue={setValue}
+              getFieldValue={getValues}
             />
           )}
           {stepNum === 2 && (
@@ -102,6 +154,8 @@ export const CharacterBuilder: React.FC = () => {
               errors={errors}
               handleStepForward={() => setStepNum(stepNum + 1)}
               handleStepBack={() => setStepNum(stepNum - 1)}
+              setFieldValue={setValue}
+              getFieldValue={getValues}
             />
           )}
           {stepNum === 3 && (
@@ -110,9 +164,20 @@ export const CharacterBuilder: React.FC = () => {
               errors={errors}
               handleStepForward={() => setStepNum(stepNum + 1)}
               handleStepBack={() => setStepNum(stepNum - 1)}
+              setFieldValue={setValue}
+              getFieldValue={getValues}
             />
           )}
-          {/* Select a background */}
+          {stepNum === 4 && (
+            <Background
+              register={register}
+              errors={errors}
+              handleStepForward={() => setStepNum(stepNum + 1)}
+              handleStepBack={() => setStepNum(stepNum - 1)}
+              setFieldValue={setValue}
+              getFieldValue={getValues}
+            />
+          )}
         </StyledForm>
       </StyledStepsContainer>
     </StyledCharacterBuilderContainer>

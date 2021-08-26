@@ -4,7 +4,10 @@ export const APP_BORDER_RADIUS = '5px';
 export const APP_PADDING = '12px 48px';
 export const APP_BACKGROUND_COLOUR_PRIMARY = '#eaeaea';
 export const APP_FONT_FAMILY = 'Tenali Ramakrishna';
+
 export const TEXT_COLOR_PRIMARY = '#2b2b2b';
+export const TEXT_COLOR_PRIMARY_DISABLED = '#7d7289';
+export const TEXT_COLOR_PRIMARY_HOVER = '#362c3f';
 export const TEXT_COLOR_SECONDARY = '#514260';
 
 export const StyledAppContainer = styled.div`
@@ -100,6 +103,16 @@ export const StyledStepButton = styled.button`
   @media only screen and (max-width: 480px) {
     margin-bottom: 8px;
     width: 100%;
+  }
+  &:hover {
+    background-color: ${TEXT_COLOR_PRIMARY_HOVER};
+  }
+  &:disabled {
+    background-color: ${TEXT_COLOR_PRIMARY_DISABLED};
+    &:hover {
+      background-color: ${TEXT_COLOR_PRIMARY_DISABLED};
+      cursor: not-allowed;
+    }
   }
 `;
 

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { DeepMap, FieldError, UseFormRegister } from 'react-hook-form';
 import { useAppDispatch } from '../../helpers/hooks';
 import { commonActions } from '../../store/slices/common';
 import { useAllRaces, useDetailedRace } from '../../store/selectors/common';
@@ -23,17 +22,10 @@ import {
   AbilityMapEnum,
   APIReference,
   CommonModel,
-  FormInputs,
+  GenericComponentProps,
 } from '../../types';
 
-interface RaceProps {
-  register: UseFormRegister<FormInputs>;
-  errors: DeepMap<FormInputs, FieldError>;
-  handleStepForward: () => void;
-  handleStepBack: () => void;
-}
-
-export const Race: React.FC<RaceProps> = (props) => {
+export const Race: React.FC<GenericComponentProps> = (props) => {
   const dispatch = useAppDispatch();
   const allRaces = useAllRaces();
   const detailedRace = useDetailedRace();
@@ -65,6 +57,7 @@ export const Race: React.FC<RaceProps> = (props) => {
     if (allRaces?.results) {
       const randomRace = handleRandomise(allRaces?.results);
       setSelectedRace({ index: randomRace.index, name: randomRace.name });
+      props.setFieldValue('race', randomRace.index);
       dispatch(commonActions.getRaceDetails({ index: randomRace.index }));
     }
   };
@@ -145,7 +138,10 @@ export const Race: React.FC<RaceProps> = (props) => {
           </>
         )}
         <StyledButtonContainer>
-          <StyledStepButton onClick={props.handleStepForward}>
+          <StyledStepButton
+            onClick={props.handleStepForward}
+            disabled={!selectedRace || selectedRace.index === ''}
+          >
             Next: Class &#8594;
           </StyledStepButton>
         </StyledButtonContainer>

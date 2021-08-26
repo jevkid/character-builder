@@ -1,4 +1,4 @@
-import { Race, SubRace, Class, SubClass, CommonModel } from "../types";
+import { Race, SubRace, Class, SubClass, CommonModel, Background } from "../types";
 
 export interface APICommonResponse {
   count: number;
@@ -24,6 +24,11 @@ export interface APIAllSubClassesResponse {
   results: CommonModel[];
 }
 
+export interface APIAllBackgroundsResponse {
+  count: number;
+  results: CommonModel[];
+}
+
 export type APIRacesResponse = Race;
 
 export type APISubRacesResponse = SubRace;
@@ -31,3 +36,5 @@ export type APISubRacesResponse = SubRace;
 export type APIClassesResponse = Class;
 
 export type APISubClassesResponse = SubClass;
+
+export type APIBackgroundsResponse = Background;

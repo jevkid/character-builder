@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { APIRacesResponse, APIAllRacesResponse, APIAllClassesResponse, APIAllSubClassesResponse, APIAllSubRacesResponse, APIClassesResponse } from './types';
+import { APIRacesResponse, APIAllRacesResponse, APIAllClassesResponse, APIAllSubClassesResponse, APIAllSubRacesResponse, APIClassesResponse, APIAllBackgroundsResponse } from './types';
 
 export const ApiAxiosInstance: AxiosInstance = axios.create({
   baseURL: "https://www.dnd5eapi.co/api/",
@@ -22,6 +22,12 @@ export const getRaceDetails = (index?: string) => {
 export const getClassDetails = (index?: string) => {
   return ApiAxiosInstance.get(`classes${index ? `/${index}` : ''}`)
     .then((success: AxiosResponse<APIClassesResponse>) => success)
+    .catch((reason: AxiosResponse) => reason);
+};
+
+export const getBackgroundDetails = (index?: string) => {
+  return ApiAxiosInstance.get(`backgrounds${index ? `/${index}` : ''}`)
+    .then((success: AxiosResponse<APIRacesResponse>) => success)
     .catch((reason: AxiosResponse) => reason);
 };
 
@@ -52,5 +58,11 @@ export const getAllClasses = () => {
 export const getAllSubClasses = (index: string) => {
   return ApiAxiosInstance.get(`subclasses/${index}`)
     .then((success: AxiosResponse<APIAllSubClassesResponse>) => success)
+    .catch((reason: AxiosResponse) => reason);
+};
+
+export const getAllBackgrounds = () => {
+  return ApiAxiosInstance.get(`backgrounds`)
+    .then((success: AxiosResponse<APIAllBackgroundsResponse>) => success)
     .catch((reason: AxiosResponse) => reason);
 };
