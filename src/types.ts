@@ -8,18 +8,18 @@ export interface FormInputs {
   abilityScores: AbilityOptions;
   background: {
     parents: {
-      knowledge: APIReference;
-      race: APIReference;
+      knowledge: string;
+      race: string;
     },
-    birthplace?: APIReference;
+    birthplace?: string;
     siblings?: {
-      occupation?: APIReference;
-      alignment?: APIReference;
-      status?: APIReference;
-      relationship?: APIReference;
-      number?: APIReference;
-      birthOrder?: APIReference;
-      details?: APIReference;
+      occupation?: string;
+      alignment?: string;
+      status?: string;
+      relationship?: string;
+      number?: string;
+      birthOrder?: string;
+      details?: string;
     }
   };
 }

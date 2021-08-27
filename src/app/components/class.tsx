@@ -20,21 +20,17 @@ import {
   StyledColumn,
 } from '../styles';
 import { handleRandomise } from '../../helpers/randomise';
-import { APIReference, CommonModel, GenericComponentProps } from '../../types';
+import { CommonModel, GenericComponentProps } from '../../types';
 
 export const Class: React.FC<GenericComponentProps> = (props) => {
   const dispatch = useAppDispatch();
   const allClasses = useAllClasses();
+  const selectedClass = props.getFieldValue('class');
+  const selectedSubClass = props.getFieldValue('subClass');
   const detailedClass = useDetailedClass();
   const [allSubClasses, setAllSubClasses] = React.useState<
     CommonModel[] | undefined
   >([]);
-  const [selectedClass, setSelectedClass] = React.useState<
-    APIReference | undefined
-  >(undefined);
-  const [selectedSubClass, setSelectedSubClass] = React.useState<
-    APIReference | undefined
-  >(undefined);
   const [displayClassDetails, setDisplayClassDetails] = React.useState(false);
 
   // Need to set this to state so that it is accessible anywhere
@@ -43,17 +39,13 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
       (subClass) => subClass.index === index
     );
     if (selectedSubClass && selectedSubClass.length > 0) {
-      setSelectedSubClass({
-        index: selectedSubClass[0].index,
-        name: selectedSubClass[0].name,
-      });
+      props.setFieldValue('subClass', selectedSubClass[0].index);
     }
   };
 
   const handleRandomClass = () => {
     if (allClasses?.results) {
       const randomClass = handleRandomise(allClasses?.results);
-      setSelectedClass({ index: randomClass.index, name: randomClass.name });
       props.setFieldValue('class', randomClass.index);
       dispatch(commonActions.getClassDetails({ index: randomClass.index }));
     }
@@ -64,10 +56,7 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
       (item) => item.index === index
     );
     if (selectedClass && selectedClass.length > 0) {
-      setSelectedClass({
-        index: selectedClass[0].index,
-        name: selectedClass[0].name,
-      });
+      props.setFieldValue('class', selectedClass[0].index);
       dispatch(
         commonActions.getClassDetails({ index: selectedClass[0].index })
       );
@@ -98,7 +87,7 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
           it.
         </StyledStepsSubheader>
         <StyledSelect
-          value={selectedClass?.index}
+          value={selectedClass}
           {...props.register('class')}
           onChange={(e) => {
             handleSelectedClass(e.target.value);
@@ -120,7 +109,7 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
           <>
             <StyledStepsSubheader>Select a subclass.</StyledStepsSubheader>
             <StyledSelect
-              value={selectedSubClass?.name}
+              value={selectedSubClass}
               {...props.register('subClass')}
               onChange={(e) => {
                 handleSelectedSubClass(e.target.value);
@@ -142,7 +131,7 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
           </StyledStepButton>
           <StyledStepButton
             onClick={props.handleStepForward}
-            disabled={!selectedClass || selectedClass.index === ''}
+            disabled={!selectedClass}
           >
             Next: Ability scores &#8594;
           </StyledStepButton>

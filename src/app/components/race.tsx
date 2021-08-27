@@ -20,7 +20,6 @@ import {
 import { handleRandomise } from '../../helpers/randomise';
 import {
   AbilityMapEnum,
-  APIReference,
   CommonModel,
   GenericComponentProps,
 } from '../../types';
@@ -28,16 +27,12 @@ import {
 export const Race: React.FC<GenericComponentProps> = (props) => {
   const dispatch = useAppDispatch();
   const allRaces = useAllRaces();
+  const selectedRace = props.getFieldValue('race');
+  const selectedSubRace = props.getFieldValue('subRace');
   const detailedRace = useDetailedRace();
   const [allSubRaces, setAllSubRaces] = React.useState<
     CommonModel[] | undefined
   >([]);
-  const [selectedRace, setSelectedRace] = React.useState<
-    APIReference | undefined
-  >(undefined);
-  const [selectedSubRace, setSelectedSubRace] = React.useState<
-    APIReference | undefined
-  >(undefined);
   const [displayRaceDetails, setDisplayRaceDetails] = React.useState(false);
 
   // Need to set this to state so that it is accessible anywhere
@@ -46,17 +41,13 @@ export const Race: React.FC<GenericComponentProps> = (props) => {
       (subRace) => subRace.index === index
     );
     if (selectedSubRace && selectedSubRace.length > 0) {
-      setSelectedSubRace({
-        index: selectedSubRace[0].index,
-        name: selectedSubRace[0].name,
-      });
+      props.setFieldValue('subRace', selectedSubRace[0].index);
     }
   };
 
   const handleRandomRace = () => {
     if (allRaces?.results) {
       const randomRace = handleRandomise(allRaces?.results);
-      setSelectedRace({ index: randomRace.index, name: randomRace.name });
       props.setFieldValue('race', randomRace.index);
       dispatch(commonActions.getRaceDetails({ index: randomRace.index }));
     }
@@ -67,10 +58,7 @@ export const Race: React.FC<GenericComponentProps> = (props) => {
       (race) => race.index === index
     );
     if (selectedRace && selectedRace.length > 0) {
-      setSelectedRace({
-        index: selectedRace[0].index,
-        name: selectedRace[0].name,
-      });
+      props.setFieldValue('race', selectedRace[0].index);
       dispatch(commonActions.getRaceDetails({ index: selectedRace[0].index }));
     }
   };
@@ -99,7 +87,7 @@ export const Race: React.FC<GenericComponentProps> = (props) => {
           it.
         </StyledStepsSubheader>
         <StyledSelect
-          value={selectedRace?.index}
+          value={selectedRace}
           {...props.register('race')}
           onChange={(e) => {
             handleSelectedRace(e.target.value);
@@ -121,7 +109,7 @@ export const Race: React.FC<GenericComponentProps> = (props) => {
           <>
             <StyledStepsSubheader>Select a subrace.</StyledStepsSubheader>
             <StyledSelect
-              value={selectedSubRace?.name}
+              value={selectedSubRace}
               {...props.register('subRace')}
               onChange={(e) => {
                 handleSelectedSubRace(e.target.value);
@@ -140,7 +128,7 @@ export const Race: React.FC<GenericComponentProps> = (props) => {
         <StyledButtonContainer>
           <StyledStepButton
             onClick={props.handleStepForward}
-            disabled={!selectedRace || selectedRace.index === ''}
+            disabled={!selectedRace}
           >
             Next: Class &#8594;
           </StyledStepButton>

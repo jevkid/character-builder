@@ -2,7 +2,9 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { GenericComponentProps } from '../../types';
 import {
-  APP_BORDER_RADIUS,
+  StyledInput,
+  StyledFieldContainer,
+  StyledLabel,
   StyledContainer,
   StyledStepsHeader,
   StyledStepsSubheader,
@@ -21,30 +23,6 @@ const StyledScoresContainer = styled.div`
   margin-top: 32px;
   @media only screen and (max-width: 480px) {
     flex-direction: column;
-  }
-`;
-
-const StyledInput = styled.input`
-  width: 40px;
-  height: 25px;
-  border-radius: ${APP_BORDER_RADIUS};
-  border: 1px solid threedface;
-`;
-
-const StyledLabel = styled.label`
-  padding: 0 12px;
-`;
-
-const StyledFieldContainer = styled.fieldset`
-  display: flex;
-  align-items: center;
-  margin: 0 8px;
-  border-style: solid;
-  border-radius: ${APP_BORDER_RADIUS};
-  @media only screen and (max-width: 480px) {
-    margin: 8px 0;
-    justify-content: space-between;
-    max-width: 185px;
   }
 `;
 

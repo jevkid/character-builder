@@ -10,6 +10,7 @@ export const TEXT_COLOR_PRIMARY_DISABLED = '#7d7289';
 export const TEXT_COLOR_PRIMARY_HOVER = '#362c3f';
 export const TEXT_COLOR_SECONDARY = '#514260';
 
+// Common app styles
 export const StyledAppContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -24,6 +25,7 @@ export const StyledContainer = styled.div`
   text-align: center;
 `;
 
+// Step related styles
 export const StyledStepsHeader = styled.h3`
   text-align: center;
   margin: 12px 0;
@@ -41,22 +43,6 @@ export const StyledStepsSubheader = styled.h5`
   margin: 12px 0;
 `;
 
-export const StyledSelect = styled.select`
-  width: 200px;
-  height: 30px;
-  border-radius: ${APP_BORDER_RADIUS};
-  margin: 12px 0;
-`;
-
-export const StyledRandomiseButton = styled.a`
-  font-size: inherit;
-  color: ${TEXT_COLOR_SECONDARY};
-  &:hover {
-    cursor: pointer;
-    color: ${TEXT_COLOR_PRIMARY};
-  }
-`;
-
 export const StyledStepContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -72,6 +58,48 @@ export const StyledDetails = styled.div`
   margin-top: 32px;
 `;
 
+// Input styles
+export const StyledLabel = styled.label`
+  padding: 0 12px;
+`;
+
+export const StyledInput = styled.input`
+  width: 40px;
+  height: 25px;
+  border-radius: ${APP_BORDER_RADIUS};
+  border: 1px solid threedface;
+`;
+
+export const StyledSelect = styled.select`
+  width: 200px;
+  height: 30px;
+  border-radius: ${APP_BORDER_RADIUS};
+  margin: 12px 0;
+`;
+
+// export const StyledRadioGroup = styled.fieldset`
+//   display: flex;
+//   border: 0;
+//   align-items: center;
+//   justify-content: center;
+// `;
+
+export const StyledRadio = styled.input``;
+
+export const StyledFieldContainer = styled.fieldset`
+  display: flex;
+  align-items: center;
+  margin: 0 8px;
+  border-style: solid;
+  border-radius: ${APP_BORDER_RADIUS};
+  @media only screen and (max-width: 480px) {
+    margin: 8px 0;
+    justify-content: space-between;
+    max-width: 185px;
+  }
+`;
+
+// Generic element styles
 export const StyledP = styled.p``;
 
 export const StyledList = styled.ul`
@@ -81,11 +109,32 @@ export const StyledList = styled.ul`
 
 export const StyledListItem = styled.li``;
 
+export const StyledRow = styled.div`
+  display: flex;
+  margin-top: 12px;
+`;
+
+export const StyledColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 32px;
+`;
+
+// Buttons
 export const StyledButtonContainer = styled.div`
   display: flex;
   margin-top: 32px;
   @media only screen and (max-width: 480px) {
     flex-direction: column;
+  }
+`;
+
+export const StyledRandomiseButton = styled.a`
+  font-size: inherit;
+  color: ${TEXT_COLOR_SECONDARY};
+  &:hover {
+    cursor: pointer;
+    color: ${TEXT_COLOR_PRIMARY};
   }
 `;
 
@@ -114,15 +163,4 @@ export const StyledStepButton = styled.button`
       cursor: not-allowed;
     }
   }
-`;
-
-export const StyledRow = styled.div`
-  display: flex;
-  margin-top: 12px;
-`;
-
-export const StyledColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 32px;
 `;
