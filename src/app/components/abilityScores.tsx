@@ -1,6 +1,7 @@
 import * as React from 'react';
+import { useFormikContext } from 'formik';
 import styled from 'styled-components';
-import { GenericComponentProps } from '../../types';
+import { FormInputs, GenericComponentProps } from '../../types';
 import {
   StyledInput,
   StyledFieldContainer,
@@ -27,63 +28,32 @@ const StyledScoresContainer = styled.div`
 `;
 
 export const AbilityScores: React.FC<GenericComponentProps> = (props) => {
-  const [strength, setStrength] = React.useState<number | undefined>(undefined);
-  const [dexterity, setDexterity] = React.useState<number | undefined>(
-    undefined
-  );
-  const [constitution, setConstitution] = React.useState<number | undefined>(
-    undefined
-  );
-  const [intelligence, setIntelligence] = React.useState<number | undefined>(
-    undefined
-  );
-  const [wisdom, setWisdom] = React.useState<number | undefined>(undefined);
-  const [charisma, setCharisma] = React.useState<number | undefined>(undefined);
+  const { values } = useFormikContext<FormInputs>();
+  const strength = values.abilityScores?.strength;
+  const dexterity = values.abilityScores?.dexterity;
+  const constitution = values.abilityScores?.constitution;
+  const intelligence = values.abilityScores?.intelligence;
+  const wisdom = values.abilityScores?.wisdom;
+  const charisma = values.abilityScores?.charisma;
 
   const handleRandomScores = () => {
     const randomStrength = getRandomInt(MAX_SCORE, MIN_SCORE);
-    setStrength(randomStrength);
     props.setFieldValue('abilityScores.strength', randomStrength);
 
     const randomDexterity = getRandomInt(MAX_SCORE, MIN_SCORE);
-    setDexterity(randomDexterity);
     props.setFieldValue('abilityScores.dexterity', randomDexterity);
 
     const randomConstitution = getRandomInt(MAX_SCORE, MIN_SCORE);
-    setConstitution(randomConstitution);
     props.setFieldValue('abilityScores.constitution', randomConstitution);
 
     const randomIntelligence = getRandomInt(MAX_SCORE, MIN_SCORE);
-    setIntelligence(randomIntelligence);
     props.setFieldValue('abilityScores.intelligence', randomIntelligence);
 
     const randomWisdom = getRandomInt(MAX_SCORE, MIN_SCORE);
-    setWisdom(randomWisdom);
     props.setFieldValue('abilityScores.wisdom', randomWisdom);
 
     const randomCharisma = getRandomInt(MAX_SCORE, MIN_SCORE);
-    setCharisma(randomCharisma);
     props.setFieldValue('abilityScores.charisma', randomCharisma);
-  };
-
-  const handleScoreUpdate = (score: string, fieldName: string) => {
-    const scoreAsNumber = parseInt(score, 10);
-    switch (fieldName) {
-      case 'strength':
-        return setStrength(scoreAsNumber);
-      case 'dexterity':
-        return setDexterity(scoreAsNumber);
-      case 'constitution':
-        return setConstitution(scoreAsNumber);
-      case 'intelligence':
-        return setIntelligence(scoreAsNumber);
-      case 'wisdom':
-        return setWisdom(scoreAsNumber);
-      case 'charisma':
-        return setCharisma(scoreAsNumber);
-      default:
-        return false;
-    }
   };
 
   return (
@@ -103,29 +73,19 @@ export const AbilityScores: React.FC<GenericComponentProps> = (props) => {
             <StyledInput
               defaultValue={strength}
               type="number"
-              {...props.register('abilityScores.strength')}
-              onChange={(e) => {
-                handleScoreUpdate(e.target.value, 'strength');
-              }}
+              component="input"
+              name="abilityScores.strength"
             />
-            {props.errors.abilityScores?.strength && (
-              <span>Please select a</span>
-            )}
           </StyledFieldContainer>
 
           <StyledFieldContainer>
             <StyledLabel>Dexterity</StyledLabel>
             <StyledInput
               defaultValue={dexterity}
+              component="input"
               type="number"
-              {...props.register('abilityScores.dexterity')}
-              onChange={(e) => {
-                handleScoreUpdate(e.target.value, 'dexterity');
-              }}
+              name="abilityScores.dexterity"
             />
-            {props.errors.abilityScores?.dexterity && (
-              <span>Please select a</span>
-            )}
           </StyledFieldContainer>
 
           <StyledFieldContainer>
@@ -133,14 +93,9 @@ export const AbilityScores: React.FC<GenericComponentProps> = (props) => {
             <StyledInput
               defaultValue={constitution}
               type="number"
-              {...props.register('abilityScores.constitution')}
-              onChange={(e) => {
-                handleScoreUpdate(e.target.value, 'constitution');
-              }}
+              component="input"
+              name="abilityScores.constitution"
             />
-            {props.errors.abilityScores?.constitution && (
-              <span>Please select a</span>
-            )}
           </StyledFieldContainer>
 
           <StyledFieldContainer>
@@ -148,14 +103,9 @@ export const AbilityScores: React.FC<GenericComponentProps> = (props) => {
             <StyledInput
               defaultValue={intelligence}
               type="number"
-              {...props.register('abilityScores.intelligence')}
-              onChange={(e) => {
-                handleScoreUpdate(e.target.value, 'intelligence');
-              }}
+              component="input"
+              name="abilityScores.intelligence"
             />
-            {props.errors.abilityScores?.intelligence && (
-              <span>Please select a</span>
-            )}
           </StyledFieldContainer>
 
           <StyledFieldContainer>
@@ -163,27 +113,18 @@ export const AbilityScores: React.FC<GenericComponentProps> = (props) => {
             <StyledInput
               defaultValue={wisdom}
               type="number"
-              {...props.register('abilityScores.wisdom')}
-              onChange={(e) => {
-                handleScoreUpdate(e.target.value, 'wisdom');
-              }}
+              component="input"
+              name="abilityScores.wisdom"
             />
-            {props.errors.abilityScores?.wisdom && <span>Please select a</span>}
           </StyledFieldContainer>
-
           <StyledFieldContainer>
             <StyledLabel>Charisma</StyledLabel>
             <StyledInput
               defaultValue={charisma}
               type="number"
-              {...props.register('abilityScores.charisma')}
-              onChange={(e) => {
-                handleScoreUpdate(e.target.value, 'charisma');
-              }}
+              component="input"
+              name="abilityScores.charisma"
             />
-            {props.errors.abilityScores?.charisma && (
-              <span>Please select a</span>
-            )}
           </StyledFieldContainer>
         </StyledScoresContainer>
         <StyledButtonContainer>

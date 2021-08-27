@@ -1,12 +1,10 @@
-import { DeepMap, FieldError, UseFormRegister, UseFormSetValue, UseFormGetValues } from 'react-hook-form';
-
 export interface FormInputs {
-  race: string;
+  race: Races;
   subRace: string;
-  class: string;
+  class: Classes;
   subClass: string;
-  abilityScores: AbilityOptions;
-  background: {
+  abilityScores?: AbilityOptions;
+  background?: {
     parents: {
       knowledge: string;
       race: string;
@@ -28,12 +26,9 @@ export interface ParentsBackground {
 
 }
 export interface GenericComponentProps {
-  register: UseFormRegister<FormInputs>;
-  errors: DeepMap<FormInputs, FieldError>;
   handleStepForward: () => void;
   handleStepBack: () => void;
-  setFieldValue: UseFormSetValue<FormInputs>;
-  getFieldValue: UseFormGetValues<FormInputs>
+  setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
 }
 
 export interface Race {

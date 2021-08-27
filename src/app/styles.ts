@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Field } from 'formik';
 
 export const APP_BORDER_RADIUS = '5px';
 export const APP_PADDING = '12px 48px';
@@ -63,14 +64,14 @@ export const StyledLabel = styled.label`
   padding: 0 12px;
 `;
 
-export const StyledInput = styled.input`
+export const StyledInput = styled(Field)`
   width: 40px;
   height: 25px;
   border-radius: ${APP_BORDER_RADIUS};
   border: 1px solid threedface;
 `;
 
-export const StyledSelect = styled.select`
+export const StyledSelect = styled(Field)`
   width: 200px;
   height: 30px;
   border-radius: ${APP_BORDER_RADIUS};

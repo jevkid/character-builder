@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useFormikContext } from 'formik';
 import styled from 'styled-components';
 import {
   StyledContainer,
@@ -29,7 +30,7 @@ export const StyledRadioGroup = styled.fieldset`
 `;
 
 export const Background: React.FC<GenericComponentProps> = (props) => {
-  const parentsKnowledge = props.getFieldValue('background.parents.knowledge');
+  const parentsKnowledge = 'changeme';
   const handleRandomBackground = () => {
     // do something random
   };
@@ -55,7 +56,7 @@ export const Background: React.FC<GenericComponentProps> = (props) => {
             <StyledRadio
               type="radio"
               value="known"
-              {...props.register('background.parents.knowledge')}
+              name="background.parents.knowledge"
             />
           </StyledRadioContainer>
           <StyledRadioContainer>
@@ -63,7 +64,7 @@ export const Background: React.FC<GenericComponentProps> = (props) => {
             <StyledRadio
               type="radio"
               value="unknown"
-              {...props.register('background.parents.knowledge')}
+              name="background.parents.knowledge"
             />
           </StyledRadioContainer>
         </StyledRadioGroup>

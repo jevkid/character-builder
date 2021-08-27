@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useFormikContext } from 'formik';
 import { useAppDispatch } from '../../helpers/hooks';
 import { commonActions } from '../../store/slices/common';
 import { useAllClasses, useDetailedClass } from '../../store/selectors/common';
@@ -20,13 +21,14 @@ import {
   StyledColumn,
 } from '../styles';
 import { handleRandomise } from '../../helpers/randomise';
-import { CommonModel, GenericComponentProps } from '../../types';
+import { CommonModel, FormInputs, GenericComponentProps } from '../../types';
 
 export const Class: React.FC<GenericComponentProps> = (props) => {
   const dispatch = useAppDispatch();
   const allClasses = useAllClasses();
-  const selectedClass = props.getFieldValue('class');
-  const selectedSubClass = props.getFieldValue('subClass');
+  const { values } = useFormikContext<FormInputs>();
+  const selectedClass = values.class;
+  const selectedSubClass = values.subClass;
   const detailedClass = useDetailedClass();
   const [allSubClasses, setAllSubClasses] = React.useState<
     CommonModel[] | undefined
@@ -87,9 +89,10 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
           it.
         </StyledStepsSubheader>
         <StyledSelect
+          component="select"
           value={selectedClass}
-          {...props.register('class')}
-          onChange={(e) => {
+          name="class"
+          onChange={(e: any) => {
             handleSelectedClass(e.target.value);
           }}
         >
@@ -104,14 +107,14 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
             ))}
         </StyledSelect>
 
-        {props.errors.class && <span>This field is required</span>}
         {allSubClasses && allSubClasses.length > 0 && (
           <>
             <StyledStepsSubheader>Select a subclass.</StyledStepsSubheader>
             <StyledSelect
+              component="select"
               value={selectedSubClass}
-              {...props.register('subClass')}
-              onChange={(e) => {
+              name="subClass"
+              onChange={(e: any) => {
                 handleSelectedSubClass(e.target.value);
               }}
             >
@@ -121,8 +124,6 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
                 </option>
               ))}
             </StyledSelect>
-
-            {props.errors.subClass && <span>This field is required</span>}
           </>
         )}
         <StyledButtonContainer>

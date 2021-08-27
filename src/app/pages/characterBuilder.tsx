@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { Formik, Form, FormikProps } from 'formik';
 import styled from 'styled-components';
 import { TEXT_COLOR_PRIMARY, TEXT_COLOR_SECONDARY } from '../styles';
 import { Race } from '../components/race';
@@ -47,7 +47,7 @@ const StyledRandomiseButton = styled.a`
   }
 `;
 
-const StyledForm = styled.form`
+const StyledForm = styled(Form)`
   display: flex;
   flex-direction: column;
 `;
@@ -62,25 +62,15 @@ const StyledSelectedOptions = styled.div`
   justify-content: space-between;
 `;
 
-export const CharacterBuilder: React.FC = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    getValues,
-    setValue,
-  } = useForm<FormInputs>({
-    defaultValues: {
-      race: '',
-      class: '',
-    },
-  });
-  const onSubmit: SubmitHandler<FormInputs> = (data) => console.log(data);
-  const selectedRace = getValues('race') as Races;
-  const selectedClass = getValues('class') as Classes;
-  const selectedAbilities = getValues('abilityScores') as AbilityOptions;
-  const [stepNum, setStepNum] = React.useState(1);
+const initialValues: FormInputs = {
+  race: '',
+  subRace: '',
+  class: '',
+  subClass: '',
+};
 
+export const CharacterBuilder: React.FC = () => {
+  const [stepNum, setStepNum] = React.useState(1);
   return (
     <StyledCharacterBuilderContainer>
       <StyledCharacterBuilderTitleContainer>
@@ -91,95 +81,92 @@ export const CharacterBuilder: React.FC = () => {
           Build your character step by step or completely{' '}
           <StyledRandomiseButton>randomise</StyledRandomiseButton>.
         </StyledP>
-        <StyledSelectedOptions>
-          {selectedRace !== '' && (
-            <span>
-              <strong>Race</strong>: {RaceEnum[selectedRace]}
-            </span>
-          )}
-          {selectedClass !== '' && (
-            <span>
-              | <strong>Class</strong>: {ClassEnum[selectedClass]}
-            </span>
-          )}
-        </StyledSelectedOptions>
-        <StyledSelectedOptions>
-          {selectedAbilities?.strength && (
-            <span>
-              <strong>STR</strong>: {selectedAbilities.strength}
-            </span>
-          )}
-          {selectedAbilities?.dexterity && (
-            <span>
-              <strong>DEX</strong>: {selectedAbilities.dexterity}
-            </span>
-          )}
-          {selectedAbilities?.constitution && (
-            <span>
-              <strong>CON</strong>: {selectedAbilities.constitution}
-            </span>
-          )}
-          {selectedAbilities?.intelligence && (
-            <span>
-              <strong>INT</strong>: {selectedAbilities.intelligence}
-            </span>
-          )}
-          {selectedAbilities?.wisdom && (
-            <span>
-              <strong>WIS</strong>: {selectedAbilities.wisdom}
-            </span>
-          )}
-          {selectedAbilities?.charisma && (
-            <span>
-              <strong>CHA</strong>: {selectedAbilities.charisma}
-            </span>
-          )}
-        </StyledSelectedOptions>
       </StyledCharacterBuilderTitleContainer>
-      <StyledStepsContainer>
-        <StyledForm onSubmit={handleSubmit(onSubmit)}>
-          {stepNum === 1 && (
-            <Race
-              register={register}
-              errors={errors}
-              handleStepForward={() => setStepNum(stepNum + 1)}
-              handleStepBack={() => setStepNum(stepNum - 1)}
-              setFieldValue={setValue}
-              getFieldValue={getValues}
-            />
-          )}
-          {stepNum === 2 && (
-            <Class
-              register={register}
-              errors={errors}
-              handleStepForward={() => setStepNum(stepNum + 1)}
-              handleStepBack={() => setStepNum(stepNum - 1)}
-              setFieldValue={setValue}
-              getFieldValue={getValues}
-            />
-          )}
-          {stepNum === 3 && (
-            <AbilityScores
-              register={register}
-              errors={errors}
-              handleStepForward={() => setStepNum(stepNum + 1)}
-              handleStepBack={() => setStepNum(stepNum - 1)}
-              setFieldValue={setValue}
-              getFieldValue={getValues}
-            />
-          )}
-          {stepNum === 4 && (
-            <Background
-              register={register}
-              errors={errors}
-              handleStepForward={() => setStepNum(stepNum + 1)}
-              handleStepBack={() => setStepNum(stepNum - 1)}
-              setFieldValue={setValue}
-              getFieldValue={getValues}
-            />
-          )}
-        </StyledForm>
-      </StyledStepsContainer>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={(values: FormInputs) => console.log(values)}
+      >
+        {({ setFieldValue, values, errors }) => (
+          <>
+            <StyledSelectedOptions>
+              {values.race !== '' && (
+                <span>
+                  <strong>Race</strong>: {RaceEnum[values.race]}
+                </span>
+              )}
+              {values.class !== '' && (
+                <span>
+                  | <strong>Class</strong>: {ClassEnum[values.class]}
+                </span>
+              )}
+            </StyledSelectedOptions>
+            <StyledSelectedOptions>
+              {values.abilityScores?.strength && (
+                <span>
+                  <strong>STR</strong>: {values.abilityScores.strength}
+                </span>
+              )}
+              {values.abilityScores?.dexterity && (
+                <span>
+                  <strong>DEX</strong>: {values.abilityScores.dexterity}
+                </span>
+              )}
+              {values.abilityScores?.constitution && (
+                <span>
+                  <strong>CON</strong>: {values.abilityScores.constitution}
+                </span>
+              )}
+              {values.abilityScores?.intelligence && (
+                <span>
+                  <strong>INT</strong>: {values.abilityScores.intelligence}
+                </span>
+              )}
+              {values.abilityScores?.wisdom && (
+                <span>
+                  <strong>WIS</strong>: {values.abilityScores.wisdom}
+                </span>
+              )}
+              {values.abilityScores?.charisma && (
+                <span>
+                  <strong>CHA</strong>: {values.abilityScores.charisma}
+                </span>
+              )}
+            </StyledSelectedOptions>
+            <StyledStepsContainer>
+              <StyledForm>
+                {stepNum === 1 && (
+                  <Race
+                    handleStepForward={() => setStepNum(stepNum + 1)}
+                    handleStepBack={() => setStepNum(stepNum - 1)}
+                    setFieldValue={setFieldValue}
+                  />
+                )}
+                {stepNum === 2 && (
+                  <Class
+                    handleStepForward={() => setStepNum(stepNum + 1)}
+                    handleStepBack={() => setStepNum(stepNum - 1)}
+                    setFieldValue={setFieldValue}
+                  />
+                )}
+                {stepNum === 3 && (
+                  <AbilityScores
+                    handleStepForward={() => setStepNum(stepNum + 1)}
+                    handleStepBack={() => setStepNum(stepNum - 1)}
+                    setFieldValue={setFieldValue}
+                  />
+                )}
+                {stepNum === 4 && (
+                  <Background
+                    handleStepForward={() => setStepNum(stepNum + 1)}
+                    handleStepBack={() => setStepNum(stepNum - 1)}
+                    setFieldValue={setFieldValue}
+                  />
+                )}
+              </StyledForm>
+            </StyledStepsContainer>
+          </>
+        )}
+      </Formik>
     </StyledCharacterBuilderContainer>
   );
 };

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useFormikContext } from 'formik';
 import { useAppDispatch } from '../../helpers/hooks';
 import { commonActions } from '../../store/slices/common';
 import { useAllRaces, useDetailedRace } from '../../store/selectors/common';
@@ -21,14 +22,16 @@ import { handleRandomise } from '../../helpers/randomise';
 import {
   AbilityMapEnum,
   CommonModel,
+  FormInputs,
   GenericComponentProps,
 } from '../../types';
 
 export const Race: React.FC<GenericComponentProps> = (props) => {
   const dispatch = useAppDispatch();
   const allRaces = useAllRaces();
-  const selectedRace = props.getFieldValue('race');
-  const selectedSubRace = props.getFieldValue('subRace');
+  const { values } = useFormikContext<FormInputs>();
+  const selectedRace = values.race;
+  const selectedSubRace = values.subRace;
   const detailedRace = useDetailedRace();
   const [allSubRaces, setAllSubRaces] = React.useState<
     CommonModel[] | undefined
@@ -87,9 +90,10 @@ export const Race: React.FC<GenericComponentProps> = (props) => {
           it.
         </StyledStepsSubheader>
         <StyledSelect
+          component="select"
           value={selectedRace}
-          {...props.register('race')}
-          onChange={(e) => {
+          name="race"
+          onChange={(e: any) => {
             handleSelectedRace(e.target.value);
           }}
         >
@@ -104,14 +108,14 @@ export const Race: React.FC<GenericComponentProps> = (props) => {
             ))}
         </StyledSelect>
 
-        {props.errors.race && <span>This field is required</span>}
         {allSubRaces && allSubRaces.length > 0 && (
           <>
             <StyledStepsSubheader>Select a subrace.</StyledStepsSubheader>
             <StyledSelect
+              component="select"
               value={selectedSubRace}
-              {...props.register('subRace')}
-              onChange={(e) => {
+              name="subRace"
+              onChange={(e: any) => {
                 handleSelectedSubRace(e.target.value);
               }}
             >
@@ -121,8 +125,6 @@ export const Race: React.FC<GenericComponentProps> = (props) => {
                 </option>
               ))}
             </StyledSelect>
-
-            {props.errors.subRace && <span>This field is required</span>}
           </>
         )}
         <StyledButtonContainer>
