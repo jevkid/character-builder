@@ -4,11 +4,15 @@ export const parents = {
   knowledge: [
     {
       index: 'known',
-      name: 'You know who your parents are or were'
+      name: 'You know who your parents are.'
     },
     {
       index: 'unknown',
-      name: 'You do not know who your parents were.',
+      name: 'You don\'t know who your parents are.',
+    },
+    {
+      index: 'na',
+      name: 'You don\'t care who your parents are.',
     }
   ],
   race: {
@@ -89,3 +93,9 @@ export const siblings = {
 export const familyFriends = {
 
 };
+
+export const backgroundInfo = {
+  parents,
+  siblings,
+  familyFriends,
+}

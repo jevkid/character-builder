@@ -20,7 +20,7 @@ export const useAllSubClasses = () =>
   useSelector((state: RootState) => state.common.subClasses.options, shallowEqual);
 
 export const useAllBackgrounds = () =>
-  useSelector((state: RootState) => state.common.backgrounds.options, shallowEqual);
+  useSelector((state: RootState) => state.common.backgrounds.details, shallowEqual);
 
-export const useDetailedBackground = () =>
-  useSelector((state: RootState) => state.common.detailedBackground.details, shallowEqual);
+export const useBackgroundParents = () =>
+  useSelector((state: RootState) => state.common.backgrounds.details?.parents, shallowEqual);

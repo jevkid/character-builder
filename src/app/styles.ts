@@ -72,18 +72,11 @@ export const StyledInput = styled(Field)`
 `;
 
 export const StyledSelect = styled(Field)`
-  width: 200px;
+  width: 250px;
   height: 30px;
   border-radius: ${APP_BORDER_RADIUS};
   margin: 12px 0;
 `;
-
-// export const StyledRadioGroup = styled.fieldset`
-//   display: flex;
-//   border: 0;
-//   align-items: center;
-//   justify-content: center;
-// `;
 
 export const StyledRadio = styled.input``;
 

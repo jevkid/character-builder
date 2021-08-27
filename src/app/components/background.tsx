@@ -3,7 +3,6 @@ import { useFormikContext } from 'formik';
 import styled from 'styled-components';
 import {
   StyledContainer,
-  StyledRadio,
   StyledStepsHeader,
   StyledStepsSubheader,
   StyledRandomiseButton,
@@ -11,26 +10,50 @@ import {
   StyledButtonContainer,
   StyledStepButton,
   StyledLabel,
-  // StyledRadioGroup,
+  StyledSelect,
 } from '../styles';
-import { GenericComponentProps } from '../../types';
+import { APIReference, FormInputs, GenericComponentProps } from '../../types';
+import { useAppDispatch } from '../../helpers/hooks';
+import { commonActions } from '../../store/slices/common';
+import {
+  useAllBackgrounds,
+  useBackgroundParents,
+} from '../../store/selectors/common';
 
-const StyledRadioContainer = styled.div`
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-`;
-
-export const StyledRadioGroup = styled.fieldset`
+const StyledSection = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  border: 0;
-  align-items: flex-start;
 `;
 
 export const Background: React.FC<GenericComponentProps> = (props) => {
-  const parentsKnowledge = 'changeme';
+  const dispatch = useAppDispatch();
+  const { values } = useFormikContext<FormInputs>();
+  const selectedRace = values.race;
+  const parentsKnown = values.background?.parents.knowledge;
+  const backgroundDetails = useAllBackgrounds();
+  const parentDetails = useBackgroundParents();
+  const [parentsRaceOptions, setParentsRaceOptions] = React.useState<
+    APIReference[]
+  >([]);
+
+  const handleParentsKnowledge = (index: string) => {
+    props.setFieldValue('background.parents.knowledge', index);
+  };
+
+  const handleParentsRace = (index: string) => {
+    props.setFieldValue('background.parents.race', index);
+  };
+
+  React.useEffect(() => {
+    dispatch(commonActions.getAllBackgrounds());
+  }, [dispatch]);
+
+  React.useEffect(() => {
+    if (parentsKnown === 'known' && parentDetails?.race[selectedRace]?.race) {
+      setParentsRaceOptions(parentDetails.race[selectedRace].race);
+    }
+  }, [parentDetails?.race, selectedRace, parentsKnown]);
+
   const handleRandomBackground = () => {
     // do something random
   };
@@ -50,24 +73,50 @@ export const Background: React.FC<GenericComponentProps> = (props) => {
         <StyledStepsSubheader>
           <strong>Parents</strong>
         </StyledStepsSubheader>
-        <StyledRadioGroup>
-          <StyledRadioContainer>
-            <StyledLabel>Known</StyledLabel>
-            <StyledRadio
-              type="radio"
-              value="known"
-              name="background.parents.knowledge"
-            />
-          </StyledRadioContainer>
-          <StyledRadioContainer>
-            <StyledLabel>Unknown</StyledLabel>
-            <StyledRadio
-              type="radio"
-              value="unknown"
-              name="background.parents.knowledge"
-            />
-          </StyledRadioContainer>
-        </StyledRadioGroup>
+        <StyledSelect
+          as="select"
+          value={parentsKnown}
+          name="background.parents.knowledge"
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+            handleParentsKnowledge(e.target.value);
+          }}
+        >
+          <option value="" selected disabled>
+            - - - -
+          </option>
+          {parentDetails?.knowledge.map((item) => (
+            <option value={item.index} key={item.index}>
+              {item.name}
+            </option>
+          ))}
+        </StyledSelect>
+        {parentsKnown === 'known' &&
+          parentDetails?.race[selectedRace]?.race &&
+          parentDetails?.race[selectedRace]?.race.length > 0 && (
+            <StyledSection>
+              <StyledStepsSubheader>
+                <strong>Parents' race</strong>
+              </StyledStepsSubheader>
+              <StyledSelect
+                as="select"
+                value={parentsKnown}
+                name="background.parents.race"
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                  handleParentsRace(e.target.value);
+                }}
+              >
+                <option value="" selected disabled>
+                  - - - -
+                </option>
+                {parentsRaceOptions.map((race) => (
+                  <option value={race.index} key={race.index}>
+                    {race.name}
+                  </option>
+                ))}
+              </StyledSelect>
+            </StyledSection>
+          )}
+
         {/* Birthplace */}
         {/* Siblings */}
         <StyledButtonContainer>

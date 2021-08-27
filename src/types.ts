@@ -6,7 +6,7 @@ export interface FormInputs {
   abilityScores?: AbilityOptions;
   background?: {
     parents: {
-      knowledge: string;
+      knowledge: 'known' | 'unknown' | 'na';
       race: string;
     },
     birthplace?: string;
@@ -22,8 +22,22 @@ export interface FormInputs {
   };
 }
 
-export interface ParentsBackground {
+export interface BackgroundDetails {
+  parents: ParentsBackground;
+  siblings: any;
+  familyFriends: any;
+}
 
+export interface ParentsBackground {
+  dice: number;
+  knowledge: APIReference[];
+  race: Record<
+  string,
+  {
+    dice: number;
+    race: APIReference[];
+  }
+  >;
 }
 export interface GenericComponentProps {
   handleStepForward: () => void;

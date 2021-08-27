@@ -89,7 +89,7 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
           it.
         </StyledStepsSubheader>
         <StyledSelect
-          component="select"
+          as="select"
           value={selectedClass}
           name="class"
           onChange={(e: any) => {
@@ -111,7 +111,7 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
           <>
             <StyledStepsSubheader>Select a subclass.</StyledStepsSubheader>
             <StyledSelect
-              component="select"
+              as="select"
               value={selectedSubClass}
               name="subClass"
               onChange={(e: any) => {

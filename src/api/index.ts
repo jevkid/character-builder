@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { APIRacesResponse, APIAllRacesResponse, APIAllClassesResponse, APIAllSubClassesResponse, APIAllSubRacesResponse, APIClassesResponse, APIAllBackgroundsResponse } from './types';
+import { backgroundInfo } from './backgrounds';
 
 export const ApiAxiosInstance: AxiosInstance = axios.create({
   baseURL: "https://www.dnd5eapi.co/api/",
@@ -62,7 +63,7 @@ export const getAllSubClasses = (index: string) => {
 };
 
 export const getAllBackgrounds = () => {
-  return ApiAxiosInstance.get(`backgrounds`)
-    .then((success: AxiosResponse<APIAllBackgroundsResponse>) => success)
-    .catch((reason: AxiosResponse) => reason);
+  return {
+    data: backgroundInfo
+  };
 };

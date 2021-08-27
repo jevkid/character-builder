@@ -1,6 +1,6 @@
 import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit';
-import { APIAllRacesResponse, APIAllSubRacesResponse, APIAllClassesResponse, APIAllSubClassesResponse, APIAllBackgroundsResponse } from '../../api/types';
-import { Background, Class, Race } from '../../types';
+import { APIAllRacesResponse, APIAllSubRacesResponse, APIAllClassesResponse, APIAllSubClassesResponse } from '../../api/types';
+import { BackgroundDetails, Class, Race } from '../../types';
 
 export interface CommonState {
   races: {
@@ -40,14 +40,8 @@ export interface CommonState {
   backgrounds: {
     loading: boolean;
     error: boolean;
-    options?: APIAllBackgroundsResponse;
-    selected?: string;
+    details?: BackgroundDetails;
   },
-  detailedBackground: {
-    loading: boolean;
-    error: boolean;
-    details?: Background;
-  }
 }
 
 const initialState: CommonState = {
@@ -76,10 +70,6 @@ const initialState: CommonState = {
     error: false,
   },
   backgrounds: {
-    loading: false,
-    error: false,
-  },
-  detailedBackground: {
     loading: false,
     error: false,
   },
@@ -163,25 +153,13 @@ const commonSlice = createSlice({
       state.subClasses.loading = false;
       state.subClasses.error = true;
     },
-    getDetailedBackgroundLoading: (state) => {
-      state.detailedBackground.loading = true;
-    },
-    getDetailedBackgroundSuccess: (state, action: PayloadAction<Background>) => {
-      state.detailedBackground.loading = false;
-      state.detailedBackground.error = false;
-      state.detailedBackground.details = action.payload;
-    },
-    getDetailedBackgroundFailure: (state) => {
-      state.detailedBackground.loading = false;
-      state.detailedBackground.error = true;
-    },
     getAllBackgroundsLoading: (state) => {
       state.backgrounds.loading = true;
     },
-    getAllBackgroundsSuccess: (state, action: PayloadAction<APIAllBackgroundsResponse>) => {
+    getAllBackgroundsSuccess: (state, action: PayloadAction<BackgroundDetails>) => {
       state.backgrounds.loading = false;
       state.backgrounds.error = false;
-      state.backgrounds.options = action.payload;
+      state.backgrounds.details = action.payload;
     },
     getAllBackgroundsFailure: (state) => {
       state.backgrounds.loading = false;

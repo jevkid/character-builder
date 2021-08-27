@@ -1,17 +1,10 @@
 import * as React from 'react';
-import { Formik, Form, FormikProps } from 'formik';
+import { Formik, Form } from 'formik';
 import styled from 'styled-components';
 import { TEXT_COLOR_PRIMARY, TEXT_COLOR_SECONDARY } from '../styles';
 import { Race } from '../components/race';
 import { Class } from '../components/class';
-import {
-  AbilityOptions,
-  ClassEnum,
-  Classes,
-  FormInputs,
-  RaceEnum,
-  Races,
-} from '../../types';
+import { ClassEnum, FormInputs, RaceEnum } from '../../types';
 import { AbilityScores } from '../components/abilityScores';
 import { Background } from '../components/background';
 
@@ -33,10 +26,11 @@ const StyledCharacterBuilderTitleContainer = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-bottom: 32px;
 `;
 
-const StyledStepsContainer = styled.div``;
+const StyledStepsContainer = styled.div`
+  margin-top: 32px;
+`;
 
 const StyledRandomiseButton = styled.a`
   font-size: inherit;

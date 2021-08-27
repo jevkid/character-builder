@@ -1,6 +1,6 @@
 import { takeEvery } from 'redux-saga/effects';
 import { commonActions } from '../slices/common';
-import { returnAllRaces, returnAllClasses, returnAllSubClasses, returnAllSubRaces, returnRaceDetails, returnClassDetails, returnAllBackgrounds, returnBackgroundDetails } from '../sagas/common';
+import { returnAllRaces, returnAllClasses, returnAllSubClasses, returnAllSubRaces, returnRaceDetails, returnClassDetails, returnAllBackgrounds } from '../sagas/common';
 
 export function* rootSaga() {
   yield takeEvery(commonActions.getAllRaces, returnAllRaces);
@@ -10,5 +10,4 @@ export function* rootSaga() {
   yield takeEvery(commonActions.getAllClasses, returnAllClasses);
   yield takeEvery(commonActions.getAllSubClasses, returnAllSubClasses);
   yield takeEvery(commonActions.getAllBackgrounds, returnAllBackgrounds);
-  yield takeEvery(commonActions.getBackgroundDetails, returnBackgroundDetails);
 }
