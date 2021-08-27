@@ -18,12 +18,22 @@ export interface FormInputs {
       number?: string;
       birthOrder?: string;
       details?: string;
+    };
+    general: {
+      alignment: string;
+      background: string;
     }
   };
+  details?: {
+    name: string;
+    gender: string;
+    age: number;
+  }
 }
 
 export interface BackgroundDetails {
   parents: ParentsBackground;
+  background: GeneralBackground;
   siblings: any;
   familyFriends: any;
 }
@@ -39,9 +49,20 @@ export interface ParentsBackground {
   }
   >;
 }
+
+export interface GeneralBackground {
+  alignment: APIReference[];
+  background: APIReference[];
+}
+
 export interface GenericComponentProps {
   handleStepForward: () => void;
   handleStepBack: () => void;
+  setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
+  setModalData: (apiUrl: string) => void;
+}
+
+export interface SimpleComponentProps {
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
 }
 
@@ -290,4 +311,42 @@ export interface PersonalityTraits {
 export interface APIReference {
   index: string;
   name: string;
+}
+
+export interface ApiContentModal {
+  name?: string;
+  index?: string;
+  desc?: string[] | string;
+  // Equipment
+  category_range?: string;
+  cost?: {
+    quantity: number;
+    unit: string;
+  };
+  damage?: {
+    damage_dice: string;
+    damage_type: CommonModel;
+  }
+  equipment_category?: CommonModel;
+  properties?: CommonModel[];
+  range?: {
+    normal: number | null;
+    long: number | null;
+  }
+  two_handed_damage?: {
+    damage_dice: string;
+    damage_type: CommonModel;
+  }
+  url?: string;
+  weapon_category?: string;
+  weapon_range?: string;
+  weight?: number;
+  // Language
+  script?: string;
+  typical_speakers?: string[];
+  type?: string;
+  // Trait
+  proficiencies?: CommonModel[];
+  races?: CommonModel[];
+  subraces?: CommonModel[];
 }

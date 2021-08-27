@@ -6,22 +6,21 @@ import { useAllClasses, useDetailedClass } from '../../store/selectors/common';
 import {
   StyledContainer,
   StyledStepsHeader,
-  StyledDetailHeader,
+  StyledSection,
   StyledStepsSubheader,
   StyledSelect,
-  StyledRandomiseButton,
+  StyledTextButton,
   StyledStepContainer,
-  StyledDetails,
   StyledP,
   StyledList,
   StyledListItem,
   StyledButtonContainer,
   StyledStepButton,
   StyledRow,
-  StyledColumn,
 } from '../styles';
 import { handleRandomise } from '../../helpers/randomise';
 import { CommonModel, FormInputs, GenericComponentProps } from '../../types';
+import { DropdownContainer } from '../elements/dropdownContainer';
 
 export const Class: React.FC<GenericComponentProps> = (props) => {
   const dispatch = useAppDispatch();
@@ -83,9 +82,9 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
         <StyledStepsHeader>Step Two: Class</StyledStepsHeader>
         <StyledStepsSubheader>
           Select a class or{' '}
-          <StyledRandomiseButton onClick={() => handleRandomClass()}>
+          <StyledTextButton role="button" onClick={() => handleRandomClass()}>
             randomise
-          </StyledRandomiseButton>{' '}
+          </StyledTextButton>{' '}
           it.
         </StyledStepsSubheader>
         <StyledSelect
@@ -138,11 +137,14 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
           </StyledStepButton>
         </StyledButtonContainer>
       </StyledContainer>
-      {detailedClass && displayClassDetails && (
-        <StyledColumn>
-          <StyledDetailHeader>{detailedClass.name}</StyledDetailHeader>
+      {detailedClass && (
+        <DropdownContainer
+          title={detailedClass.name}
+          handleToggle={setDisplayClassDetails}
+          displayContent={displayClassDetails}
+        >
           <StyledRow>
-            <StyledDetails>
+            <StyledSection>
               <StyledP>
                 <strong>Hit points: </strong>
                 {detailedClass.hit_die}
@@ -155,7 +157,11 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
                   <StyledList>
                     {detailedClass.proficiencies.map((proficiency) => (
                       <StyledListItem key={proficiency.index}>
-                        {proficiency.name}
+                        <StyledTextButton
+                          onClick={() => props.setModalData(proficiency.url)}
+                        >
+                          {proficiency.name}
+                        </StyledTextButton>
                       </StyledListItem>
                     ))}
                   </StyledList>
@@ -173,14 +179,18 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
                     <StyledList>
                       {choice.from.map((item) => (
                         <StyledListItem key={item.index}>
-                          {item.name}
+                          <StyledTextButton
+                            onClick={() => props.setModalData(item.url)}
+                          >
+                            {item.name}
+                          </StyledTextButton>
                         </StyledListItem>
                       ))}
                     </StyledList>
                   </div>
                 ))}
-            </StyledDetails>
-            <StyledDetails>
+            </StyledSection>
+            <StyledSection>
               {detailedClass.starting_equipment.length > 0 && (
                 <>
                   <StyledP>
@@ -189,7 +199,11 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
                   <StyledList>
                     {detailedClass.starting_equipment.map((item) => (
                       <StyledListItem key={item.equipment.index}>
-                        {item.equipment.name}
+                        <StyledTextButton
+                          onClick={() => props.setModalData(item.equipment.url)}
+                        >
+                          {item.equipment.name}
+                        </StyledTextButton>
                       </StyledListItem>
                     ))}
                   </StyledList>
@@ -208,7 +222,13 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
                       (item) =>
                         item?.equipment?.name && (
                           <StyledListItem key={item.equipment.index}>
-                            {item?.equipment?.name}
+                            <StyledTextButton
+                              onClick={() =>
+                                props.setModalData(item.equipment.url)
+                              }
+                            >
+                              {item.equipment.name}
+                            </StyledTextButton>
                           </StyledListItem>
                         )
                     )
@@ -222,15 +242,19 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
                   <StyledList>
                     {detailedClass.saving_throws.map((item) => (
                       <StyledListItem key={item.index}>
-                        {item.name}
+                        <StyledTextButton
+                          onClick={() => props.setModalData(item.url)}
+                        >
+                          {item.name}
+                        </StyledTextButton>
                       </StyledListItem>
                     ))}
                   </StyledList>
                 </>
               )}
-            </StyledDetails>
+            </StyledSection>
           </StyledRow>
-        </StyledColumn>
+        </DropdownContainer>
       )}
     </StyledStepContainer>
   );

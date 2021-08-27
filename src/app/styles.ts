@@ -55,7 +55,7 @@ export const StyledDetails = styled.div`
   flex-direction: column;
   align-items: flex-start;
   text-align: left;
-  max-width: 500px;
+  width: 50%;
   margin-top: 32px;
 `;
 
@@ -64,8 +64,15 @@ export const StyledLabel = styled.label`
   padding: 0 12px;
 `;
 
-export const StyledInput = styled(Field)`
+export const StyledNumberInput = styled(Field)`
   width: 40px;
+  height: 25px;
+  border-radius: ${APP_BORDER_RADIUS};
+  border: 1px solid threedface;
+`;
+
+export const StyledInput = styled(Field)`
+  width: auto;
   height: 25px;
   border-radius: ${APP_BORDER_RADIUS};
   border: 1px solid threedface;
@@ -78,13 +85,15 @@ export const StyledSelect = styled(Field)`
   margin: 12px 0;
 `;
 
+export const StyledRadioGroup = styled.div``;
+
 export const StyledRadio = styled.input``;
 
-export const StyledFieldContainer = styled.fieldset`
+export const StyledFieldContainer = styled.fieldset<{ hideBorder?: boolean }>`
   display: flex;
   align-items: center;
   margin: 0 8px;
-  border-style: solid;
+  border-style: ${({ hideBorder }) => hideBorder ? 'none' : 'solid'};
   border-radius: ${APP_BORDER_RADIUS};
   @media only screen and (max-width: 480px) {
     margin: 8px 0;
@@ -114,21 +123,23 @@ export const StyledColumn = styled.div`
   margin-top: 32px;
 `;
 
+export const StyledSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 50%;
+  @media only screen and (max-width: 480px) {
+    width: 100%;
+  }
+`;
+
+
 // Buttons
 export const StyledButtonContainer = styled.div`
   display: flex;
   margin-top: 32px;
   @media only screen and (max-width: 480px) {
     flex-direction: column;
-  }
-`;
-
-export const StyledRandomiseButton = styled.a`
-  font-size: inherit;
-  color: ${TEXT_COLOR_SECONDARY};
-  &:hover {
-    cursor: pointer;
-    color: ${TEXT_COLOR_PRIMARY};
   }
 `;
 
@@ -156,5 +167,22 @@ export const StyledStepButton = styled.button`
       background-color: ${TEXT_COLOR_PRIMARY_DISABLED};
       cursor: not-allowed;
     }
+  }
+`;
+
+export const StyledTextButton = styled.button`
+  appearance: none;
+  font-family: inherit;
+  border: 0;
+  box-shadow: none;
+  outline: 0;
+  background: none;
+  font-size: inherit;
+  padding: 0;
+  margin: 0;
+  color: ${TEXT_COLOR_SECONDARY};
+  &:hover {
+    cursor: pointer;
+    color: ${TEXT_COLOR_PRIMARY};
   }
 `;

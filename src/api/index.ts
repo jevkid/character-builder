@@ -1,9 +1,14 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { APIRacesResponse, APIAllRacesResponse, APIAllClassesResponse, APIAllSubClassesResponse, APIAllSubRacesResponse, APIClassesResponse, APIAllBackgroundsResponse } from './types';
+import { APIRacesResponse, APIAllRacesResponse, APIAllClassesResponse, APIAllSubClassesResponse, APIAllSubRacesResponse, APIClassesResponse } from './types';
 import { backgroundInfo } from './backgrounds';
 
 export const ApiAxiosInstance: AxiosInstance = axios.create({
   baseURL: "https://www.dnd5eapi.co/api/",
+  validateStatus: () => true,
+});
+
+export const BaseAxiosInstance: AxiosInstance = axios.create({
+  baseURL: "https://www.dnd5eapi.co/",
   validateStatus: () => true,
 });
 

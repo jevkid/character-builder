@@ -6,17 +6,17 @@ import { useAllRaces, useDetailedRace } from '../../store/selectors/common';
 import {
   StyledContainer,
   StyledStepsHeader,
-  StyledDetailHeader,
   StyledStepsSubheader,
   StyledSelect,
-  StyledRandomiseButton,
+  StyledTextButton,
   StyledStepContainer,
-  StyledDetails,
   StyledP,
   StyledList,
   StyledListItem,
   StyledButtonContainer,
   StyledStepButton,
+  StyledSection,
+  StyledRow,
 } from '../styles';
 import { handleRandomise } from '../../helpers/randomise';
 import {
@@ -25,6 +25,7 @@ import {
   FormInputs,
   GenericComponentProps,
 } from '../../types';
+import { DropdownContainer } from '../elements/dropdownContainer';
 
 export const Race: React.FC<GenericComponentProps> = (props) => {
   const dispatch = useAppDispatch();
@@ -76,7 +77,7 @@ export const Race: React.FC<GenericComponentProps> = (props) => {
       setDisplayRaceDetails(true);
     }
     // from here, we need to get the subraces object from the detailed race response and use that to populate the subraces dropdown
-  }, [detailedRace]);
+  }, [selectedRace, detailedRace]);
 
   return (
     <StyledStepContainer>
@@ -84,9 +85,9 @@ export const Race: React.FC<GenericComponentProps> = (props) => {
         <StyledStepsHeader>Step One: Race</StyledStepsHeader>
         <StyledStepsSubheader>
           Select a race or{' '}
-          <StyledRandomiseButton onClick={() => handleRandomRace()}>
+          <StyledTextButton role="button" onClick={() => handleRandomRace()}>
             randomise
-          </StyledRandomiseButton>{' '}
+          </StyledTextButton>{' '}
           it.
         </StyledStepsSubheader>
         <StyledSelect
@@ -136,70 +137,93 @@ export const Race: React.FC<GenericComponentProps> = (props) => {
           </StyledStepButton>
         </StyledButtonContainer>
       </StyledContainer>
-      {detailedRace && displayRaceDetails && (
-        <StyledDetails>
-          <StyledDetailHeader>{detailedRace.name}</StyledDetailHeader>
-          <StyledP>
-            <strong>Ability score increase</strong>:
-          </StyledP>
-          <StyledList>
-            {detailedRace.ability_bonuses.map((bonus) => (
-              <StyledListItem key={bonus.ability_score.index}>
-                Your {AbilityMapEnum[bonus.ability_score.name]} score increases
-                by {bonus.bonus}{' '}
-              </StyledListItem>
-            ))}
-          </StyledList>
-          <StyledP>
-            <strong>Age</strong>: {detailedRace.age}
-          </StyledP>
-          <StyledP>
-            <strong>Alignment</strong>: {detailedRace.alignment}
-          </StyledP>
-          <StyledP>
-            <strong>Size</strong>: {detailedRace.size} -{' '}
-            {detailedRace.size_description}
-          </StyledP>
-          <StyledP>
-            <strong>Speed</strong>: {detailedRace.speed}
-          </StyledP>
-          {detailedRace.traits.length > 0 && (
-            <>
+      {detailedRace && (
+        <DropdownContainer
+          title={detailedRace?.name}
+          displayContent={displayRaceDetails}
+          handleToggle={setDisplayRaceDetails}
+        >
+          <StyledRow>
+            <StyledSection>
               <StyledP>
-                <strong>Traits</strong>:
+                <strong>Ability score increase</strong>:
               </StyledP>
               <StyledList>
-                {detailedRace.traits.map((trait) => (
-                  <StyledListItem key={trait.index}>
-                    {trait.name}
+                {detailedRace.ability_bonuses.map((bonus) => (
+                  <StyledListItem key={bonus.ability_score.index}>
+                    Your {AbilityMapEnum[bonus.ability_score.name]} score
+                    increases by {bonus.bonus}{' '}
                   </StyledListItem>
                 ))}
               </StyledList>
-            </>
-          )}
-          <StyledP>
-            <strong>Languages</strong>: {detailedRace.language_desc}
-          </StyledP>
-          <StyledList>
-            {detailedRace.languages.map((language) => (
-              <StyledListItem key={language.index}>
-                {language.name}
-              </StyledListItem>
-            ))}
-          </StyledList>
-          {detailedRace.starting_proficiencies.length > 0 && (
-            <>
               <StyledP>
-                <strong>Starting proficiences</strong>:
+                <strong>Age</strong>: {detailedRace.age}
+              </StyledP>
+              <StyledP>
+                <strong>Alignment</strong>: {detailedRace.alignment}
+              </StyledP>
+              <StyledP>
+                <strong>Size</strong>: {detailedRace.size} -{' '}
+                {detailedRace.size_description}
+              </StyledP>
+            </StyledSection>
+            <StyledSection>
+              <StyledP>
+                <strong>Speed</strong>: {detailedRace.speed}
+              </StyledP>
+              {detailedRace.traits.length > 0 && (
+                <>
+                  <StyledP>
+                    <strong>Traits</strong>:
+                  </StyledP>
+                  <StyledList>
+                    {detailedRace.traits.map((trait) => (
+                      <StyledListItem key={trait.index}>
+                        <StyledTextButton
+                          onClick={() => props.setModalData(trait.url)}
+                        >
+                          {trait.name}
+                        </StyledTextButton>
+                      </StyledListItem>
+                    ))}
+                  </StyledList>
+                </>
+              )}
+              <StyledP>
+                <strong>Languages</strong>: {detailedRace.language_desc}
               </StyledP>
               <StyledList>
-                {detailedRace.starting_proficiencies.map((item) => (
-                  <StyledListItem key={item.index}>{item.name}</StyledListItem>
+                {detailedRace.languages.map((language) => (
+                  <StyledListItem key={language.index}>
+                    <StyledTextButton
+                      onClick={() => props.setModalData(language.url)}
+                    >
+                      {language.name}
+                    </StyledTextButton>
+                  </StyledListItem>
                 ))}
               </StyledList>
-            </>
-          )}
-        </StyledDetails>
+              {detailedRace.starting_proficiencies.length > 0 && (
+                <>
+                  <StyledP>
+                    <strong>Starting proficiences</strong>:
+                  </StyledP>
+                  <StyledList>
+                    {detailedRace.starting_proficiencies.map((item) => (
+                      <StyledListItem key={item.index}>
+                        <StyledTextButton
+                          onClick={() => props.setModalData(item.url)}
+                        >
+                          {item.name}
+                        </StyledTextButton>
+                      </StyledListItem>
+                    ))}
+                  </StyledList>
+                </>
+              )}
+            </StyledSection>
+          </StyledRow>
+        </DropdownContainer>
       )}
     </StyledStepContainer>
   );

@@ -82,6 +82,93 @@ export const parents = {
   }
 };
 
+export const background = {
+  alignment: [
+    {
+      index: 'chaotic-evil',
+      name: 'Chaotic evil'
+    },
+    {
+      index: 'lawful-evil',
+      name: 'Lawful evil'
+    },
+    {
+      index: 'neutral-evil',
+      name: 'Neutral evil'
+    },
+    {
+      index: 'neutral',
+      name: 'Neutral'
+    },
+    {
+      index: 'neutral-good',
+      name: 'Neutral good'
+    },
+    {
+      index: 'lawful-good',
+      name: 'Lawful good'
+    },
+    {
+      index: 'chaotic-good',
+      name: 'Chaotic good'
+    }
+  ],
+  background: [
+    {
+      index: 'acolyte',
+      name: 'Acolyte'
+    },
+    {
+      index: 'charlatan',
+      name: 'Charlatan'
+    },
+    {
+      index: 'criminal',
+      name: 'Criminal'
+    },
+    {
+      index: 'entertainer',
+      name: 'Entertainer'
+    },
+    {
+      index: 'folk-hero',
+      name: 'Folk hero'
+    },
+    {
+      index: 'guild-artisan',
+      name: 'Guild artisan'
+    },
+    {
+      index: 'hermit',
+      name: 'Hermit'
+    },
+    {
+      index: 'noble',
+      name: 'Noble'
+    },
+    {
+      index: 'outlander',
+      name: 'Outlander'
+    },
+    {
+      index: 'sage',
+      name: 'Sage'
+    },
+    {
+      index: 'sailor',
+      name: 'Sailor',
+    },
+    {
+      index: 'solider',
+      name: 'Soldier'
+    },
+    {
+      index: 'urchin',
+      name: 'Urchin'
+    },
+  ]
+};
+
 export const birthplace = {
 
 };
@@ -97,5 +184,6 @@ export const familyFriends = {
 export const backgroundInfo = {
   parents,
   siblings,
+  background,
   familyFriends,
 }

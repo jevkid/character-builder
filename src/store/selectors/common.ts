@@ -24,3 +24,6 @@ export const useAllBackgrounds = () =>
 
 export const useBackgroundParents = () =>
   useSelector((state: RootState) => state.common.backgrounds.details?.parents, shallowEqual);
+
+export const useBackgroundGeneral = () =>
+  useSelector((state: RootState) => state.common.backgrounds.details?.background, shallowEqual);

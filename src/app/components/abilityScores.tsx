@@ -3,13 +3,13 @@ import { useFormikContext } from 'formik';
 import styled from 'styled-components';
 import { FormInputs, GenericComponentProps } from '../../types';
 import {
-  StyledInput,
+  StyledNumberInput,
   StyledFieldContainer,
   StyledLabel,
   StyledContainer,
   StyledStepsHeader,
   StyledStepsSubheader,
-  StyledRandomiseButton,
+  StyledTextButton,
   StyledStepContainer,
   StyledButtonContainer,
   StyledStepButton,
@@ -62,15 +62,15 @@ export const AbilityScores: React.FC<GenericComponentProps> = (props) => {
         <StyledStepsHeader>Step Three: Ability Scores</StyledStepsHeader>
         <StyledStepsSubheader>
           Enter your ability scores or{' '}
-          <StyledRandomiseButton onClick={() => handleRandomScores()}>
+          <StyledTextButton onClick={() => handleRandomScores()}>
             randomise
-          </StyledRandomiseButton>{' '}
+          </StyledTextButton>{' '}
           them.
         </StyledStepsSubheader>
         <StyledScoresContainer>
           <StyledFieldContainer>
             <StyledLabel>Strength</StyledLabel>
-            <StyledInput
+            <StyledNumberInput
               defaultValue={strength}
               type="number"
               component="input"
@@ -80,7 +80,7 @@ export const AbilityScores: React.FC<GenericComponentProps> = (props) => {
 
           <StyledFieldContainer>
             <StyledLabel>Dexterity</StyledLabel>
-            <StyledInput
+            <StyledNumberInput
               defaultValue={dexterity}
               component="input"
               type="number"
@@ -90,7 +90,7 @@ export const AbilityScores: React.FC<GenericComponentProps> = (props) => {
 
           <StyledFieldContainer>
             <StyledLabel>Constitution</StyledLabel>
-            <StyledInput
+            <StyledNumberInput
               defaultValue={constitution}
               type="number"
               component="input"
@@ -100,7 +100,7 @@ export const AbilityScores: React.FC<GenericComponentProps> = (props) => {
 
           <StyledFieldContainer>
             <StyledLabel>Intelligence</StyledLabel>
-            <StyledInput
+            <StyledNumberInput
               defaultValue={intelligence}
               type="number"
               component="input"
@@ -110,7 +110,7 @@ export const AbilityScores: React.FC<GenericComponentProps> = (props) => {
 
           <StyledFieldContainer>
             <StyledLabel>Wisdom</StyledLabel>
-            <StyledInput
+            <StyledNumberInput
               defaultValue={wisdom}
               type="number"
               component="input"
@@ -119,7 +119,7 @@ export const AbilityScores: React.FC<GenericComponentProps> = (props) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabel>Charisma</StyledLabel>
-            <StyledInput
+            <StyledNumberInput
               defaultValue={charisma}
               type="number"
               component="input"
