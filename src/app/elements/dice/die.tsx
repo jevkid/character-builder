@@ -1,6 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
-import { motion, useAnimation } from 'framer-motion';
+import styled, { css, keyframes } from 'styled-components';
 
 const containerWidth = 200;
 const containerHeight = containerWidth;
@@ -9,6 +8,7 @@ const faceWidth = containerWidth * 0.5;
 const faceHeight = faceWidth * 0.86;
 
 const transitionDuration = '0.5s';
+const animationDuration = '3s';
 
 const angle = '53deg';
 const ringAngle = '-11deg';
@@ -23,14 +23,8 @@ const translateLowerY = faceHeight * 0.78 + translateRingY;
 
 interface DiceFaceProps {
   faceNum: number;
-  rotateXVar?: string;
-  rotateYVar?: string;
-  rotateZVar?: string;
-  rotateXFace?: string;
-  rotateYFace?: string;
-  rotateZFace?: string;
-  translateYFace?: string;
-  translateZFace?: string;
+  rolling?: boolean;
+  transformProps?: string;
 }
 
 const StyledDiceContainer = styled.div`
@@ -41,48 +35,39 @@ const StyledDiceContainer = styled.div`
   perspective: 1500px;
 `;
 
-const StyledDice = styled(motion.div)<DiceFaceProps>`
+const roll = keyframes`
+  10% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) }
+  30% { transform: rotateX(120deg) rotateY(240deg) rotateZ(0deg) translateX(40px) translateY(40px) }
+  50% { transform: rotateX(240deg) rotateY(480deg) rotateZ(0deg) translateX(-40px) translateY(-40px) }
+  70% { transform: rotateX(360deg) rotateY(720deg) rotateZ(0deg) }
+  90% { transform: rotateX(480deg) rotateY(960deg) rotateZ(0deg) }
+`;
+
+const animation = () =>
+  css`
+    ${roll} ${animationDuration} linear;
+  `;
+
+const StyledDice = styled.button<DiceFaceProps>`
+  background: transparent;
+  border: 0;
   position: absolute;
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
   transition: transform ${transitionDuration} ease-out;
   cursor: pointer;
+  transform: rotateX(-53deg);
 
-  ${({ faceNum, rotateXVar, rotateYVar }) =>
-    faceNum >= 1 &&
-    faceNum <= 5 &&
-    `
-    &[data-face="${faceNum}"] {
-      transform: rotateX(${rotateXVar}) rotateY(${rotateYVar});
-    }
-    `}
-  ${({ faceNum, rotateXVar, rotateYVar }) =>
-    faceNum >= 6 &&
-    faceNum <= 10 &&
-    `
-    &[data-face="${faceNum}"] {
-      transform: rotateX(${rotateXVar}) rotateZ(180deg) rotateY(${rotateYVar});
-    }
-    `}
+  &.rolling {
+    animation: ${animation};
+  }
 
-  ${({ faceNum, rotateXVar, rotateYVar }) =>
-    faceNum >= 11 &&
-    faceNum <= 15 &&
+  ${({ faceNum, transformProps }) =>
+    faceNum &&
     `
-    &[data-face="${faceNum}"] {
-      transform: rotateX(${rotateXVar}) rotateY(${rotateYVar});
-    }
-    `}
-
-  ${({ faceNum, rotateXVar, rotateYVar }) =>
-    faceNum >= 16 &&
-    faceNum <= 20 &&
-    `
-    &[data-face="${faceNum}"] {
-      transform: rotateX(${rotateXVar}) rotateY(${rotateYVar});
-    }
-    `}
+      transform: ${transformProps};
+  `}
 `;
 
 const StyledDiceFace = styled.figure<DiceFaceProps>`
@@ -100,56 +85,12 @@ const StyledDiceFace = styled.figure<DiceFaceProps>`
 
   counter-increment: steps 1;
   font-family: 'Tenali Ramakrishna';
-  ${({ faceNum, rotateYFace, translateZFace, translateYFace, rotateXFace }) =>
-    faceNum >= 1 &&
-    faceNum <= 5 &&
+  ${({ faceNum, transformProps }) =>
     `
       &:nth-child(${faceNum}) {
-        transform: rotateY(${rotateYFace}) translateZ(${translateZFace}) translateY(${translateYFace}) rotateX(${rotateXFace});
+        transform: ${transformProps};
       }
     `}
-
-  ${({
-    faceNum,
-    rotateYFace,
-    translateZFace,
-    translateYFace,
-    rotateXFace,
-    rotateZFace,
-  }) =>
-    faceNum >= 6 &&
-    faceNum <= 10 &&
-    `
-      &:nth-child(${faceNum}) {
-        transform: rotateY(${rotateYFace}) translateZ(${translateZFace}) translateY(${translateYFace}) rotateZ(${rotateZFace}) rotateX(${rotateXFace});
-      }
-    `}
-
-  ${({ faceNum, rotateYFace, translateZFace, translateYFace, rotateXFace }) =>
-    faceNum >= 11 &&
-    faceNum <= 15 &&
-    `
-      &:nth-child(${faceNum}) {
-        transform: rotateY(${rotateYFace}) translateZ(${translateZFace}) translateY(${translateYFace}) rotateX(${rotateXFace});
-      }
-    `}
-
-  ${({
-    faceNum,
-    rotateYFace,
-    translateZFace,
-    translateYFace,
-    rotateXFace,
-    rotateZFace,
-  }) =>
-    faceNum >= 16 &&
-    faceNum <= 20 &&
-    `
-      &:nth-child(${faceNum}) {
-        transform: rotateY(${rotateYFace}) translateZ(${translateZFace}) translateY(${translateYFace}) rotateZ(${rotateZFace}) rotateX(${rotateXFace});
-      }
-    `}
-
   &:before {
     content: counter(steps);
     position: absolute;
@@ -166,96 +107,77 @@ const StyledDiceFace = styled.figure<DiceFaceProps>`
 `;
 
 export const D20: React.FC = () => {
-  const controls = useAnimation();
   const [currentFace, setCurrentFace] = React.useState(16);
   const dieFaces = [
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
   ];
-  const activeNum = 16;
   const numSides = 20;
   const initialSide = 1;
   const animationDuration = 3000;
-  let timeoutId: ReturnType<typeof setTimeout>;
   let rotateXVar;
   let rotateYVar;
-  let rotateZVar;
   let angleMultiplier;
+  let transformProps = '';
 
   const randomFace = () => {
     const face = Math.floor(Math.random() * numSides) + initialSide;
     setCurrentFace(face === currentFace ? randomFace() : face);
-    console.log(face);
     return face;
   };
 
   const rollTo = (face: number) => {
-    clearTimeout(timeoutId);
+    console.log(face);
     setCurrentFace(face);
   };
 
-  const randomise = () => {
-    handleDieClick();
-    clearTimeout(timeoutId);
-
-    timeoutId = setTimeout(function () {
-      handleDieClick();
-
-      rollTo(randomFace());
-    }, animationDuration);
-
-    return false;
+  const handleDiceRoll = () => {
+    const dice = document.getElementById('dice');
+    if (document && dice) {
+      dice.classList.add('rolling');
+      const timer = setTimeout(() => {
+        rollTo(randomFace());
+      }, animationDuration);
+      return () => clearTimeout(timer);
+    }
   };
 
-  const handleDieClick = () => {
-    controls.start({
-      scale: [1, 1.2, 2, 1],
-      rotateX: [0, 120, 240, 360, 480],
-      rotateY: [0, 240, 480, 720, 960],
-      rotateZ: [0, 0, 0, 0],
-      translateX: [40, 40],
-      translateY: [-40, -40],
-      transition: {
-        duration: 1,
-        ease: 'easeInOut',
-        times: [0.1, 0.3, 0.5, 0.7, 0.9, 0.1],
-      },
-    });
-  };
-
-  if (activeNum >= 1 && activeNum <= 5) {
-    angleMultiplier = activeNum - 1;
+  if (currentFace >= 1 && currentFace <= 5) {
+    angleMultiplier = currentFace - 1;
     rotateXVar = '-53deg';
     rotateYVar = `${72 * angleMultiplier}deg`;
+    transformProps = `rotateX(${rotateXVar}) rotateY(${rotateYVar});`;
   }
-  if (activeNum >= 6 && activeNum <= 10) {
-    angleMultiplier = activeNum - 6;
+
+  if (currentFace >= 6 && currentFace <= 10) {
+    angleMultiplier = currentFace - 6;
     rotateXVar = '11deg';
-    rotateYVar = `${-72 * angleMultiplier}deg`;
-    rotateZVar = '180deg';
+    rotateYVar = `${72 * angleMultiplier}deg`;
+    transformProps = `rotateX(${rotateXVar}) rotateZ(180deg) rotateY(${rotateYVar});`;
   }
 
-  if (activeNum >= 11 && activeNum <= 15) {
-    angleMultiplier = activeNum - 8;
-    rotateXVar = '191deg';
-    rotateYVar = `${-72 * angleMultiplier - -36}deg`;
+  if (currentFace >= 11 && currentFace <= 15) {
+    angleMultiplier = currentFace - 8;
+    rotateXVar = '11deg';
+    const sideAngle = 72;
+    const sideAngleVar = 72 / 2;
+    rotateYVar = `${-sideAngle * angleMultiplier - sideAngleVar}deg`;
+    transformProps = `rotateX(${rotateXVar}) rotateY(${rotateYVar});`;
   }
 
-  if (activeNum >= 16 && activeNum <= 20) {
-    angleMultiplier = activeNum - 15;
+  if (currentFace >= 16 && currentFace <= 20) {
+    angleMultiplier = currentFace - 15;
     rotateXVar = '127deg';
     rotateYVar = `${-72 * angleMultiplier}deg`;
+    transformProps = `rotateX(${rotateXVar}) rotateY(${rotateYVar});`;
   }
 
   return (
     <StyledDiceContainer>
       <StyledDice
-        faceNum={activeNum}
-        rotateXVar={rotateXVar}
-        rotateYVar={rotateYVar}
-        rotateZVar={rotateZVar}
-        animate={controls}
-        data-face={currentFace}
-        onClick={() => randomise()}
+        id="dice"
+        faceNum={currentFace}
+        transformProps={transformProps}
+        onClick={() => handleDiceRoll()}
       >
         {dieFaces.map((i) => {
           let angleFaceMultiplier;
@@ -264,12 +186,14 @@ export const D20: React.FC = () => {
           let rotateZFace;
           let translateZFace;
           let translateYFace;
+          let transformFaceProps;
           if (i >= 1 && i <= 5) {
             angleFaceMultiplier = i - 1;
             rotateXFace = angle;
             rotateYFace = `${-72 * angleFaceMultiplier}deg`;
             translateYFace = `${translateY}px`;
             translateZFace = `${translateZ}px`;
+            transformFaceProps = `rotateY(${rotateYFace}) translateZ(${translateZFace}) translateY(${translateYFace}) rotateX(${rotateXFace})`;
           }
           if (i >= 6 && i <= 10) {
             angleFaceMultiplier = i - 11;
@@ -278,6 +202,7 @@ export const D20: React.FC = () => {
             translateYFace = `${translateRingY}px`;
             rotateZFace = '180deg';
             rotateXFace = `${ringAngle}`;
+            transformFaceProps = `rotateY(${rotateYFace}) translateZ(${translateZFace}) translateY(${translateYFace}) rotateZ(${rotateZFace}) rotateX(${rotateXFace})`;
           }
           if (i >= 11 && i <= 15) {
             angleFaceMultiplier = i - 8;
@@ -285,6 +210,7 @@ export const D20: React.FC = () => {
             translateYFace = `${translateRingY}px`;
             rotateXFace = `${ringAngle}`;
             rotateYFace = `${72 * angleFaceMultiplier + 36}deg`;
+            transformFaceProps = `rotateY(${rotateYFace}) translateZ(${translateZFace}) translateY(${translateYFace}) rotateX(${rotateXFace})`;
           }
           if (i >= 16 && i <= 20) {
             angleFaceMultiplier = i - 18;
@@ -293,16 +219,13 @@ export const D20: React.FC = () => {
             translateYFace = `${translateLowerY}px`;
             rotateZFace = '180deg';
             rotateXFace = angle;
+            transformFaceProps = `rotateY(${rotateYFace}) translateZ(${translateZFace}) translateY(${translateYFace}) rotateZ(${rotateZFace}) rotateX(${rotateXFace})`;
           }
           return (
             <StyledDiceFace
               key={i}
               faceNum={i}
-              rotateXFace={rotateXFace}
-              rotateYFace={rotateYFace}
-              rotateZFace={rotateZFace}
-              translateYFace={translateYFace}
-              translateZFace={translateZFace}
+              transformProps={transformFaceProps}
             />
           );
         })}
