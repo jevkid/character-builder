@@ -1,19 +1,19 @@
 import React from 'react';
 import styled, { css, keyframes } from 'styled-components';
+import { getRandomInt } from '../../../helpers/randomise';
 
-const containerWidth = 200;
+const containerWidth = 165;
 const containerHeight = containerWidth;
-
 const faceWidth = containerWidth * 0.5;
 const faceHeight = faceWidth * 0.86;
+const opacity = 0.75;
+const color = `rgba(81, 66, 96, ${opacity})`;
 
 const transitionDuration = '0.5s';
 const animationDuration = '3s';
 
-const angle = '53deg';
-const ringAngle = '-11deg';
-const opacity = 0.75;
-const color = `rgba(81, 66, 96, ${opacity})`;
+const angle = 53;
+const ringAngle = -11;
 const translateZ = faceWidth * 0.335;
 const translateY = -faceHeight * 0.15;
 const translateRingZ = faceWidth * 0.75;
@@ -37,8 +37,8 @@ const StyledDiceContainer = styled.div`
 
 const roll = keyframes`
   10% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) }
-  30% { transform: rotateX(120deg) rotateY(240deg) rotateZ(0deg) translateX(40px) translateY(40px) }
-  50% { transform: rotateX(240deg) rotateY(480deg) rotateZ(0deg) translateX(-40px) translateY(-40px) }
+  30% { transform: rotateX(120deg) rotateY(240deg) rotateZ(0deg) }
+  50% { transform: rotateX(240deg) rotateY(480deg) rotateZ(0deg) }
   70% { transform: rotateX(360deg) rotateY(720deg) rotateZ(0deg) }
   90% { transform: rotateX(480deg) rotateY(960deg) rotateZ(0deg) }
 `;
@@ -82,15 +82,16 @@ const StyledDiceFace = styled.figure<DiceFaceProps>`
   height: 0px;
   transform-style: preserve-3d;
   backface-visibility: hidden;
-
   counter-increment: steps 1;
   font-family: 'Tenali Ramakrishna';
+
   ${({ faceNum, transformProps }) =>
     `
       &:nth-child(${faceNum}) {
         transform: ${transformProps};
       }
     `}
+
   &:before {
     content: counter(steps);
     position: absolute;
@@ -107,27 +108,14 @@ const StyledDiceFace = styled.figure<DiceFaceProps>`
 `;
 
 export const D20: React.FC = () => {
-  const [currentFace, setCurrentFace] = React.useState(16);
-  const dieFaces = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-  ];
-  const numSides = 20;
-  const initialSide = 1;
-  const animationDuration = 3000;
-  let rotateXVar;
-  let rotateYVar;
-  let angleMultiplier;
+  const [currentFace, setCurrentFace] = React.useState(1);
+  const animationDuration = 2000;
   let transformProps = '';
 
   const randomFace = () => {
-    const face = Math.floor(Math.random() * numSides) + initialSide;
+    const face = getRandomInt(20, 1);
     setCurrentFace(face === currentFace ? randomFace() : face);
     return face;
-  };
-
-  const rollTo = (face: number) => {
-    console.log(face);
-    setCurrentFace(face);
   };
 
   const handleDiceRoll = () => {
@@ -135,40 +123,36 @@ export const D20: React.FC = () => {
     if (document && dice) {
       dice.classList.add('rolling');
       const timer = setTimeout(() => {
-        rollTo(randomFace());
+        setCurrentFace(randomFace());
       }, animationDuration);
       return () => clearTimeout(timer);
     }
   };
 
   if (currentFace >= 1 && currentFace <= 5) {
-    angleMultiplier = currentFace - 1;
-    rotateXVar = '-53deg';
-    rotateYVar = `${72 * angleMultiplier}deg`;
-    transformProps = `rotateX(${rotateXVar}) rotateY(${rotateYVar});`;
+    const angleMultiplier = currentFace - 1;
+    transformProps = `rotateX(-53deg) rotateY(${72 * angleMultiplier}deg);`;
   }
 
   if (currentFace >= 6 && currentFace <= 10) {
-    angleMultiplier = currentFace - 6;
-    rotateXVar = '11deg';
-    rotateYVar = `${72 * angleMultiplier}deg`;
-    transformProps = `rotateX(${rotateXVar}) rotateZ(180deg) rotateY(${rotateYVar});`;
+    const angleMultiplier = currentFace - 6;
+    transformProps = `rotateX(11deg) rotateZ(180deg) rotateY(${
+      72 * angleMultiplier
+    }deg);`;
   }
 
   if (currentFace >= 11 && currentFace <= 15) {
-    angleMultiplier = currentFace - 8;
-    rotateXVar = '11deg';
+    const angleMultiplier = currentFace - 8;
     const sideAngle = 72;
     const sideAngleVar = 72 / 2;
-    rotateYVar = `${-sideAngle * angleMultiplier - sideAngleVar}deg`;
-    transformProps = `rotateX(${rotateXVar}) rotateY(${rotateYVar});`;
+    transformProps = `rotateX(11deg) rotateY(${
+      -sideAngle * angleMultiplier - sideAngleVar
+    }deg);`;
   }
 
   if (currentFace >= 16 && currentFace <= 20) {
-    angleMultiplier = currentFace - 15;
-    rotateXVar = '127deg';
-    rotateYVar = `${-72 * angleMultiplier}deg`;
-    transformProps = `rotateX(${rotateXVar}) rotateY(${rotateYVar});`;
+    const angleMultiplier = currentFace - 15;
+    transformProps = `rotateX(127deg) rotateY(${-72 * angleMultiplier}deg);`;
   }
 
   return (
@@ -179,47 +163,31 @@ export const D20: React.FC = () => {
         transformProps={transformProps}
         onClick={() => handleDiceRoll()}
       >
-        {dieFaces.map((i) => {
-          let angleFaceMultiplier;
-          let rotateXFace;
-          let rotateYFace;
-          let rotateZFace;
-          let translateZFace;
-          let translateYFace;
+        {Array.from({ length: 20 }, (_, i) => i + 1).map((i) => {
           let transformFaceProps;
           if (i >= 1 && i <= 5) {
-            angleFaceMultiplier = i - 1;
-            rotateXFace = angle;
-            rotateYFace = `${-72 * angleFaceMultiplier}deg`;
-            translateYFace = `${translateY}px`;
-            translateZFace = `${translateZ}px`;
-            transformFaceProps = `rotateY(${rotateYFace}) translateZ(${translateZFace}) translateY(${translateYFace}) rotateX(${rotateXFace})`;
+            const angleFaceMultiplier = i - 1;
+            transformFaceProps = `rotateY(${
+              -72 * angleFaceMultiplier
+            }deg) translateZ(${translateZ}px) translateY(${translateY}px) rotateX(${angle}deg)`;
           }
           if (i >= 6 && i <= 10) {
-            angleFaceMultiplier = i - 11;
-            rotateYFace = `${-72 * angleFaceMultiplier}deg`;
-            translateZFace = `${translateRingZ}px`;
-            translateYFace = `${translateRingY}px`;
-            rotateZFace = '180deg';
-            rotateXFace = `${ringAngle}`;
-            transformFaceProps = `rotateY(${rotateYFace}) translateZ(${translateZFace}) translateY(${translateYFace}) rotateZ(${rotateZFace}) rotateX(${rotateXFace})`;
+            const angleFaceMultiplier = i - 11;
+            transformFaceProps = `rotateY(${
+              -72 * angleFaceMultiplier
+            }deg) translateZ(${translateRingZ}px) translateY(${translateRingY}px) rotateZ(180deg) rotateX(${ringAngle}deg)`;
           }
           if (i >= 11 && i <= 15) {
-            angleFaceMultiplier = i - 8;
-            translateZFace = `${translateRingZ}px`;
-            translateYFace = `${translateRingY}px`;
-            rotateXFace = `${ringAngle}`;
-            rotateYFace = `${72 * angleFaceMultiplier + 36}deg`;
-            transformFaceProps = `rotateY(${rotateYFace}) translateZ(${translateZFace}) translateY(${translateYFace}) rotateX(${rotateXFace})`;
+            const angleFaceMultiplier = i - 8;
+            transformFaceProps = `rotateY(${
+              72 * angleFaceMultiplier + 36
+            }deg) translateZ(${translateRingZ}px) translateY(${translateRingY}px) rotateX(${ringAngle}deg)`;
           }
           if (i >= 16 && i <= 20) {
-            angleFaceMultiplier = i - 18;
-            rotateYFace = `${72 * angleFaceMultiplier + 36}deg`;
-            translateZFace = `${translateLowerZ}px`;
-            translateYFace = `${translateLowerY}px`;
-            rotateZFace = '180deg';
-            rotateXFace = angle;
-            transformFaceProps = `rotateY(${rotateYFace}) translateZ(${translateZFace}) translateY(${translateYFace}) rotateZ(${rotateZFace}) rotateX(${rotateXFace})`;
+            const angleFaceMultiplier = i - 18;
+            transformFaceProps = `rotateY(${
+              72 * angleFaceMultiplier + 36
+            }deg) translateZ(${translateLowerZ}px) translateY(${translateLowerY}px) rotateZ(180deg) rotateX(${angle}deg)`;
           }
           return (
             <StyledDiceFace
