@@ -72,17 +72,19 @@ export const StyledNumberInput = styled(Field)`
 `;
 
 export const StyledInput = styled(Field)`
-  width: auto;
-  height: 25px;
+  width: 250px;
+  height: 30px;
   border-radius: ${APP_BORDER_RADIUS};
   border: 1px solid threedface;
+  margin: 0;
 `;
 
 export const StyledSelect = styled(Field)`
   width: 250px;
-  height: 30px;
+  height: 35px;
   border-radius: ${APP_BORDER_RADIUS};
   margin: 12px 0;
+  border: 1px solid threedface;
 `;
 
 export const StyledRadioGroup = styled.div``;

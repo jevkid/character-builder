@@ -5,7 +5,11 @@ export interface FormInputs {
   subClass: string;
   abilityScores?: AbilityOptions;
   background?: {
-    parents: {
+    general: {
+      alignment: Alignments;
+      background: Backrounds;
+    }
+    parents?: {
       knowledge: 'known' | 'unknown' | 'na';
       race: string;
     },
@@ -19,10 +23,6 @@ export interface FormInputs {
       birthOrder?: string;
       details?: string;
     };
-    general: {
-      alignment: string;
-      background: string;
-    }
   };
   details?: {
     name: string;
@@ -59,7 +59,7 @@ export interface GenericComponentProps {
   handleStepForward: () => void;
   handleStepBack: () => void;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
-  setModalData: (apiUrl: string) => void;
+  setModalData: (apiUrl: string, type: string) => void;
 }
 
 export interface SimpleComponentProps {
@@ -201,8 +201,6 @@ export type Classes = "barbarian" | "bard" | "cleric" | "druid" | "fighter" | "m
 
 export type AbilityOptionsShort = 'CON' | 'DEX' | 'STR' | 'INT' | 'WIS' | 'CHA';
 
-export type AbilityOptionsFull = 'constitution' | 'dexterity' | 'strength' | 'intelligence' | 'wisdom' | 'charisma';
-
 export type AbilityOptions = {
   constitution: number;
   dexterity: number;
@@ -248,13 +246,34 @@ export enum AbilityMapEnum {
   CHA = 'Charisma',
 }
 
-export enum AbilityMapEnumShort {
-  constitution = 'CON',
-  dexterity = 'DEX',
-  strength = 'STR',
-  intelligence = 'INT',
-  wisdom = 'WIS',
-  charisma = 'CHA',
+export type Backrounds = 'acolyte' | 'charlatan' | 'criminal' | 'entertainer' | 'folk-hero' | 'guild-artisan' | 'hermit' | 'noble' | 'outlander' | 'sage' | 'sailor' | 'solider' | 'urchin' | '';
+
+export enum BackgroundEnum {
+  'acolyte' = 'Acolyte',
+  'charlatan' = 'Charlatan',
+  'criminal' = 'Criminal',
+  'entertainer' = 'Entertainer',
+  'folk-hero' = 'Folk hero',
+  'guild-artisan' = 'Guild artisan',
+  'hermit' = 'Hermit',
+  'noble' = 'Noble',
+  'outlander' = 'Outlander',
+  'sage' = 'Sage',
+  'sailor' = 'Sailor',
+  'solider' = 'Soldier',
+  'urchin' = 'Urchin'
+}
+
+export type Alignments = 'chaotic-evil' | 'lawful-evil' | 'neutral-evil' | 'neutral' | 'neutral-good' | 'lawful-good' | 'chaotic-good' | '';
+
+export enum AlignmentEnum {
+  'chaotic-evil' = 'Chaotic evil',
+  'lawful-evil' = 'Lawful evil',
+  'neutral-evil' = 'Neutral evil',
+  'neutral' = 'Neutral',
+  'neutral-good' = 'Neutral good',
+  'lawful-good' = 'Lawful good',
+  'chaotic-good' = 'Chaotic good',
 }
 
 export interface StartingEquipment {
@@ -313,11 +332,59 @@ export interface APIReference {
   name: string;
 }
 
-export interface ApiContentModal {
-  name?: string;
-  index?: string;
+export interface ModalTypes {
+  race?: RaceModal;
+  class?: ClassModal;
+}
+
+export interface ClassModal {
+  class_levels: {
+    index: 'class_levels';
+    model: [
+      {
+        level: number;
+        ability_score_bonuses: number;
+        prof_bonus: number;
+        features: CommonModel[];
+        class_specific: {
+          rage_count?: number;
+          rage_damage_bonus?: number;
+          brutal_critical_dice?: number;
+        };
+        index: string;
+        class: CommonModel;
+        url: string;
+      }
+    ]
+  };
+  multi_classing?: {
+    prerequisities: [{
+      ability_score: CommonModel;
+      minimum_score: number;
+    }];
+    proficiences: CommonModel[];
+  }
+}
+
+export interface RaceModalTypes {
+  name: string;
+  index: string;
+  url?: string;
   desc?: string[] | string;
-  // Equipment
+  proficiences?: CommonModel[];
+  races: CommonModel[];
+  subraces: CommonModel[];
+  trait_specific: {
+    subtrait_options: {
+      choose: number;
+      from: CommonModel[];
+      type: string;
+    }
+  };
+  reference: CommonModel;
+  references:CommonModel[];
+  typical_speakers: string[];
+  script: string;
   category_range?: string;
   cost?: {
     quantity: number;
@@ -336,17 +403,135 @@ export interface ApiContentModal {
   two_handed_damage?: {
     damage_dice: string;
     damage_type: CommonModel;
-  }
-  url?: string;
+  };
   weapon_category?: string;
   weapon_range?: string;
   weight?: number;
-  // Language
-  script?: string;
-  typical_speakers?: string[];
-  type?: string;
-  // Trait
-  proficiencies?: CommonModel[];
-  races?: CommonModel[];
-  subraces?: CommonModel[];
+}
+
+export interface RaceModal {
+  ability_bonuses?: {
+    index: 'ability_bonus';
+    model: {
+      ability_score: CommonModel[];
+      bonus: number;
+    };
+    additionalApi: true;
+    additionalApiModel: {
+      ability_bonuses: [{
+        index: string;
+        name: string;
+        full_name: string
+        desc: string[];
+        skills: CommonModel[];
+        url: string;
+      }];
+    }
+  };
+  ability_bonus_options?: {
+    index: 'ability_bonus_options';
+    model: {
+      choose: number;
+      from: CommonModel[];
+      type: 'ability_bonuses';
+    };
+    additionalApi: true;
+    additionalApiModel: {
+      ability_bonuses: [{
+        index: string;
+        name: string;
+        full_name: string
+        desc: string[];
+        skills: CommonModel[];
+        url: string;
+      }];
+    }
+  };
+  traits?: {
+    index: 'traits';
+    model: CommonModel[];
+    additionalApi: true;
+    additionalApiModel: {
+      index: string;
+      races: CommonModel[];
+      subraces: CommonModel[];
+      name: string;
+      desc: string[];
+      proficiencies: CommonModel[];
+      trait_specific: {
+        subtrait_options: {
+          choose: number;
+          from: CommonModel[];
+          type: 'trait';
+        }
+      };
+      url: string;
+    }
+  };
+  languages?: {
+    index: 'languages';
+    model: CommonModel[];
+    additionalApi: true;
+    additionalApiModel: {
+      index: string;
+      name: string;
+      desc: string;
+      type: string;
+      typical_speakers: string[];
+      script: string;
+      url: string;
+    }
+  };
+  language_options?: {
+    index: 'language_options';
+    model: {
+      choose: number;
+      from: CommonModel[];
+      type: 'languages';
+    };
+    additionalApi: true;
+    additionalApiModel: {
+      index: string;
+      name: string;
+      desc: string;
+      type: string;
+      typical_speakers: string[];
+      script: string;
+      url: string;
+    }
+  };
+  starting_proficiences: {
+    index: 'starting_proficiences';
+    model: CommonModel[];
+    additionalApi: true;
+    additionalApiModel: {
+      index: string;
+      type: string;
+      classes: CommonModel[];
+      races: CommonModel[];
+      name: string;
+      reference: CommonModel;
+      references:CommonModel[];
+      url: string;
+    }
+  };
+  starting_proficiency_options: {
+    index: 'starting_proficiency_options';
+    model: {
+      choose: number;
+      from: CommonModel[];
+      type: 'proficiences';
+      additionalApi: true;
+      additionalApiModel: {
+        index: string;
+        type: string;
+        classes: CommonModel[];
+        races: CommonModel[];
+        name: string;
+        reference: CommonModel;
+        references:CommonModel[];
+        url: string;
+      }
+    }
+  };
 }

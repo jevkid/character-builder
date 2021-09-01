@@ -61,11 +61,15 @@ export const AbilityScores: React.FC<GenericComponentProps> = (props) => {
       <StyledContainer>
         <StyledStepsHeader>Step Three: Ability Scores</StyledStepsHeader>
         <StyledStepsSubheader>
-          Enter your ability scores or{' '}
+          Enter your ability scores,{' '}
           <StyledTextButton onClick={() => handleRandomScores()}>
             randomise
-          </StyledTextButton>{' '}
-          them.
+          </StyledTextButton>
+          , or{' '}
+          <StyledTextButton onClick={() => handleRandomScores()}>
+            roll for them
+          </StyledTextButton>
+          .
         </StyledStepsSubheader>
         <StyledScoresContainer>
           <StyledFieldContainer>

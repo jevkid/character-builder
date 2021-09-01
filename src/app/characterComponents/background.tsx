@@ -11,16 +11,16 @@ import {
 import { GenericComponentProps } from '../../types';
 import { useAppDispatch } from '../../helpers/hooks';
 import { commonActions } from '../../store/slices/common';
-import { Parents } from './parents';
+// import { Parents } from './parents';
 import { Origins } from './origin';
-import { DropdownContainer } from '../elements/dropdownContainer';
+import { DropdownContainer } from '../components/dropdownContainer';
 
 export const Background: React.FC<GenericComponentProps> = (props) => {
   const dispatch = useAppDispatch();
-  const [displayParents, setDisplayParents] = React.useState(true);
   const [displayOrigin, setDisplayOrigin] = React.useState(true);
-  const [displayDecisions, setDisplayDecisions] = React.useState(false);
-  const [displayLifeEvents, setDisplayLifeEvents] = React.useState(false);
+  // const [displayParents, setDisplayParents] = React.useState(true);
+  // const [displayDecisions, setDisplayDecisions] = React.useState(false);
+  // const [displayLifeEvents, setDisplayLifeEvents] = React.useState(false);
 
   React.useEffect(() => {
     dispatch(commonActions.getAllBackgrounds());
@@ -41,13 +41,13 @@ export const Background: React.FC<GenericComponentProps> = (props) => {
           </StyledTextButton>{' '}
           it.
         </StyledStepsSubheader>
-        <DropdownContainer
+        {/* <DropdownContainer
           title="Parents"
           displayContent={displayParents}
           handleToggle={setDisplayParents}
         >
           <Parents setFieldValue={props.setFieldValue} />
-        </DropdownContainer>
+        </DropdownContainer> */}
 
         <DropdownContainer
           title="Origin"
@@ -57,7 +57,7 @@ export const Background: React.FC<GenericComponentProps> = (props) => {
           <Origins setFieldValue={props.setFieldValue} />
         </DropdownContainer>
 
-        <DropdownContainer
+        {/* <DropdownContainer
           title="Personal decisions"
           displayContent={displayDecisions}
           handleToggle={setDisplayDecisions}
@@ -67,7 +67,7 @@ export const Background: React.FC<GenericComponentProps> = (props) => {
           title="Life events"
           displayContent={displayLifeEvents}
           handleToggle={setDisplayLifeEvents}
-        ></DropdownContainer>
+        ></DropdownContainer> */}
 
         <StyledButtonContainer>
           <StyledStepButton onClick={props.handleStepBack}>

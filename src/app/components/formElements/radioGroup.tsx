@@ -10,6 +10,7 @@ interface RadioInputProps {
   name: string;
   value: string;
   label?: string;
+  checked?: boolean;
   onChange?: (e?: React.ChangeEvent<HTMLSelectElement>) => void;
   className?: string;
 }
@@ -51,6 +52,7 @@ export const RadioInput: React.FC<RadioInputProps> = (props) => {
         name={props.name}
         value={props.value}
         onChange={props.onChange}
+        checked={props.checked}
       />
       {props.label}
     </StyledRadioLabel>

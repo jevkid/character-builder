@@ -20,7 +20,7 @@ import {
 } from '../styles';
 import { handleRandomise } from '../../helpers/randomise';
 import { CommonModel, FormInputs, GenericComponentProps } from '../../types';
-import { DropdownContainer } from '../elements/dropdownContainer';
+import { DropdownContainer } from '../components/dropdownContainer';
 
 export const Class: React.FC<GenericComponentProps> = (props) => {
   const dispatch = useAppDispatch();
@@ -158,7 +158,9 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
                     {detailedClass.proficiencies.map((proficiency) => (
                       <StyledListItem key={proficiency.index}>
                         <StyledTextButton
-                          onClick={() => props.setModalData(proficiency.url)}
+                          onClick={() =>
+                            props.setModalData(proficiency.url, 'class')
+                          }
                         >
                           {proficiency.name}
                         </StyledTextButton>
@@ -180,7 +182,9 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
                       {choice.from.map((item) => (
                         <StyledListItem key={item.index}>
                           <StyledTextButton
-                            onClick={() => props.setModalData(item.url)}
+                            onClick={() =>
+                              props.setModalData(item.url, 'class')
+                            }
                           >
                             {item.name}
                           </StyledTextButton>
@@ -200,7 +204,9 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
                     {detailedClass.starting_equipment.map((item) => (
                       <StyledListItem key={item.equipment.index}>
                         <StyledTextButton
-                          onClick={() => props.setModalData(item.equipment.url)}
+                          onClick={() =>
+                            props.setModalData(item.equipment.url, 'class')
+                          }
                         >
                           {item.equipment.name}
                         </StyledTextButton>
@@ -224,7 +230,7 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
                           <StyledListItem key={item.equipment.index}>
                             <StyledTextButton
                               onClick={() =>
-                                props.setModalData(item.equipment.url)
+                                props.setModalData(item.equipment.url, 'class')
                               }
                             >
                               {item.equipment.name}
@@ -243,7 +249,7 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
                     {detailedClass.saving_throws.map((item) => (
                       <StyledListItem key={item.index}>
                         <StyledTextButton
-                          onClick={() => props.setModalData(item.url)}
+                          onClick={() => props.setModalData(item.url, 'class')}
                         >
                           {item.name}
                         </StyledTextButton>

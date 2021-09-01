@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { D20 } from '../elements/dice/die';
 import {
   APP_BACKGROUND_COLOUR_PRIMARY,
   APP_BORDER_RADIUS,
@@ -34,6 +33,5 @@ export const Home = () => (
   <StyledTitlePage>
     <StyledTitle>Randomi5E</StyledTitle>
     <StyledBeginButton href="/builder">begin</StyledBeginButton>
-    <D20 />
   </StyledTitlePage>
 );

@@ -2,13 +2,19 @@ import * as React from 'react';
 import { Formik, Form } from 'formik';
 import styled from 'styled-components';
 import { TEXT_COLOR_PRIMARY, StyledTextButton } from '../styles';
-import { Race } from '../components/race';
-import { Class } from '../components/class';
-import { ClassEnum, FormInputs, RaceEnum } from '../../types';
-import { AbilityScores } from '../components/abilityScores';
-import { Background } from '../components/background';
-import { Details } from '../components/details';
-import { Modal } from '../elements/modal';
+import { Race } from '../characterComponents/race';
+import { Class } from '../characterComponents/class';
+import {
+  ClassEnum,
+  FormInputs,
+  RaceEnum,
+  BackgroundEnum,
+  AlignmentEnum,
+} from '../../types';
+import { AbilityScores } from '../characterComponents/abilityScores';
+import { Background } from '../characterComponents/background';
+import { Details } from '../characterComponents/details';
+import { Modal } from '../components/modal';
 
 const StyledCharacterBuilderContainer = styled.div`
   display: flex;
@@ -62,9 +68,13 @@ export const CharacterBuilder: React.FC = () => {
   const [modalApiUrl, setModalApiUrl] = React.useState<string | undefined>(
     undefined
   );
-  const handleApiModal = (apiUrl: string) => {
+  const [modalType, setModalType] = React.useState<string | undefined>(
+    undefined
+  );
+  const handleApiModal = (apiUrl: string, type: string) => {
     setDisplayModal(true);
     setModalApiUrl(apiUrl);
+    setModalType(type);
   };
 
   return (
@@ -149,6 +159,32 @@ export const CharacterBuilder: React.FC = () => {
                 </span>
               )}
             </StyledSelectedOptions>
+            <StyledSelectedOptions>
+              {values.background?.general.background && (
+                <span>
+                  <strong>Background</strong>:{' '}
+                  <StyledTextButton role="button" onClick={() => setStepNum(4)}>
+                    {BackgroundEnum[values.background?.general.background]}
+                  </StyledTextButton>
+                </span>
+              )}
+              {values.background?.general?.alignment && (
+                <span>
+                  <strong>Alignment</strong>:{' '}
+                  <StyledTextButton role="button" onClick={() => setStepNum(4)}>
+                    {AlignmentEnum[values.background?.general.alignment]}
+                  </StyledTextButton>
+                </span>
+              )}
+              {values.details?.name !== '' && (
+                <span>
+                  <strong>Name</strong>:{' '}
+                  <StyledTextButton role="button" onClick={() => setStepNum(5)}>
+                    {values.details?.name}
+                  </StyledTextButton>
+                </span>
+              )}
+            </StyledSelectedOptions>
             <StyledStepsContainer>
               <StyledForm>
                 {stepNum === 1 && (
@@ -198,6 +234,7 @@ export const CharacterBuilder: React.FC = () => {
       </Formik>
       <Modal
         apiUrl={modalApiUrl}
+        modalType={modalType}
         displayModal={displayModal}
         closeModal={() => setDisplayModal(false)}
       />
