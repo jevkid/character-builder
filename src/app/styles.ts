@@ -39,9 +39,11 @@ export const StyledDetailHeader = styled.h4`
   align-self: center;
 `;
 
-export const StyledStepsSubheader = styled.h5`
+export const StyledStepsSubheader = styled.h5<{ isInline?: boolean }>`
   text-align: center;
   margin: 12px 0;
+  ${({ isInline }) => isInline && `margin-right: 8px;`}
+
 `;
 
 export const StyledStepContainer = styled.div`
@@ -91,8 +93,9 @@ export const StyledRadioGroup = styled.div``;
 
 export const StyledRadio = styled.input``;
 
-export const StyledFieldContainer = styled.fieldset<{ hideBorder?: boolean }>`
+export const StyledFieldContainer = styled.fieldset<{ hideBorder?: boolean; column?: boolean; }>`
   display: flex;
+  ${({ column }) => column && `flex-direction: column`};
   align-items: center;
   margin: 0 8px;
   border-style: ${({ hideBorder }) => hideBorder ? 'none' : 'solid'};

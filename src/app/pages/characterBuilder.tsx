@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Formik, Form } from 'formik';
 import styled from 'styled-components';
 import { TEXT_COLOR_PRIMARY, StyledTextButton } from '../styles';
+import { characterBuilderActions } from '../../store/slices/characterBuilder';
 import { Race } from '../characterComponents/race';
 import { Class } from '../characterComponents/class';
 import {
@@ -15,6 +16,7 @@ import { AbilityScores } from '../characterComponents/abilityScores';
 import { Background } from '../characterComponents/background';
 import { Details } from '../characterComponents/details';
 import { Modal } from '../components/modal';
+import { useAppDispatch } from '../../store';
 
 const StyledCharacterBuilderContainer = styled.div`
   display: flex;
@@ -60,9 +62,21 @@ const initialValues: FormInputs = {
   subRace: '',
   class: '',
   subClass: '',
+  abilityScores: {
+    strength: '' as unknown as number,
+    wisdom: '' as unknown as number,
+    charisma: '' as unknown as number,
+    constitution: '' as unknown as number,
+    dexterity: '' as unknown as number,
+    intelligence: '' as unknown as number,
+  },
+  details: {
+    name: '',
+  },
 };
 
 export const CharacterBuilder: React.FC = () => {
+  const dispatch = useAppDispatch();
   const [stepNum, setStepNum] = React.useState(1);
   const [displayModal, setDisplayModal] = React.useState(false);
   const [modalApiUrl, setModalApiUrl] = React.useState<string | undefined>(
@@ -77,6 +91,10 @@ export const CharacterBuilder: React.FC = () => {
     setModalType(type);
   };
 
+  const handleSubmit = (form: FormInputs) => {
+    dispatch(characterBuilderActions.saveCharacter({ character: form }));
+  };
+
   return (
     <StyledCharacterBuilderContainer>
       <StyledCharacterBuilderTitleContainer>
@@ -87,7 +105,7 @@ export const CharacterBuilder: React.FC = () => {
       </StyledCharacterBuilderTitleContainer>
       <Formik
         initialValues={initialValues}
-        onSubmit={(values: FormInputs) => console.log(values)}
+        onSubmit={(values: FormInputs) => handleSubmit(values)}
       >
         {({ setFieldValue, values, errors }) => (
           <>
@@ -160,7 +178,7 @@ export const CharacterBuilder: React.FC = () => {
               )}
             </StyledSelectedOptions>
             <StyledSelectedOptions>
-              {values.background?.general.background && (
+              {values.background?.general?.background && (
                 <span>
                   <strong>Background</strong>:{' '}
                   <StyledTextButton role="button" onClick={() => setStepNum(4)}>
@@ -176,7 +194,7 @@ export const CharacterBuilder: React.FC = () => {
                   </StyledTextButton>
                 </span>
               )}
-              {values.details?.name !== '' && (
+              {values.details?.name && (
                 <span>
                   <strong>Name</strong>:{' '}
                   <StyledTextButton role="button" onClick={() => setStepNum(5)}>

@@ -37,10 +37,11 @@ export const Origins: React.FC<SimpleComponentProps> = (props) => {
         <RadioGroup>
           {generalDetails?.background.map((item) => (
             <RadioInput
+              key={item.index}
               label={item.name}
               name="background.general.background"
               value={item.index}
-              checked={item.index === values.background?.general.background}
+              checked={item.index === values.background?.general?.background}
               onChange={() =>
                 handleChange('background.general.background', item.index)
               }
@@ -55,10 +56,11 @@ export const Origins: React.FC<SimpleComponentProps> = (props) => {
         <RadioGroup>
           {generalDetails?.alignment.map((race) => (
             <RadioInput
+              key={race.index}
               label={race.name}
               name="background.general.alignment"
               value={race.index}
-              checked={race.index === values.background?.general.alignment}
+              checked={race.index === values.background?.general?.alignment}
               onChange={() =>
                 handleChange('background.general.alignment', race.index)
               }

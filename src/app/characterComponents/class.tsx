@@ -76,13 +76,19 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
     // from here, we need to get the subClasses object from the detailed class response and use that to populate the subClasses dropdown
   }, [detailedClass]);
 
+  React.useEffect(() => {
+    if (allSubClasses && allSubClasses.length > 0) {
+      props.setFieldValue('subClass', allSubClasses[0].index);
+    }
+  }, [allSubClasses]);
+
   return (
     <StyledStepContainer>
       <StyledContainer>
         <StyledStepsHeader>Step Two: Class</StyledStepsHeader>
         <StyledStepsSubheader>
           Select a class or{' '}
-          <StyledTextButton role="button" onClick={() => handleRandomClass()}>
+          <StyledTextButton type="button" onClick={() => handleRandomClass()}>
             randomise
           </StyledTextButton>{' '}
           it.
@@ -126,10 +132,11 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
           </>
         )}
         <StyledButtonContainer>
-          <StyledStepButton onClick={props.handleStepBack}>
+          <StyledStepButton type="button" onClick={props.handleStepBack}>
             &#8592; Previous: Race
           </StyledStepButton>
           <StyledStepButton
+            type="button"
             onClick={props.handleStepForward}
             disabled={!selectedClass}
           >
@@ -158,6 +165,7 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
                     {detailedClass.proficiencies.map((proficiency) => (
                       <StyledListItem key={proficiency.index}>
                         <StyledTextButton
+                          type="button"
                           onClick={() =>
                             props.setModalData(proficiency.url, 'class')
                           }
@@ -182,6 +190,7 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
                       {choice.from.map((item) => (
                         <StyledListItem key={item.index}>
                           <StyledTextButton
+                            type="button"
                             onClick={() =>
                               props.setModalData(item.url, 'class')
                             }
@@ -204,6 +213,7 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
                     {detailedClass.starting_equipment.map((item) => (
                       <StyledListItem key={item.equipment.index}>
                         <StyledTextButton
+                          type="button"
                           onClick={() =>
                             props.setModalData(item.equipment.url, 'class')
                           }
@@ -229,6 +239,7 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
                         item?.equipment?.name && (
                           <StyledListItem key={item.equipment.index}>
                             <StyledTextButton
+                              type="button"
                               onClick={() =>
                                 props.setModalData(item.equipment.url, 'class')
                               }
@@ -249,6 +260,7 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
                     {detailedClass.saving_throws.map((item) => (
                       <StyledListItem key={item.index}>
                         <StyledTextButton
+                          type="button"
                           onClick={() => props.setModalData(item.url, 'class')}
                         >
                           {item.name}

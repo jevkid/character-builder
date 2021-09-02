@@ -5,7 +5,7 @@ export interface FormInputs {
   subClass: string;
   abilityScores?: AbilityOptions;
   background?: {
-    general: {
+    general?: {
       alignment: Alignments;
       background: Backrounds;
     }
@@ -24,10 +24,10 @@ export interface FormInputs {
       details?: string;
     };
   };
-  details?: {
+  details: {
     name: string;
-    gender: string;
-    age: number;
+    gender?: string;
+    age?: number;
   }
 }
 
@@ -54,6 +54,13 @@ export interface GeneralBackground {
   alignment: APIReference[];
   background: APIReference[];
 }
+
+export interface MappedRaceOptions {
+  index: string;
+  name: string;
+  reqGender: boolean;
+}
+
 
 export interface GenericComponentProps {
   handleStepForward: () => void;

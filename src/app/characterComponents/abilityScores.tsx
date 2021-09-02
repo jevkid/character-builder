@@ -62,11 +62,11 @@ export const AbilityScores: React.FC<GenericComponentProps> = (props) => {
         <StyledStepsHeader>Step Three: Ability Scores</StyledStepsHeader>
         <StyledStepsSubheader>
           Enter your ability scores,{' '}
-          <StyledTextButton onClick={() => handleRandomScores()}>
+          <StyledTextButton type="button" onClick={() => handleRandomScores()}>
             randomise
           </StyledTextButton>
           , or{' '}
-          <StyledTextButton onClick={() => handleRandomScores()}>
+          <StyledTextButton type="button" onClick={() => handleRandomScores()}>
             roll for them
           </StyledTextButton>
           .
@@ -75,9 +75,8 @@ export const AbilityScores: React.FC<GenericComponentProps> = (props) => {
           <StyledFieldContainer>
             <StyledLabel>Strength</StyledLabel>
             <StyledNumberInput
-              defaultValue={strength}
+              value={strength}
               type="number"
-              component="input"
               name="abilityScores.strength"
             />
           </StyledFieldContainer>
@@ -85,8 +84,7 @@ export const AbilityScores: React.FC<GenericComponentProps> = (props) => {
           <StyledFieldContainer>
             <StyledLabel>Dexterity</StyledLabel>
             <StyledNumberInput
-              defaultValue={dexterity}
-              component="input"
+              value={dexterity}
               type="number"
               name="abilityScores.dexterity"
             />
@@ -95,9 +93,8 @@ export const AbilityScores: React.FC<GenericComponentProps> = (props) => {
           <StyledFieldContainer>
             <StyledLabel>Constitution</StyledLabel>
             <StyledNumberInput
-              defaultValue={constitution}
+              value={constitution}
               type="number"
-              component="input"
               name="abilityScores.constitution"
             />
           </StyledFieldContainer>
@@ -105,9 +102,8 @@ export const AbilityScores: React.FC<GenericComponentProps> = (props) => {
           <StyledFieldContainer>
             <StyledLabel>Intelligence</StyledLabel>
             <StyledNumberInput
-              defaultValue={intelligence}
+              value={intelligence}
               type="number"
-              component="input"
               name="abilityScores.intelligence"
             />
           </StyledFieldContainer>
@@ -115,27 +111,26 @@ export const AbilityScores: React.FC<GenericComponentProps> = (props) => {
           <StyledFieldContainer>
             <StyledLabel>Wisdom</StyledLabel>
             <StyledNumberInput
-              defaultValue={wisdom}
+              value={wisdom}
               type="number"
-              component="input"
               name="abilityScores.wisdom"
             />
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabel>Charisma</StyledLabel>
             <StyledNumberInput
-              defaultValue={charisma}
+              value={charisma}
               type="number"
-              component="input"
               name="abilityScores.charisma"
             />
           </StyledFieldContainer>
         </StyledScoresContainer>
         <StyledButtonContainer>
-          <StyledStepButton onClick={props.handleStepBack}>
+          <StyledStepButton type="button" onClick={props.handleStepBack}>
             &#8592; Previous: Class
           </StyledStepButton>
           <StyledStepButton
+            type="button"
             onClick={props.handleStepForward}
             disabled={
               !strength ||

@@ -36,7 +36,10 @@ export const Background: React.FC<GenericComponentProps> = (props) => {
         <StyledStepsHeader>Step Four: Background</StyledStepsHeader>
         <StyledStepsSubheader>
           Build as much of a background as you'd like, or completely{' '}
-          <StyledTextButton onClick={() => handleRandomBackground()}>
+          <StyledTextButton
+            type="button"
+            onClick={() => handleRandomBackground()}
+          >
             randomise
           </StyledTextButton>{' '}
           it.
@@ -70,10 +73,10 @@ export const Background: React.FC<GenericComponentProps> = (props) => {
         ></DropdownContainer> */}
 
         <StyledButtonContainer>
-          <StyledStepButton onClick={props.handleStepBack}>
+          <StyledStepButton type="button" onClick={props.handleStepBack}>
             &#8592; Previous: Ability scores
           </StyledStepButton>
-          <StyledStepButton onClick={props.handleStepForward}>
+          <StyledStepButton type="button" onClick={props.handleStepForward}>
             Next: Details &#8594;
           </StyledStepButton>
         </StyledButtonContainer>

@@ -29,6 +29,7 @@ import { DropdownContainer } from '../components/dropdownContainer';
 
 export const Race: React.FC<GenericComponentProps> = (props) => {
   const dispatch = useAppDispatch();
+  const { setFieldValue, setModalData, handleStepForward } = props;
   const allRaces = useAllRaces();
   const { values } = useFormikContext<FormInputs>();
   const selectedRace = values.race;
@@ -45,14 +46,14 @@ export const Race: React.FC<GenericComponentProps> = (props) => {
       (subRace) => subRace.index === index
     );
     if (selectedSubRace && selectedSubRace.length > 0) {
-      props.setFieldValue('subRace', selectedSubRace[0].index);
+      setFieldValue('subRace', selectedSubRace[0].index);
     }
   };
 
   const handleRandomRace = () => {
     if (allRaces?.results) {
       const randomRace = handleRandomise(allRaces?.results);
-      props.setFieldValue('race', randomRace.index);
+      setFieldValue('race', randomRace.index);
       dispatch(commonActions.getRaceDetails({ index: randomRace.index }));
     }
   };
@@ -62,7 +63,7 @@ export const Race: React.FC<GenericComponentProps> = (props) => {
       (race) => race.index === index
     );
     if (selectedRace && selectedRace.length > 0) {
-      props.setFieldValue('race', selectedRace[0].index);
+      setFieldValue('race', selectedRace[0].index);
       dispatch(commonActions.getRaceDetails({ index: selectedRace[0].index }));
     }
   };
@@ -79,13 +80,19 @@ export const Race: React.FC<GenericComponentProps> = (props) => {
     // from here, we need to get the subraces object from the detailed race response and use that to populate the subraces dropdown
   }, [selectedRace, detailedRace]);
 
+  React.useEffect(() => {
+    if (allSubRaces && allSubRaces.length > 0) {
+      setFieldValue('subRace', allSubRaces[0].index);
+    }
+  }, [allSubRaces, setFieldValue]);
+
   return (
     <StyledStepContainer>
       <StyledContainer>
         <StyledStepsHeader>Step One: Race</StyledStepsHeader>
         <StyledStepsSubheader>
           Select a race or{' '}
-          <StyledTextButton role="button" onClick={() => handleRandomRace()}>
+          <StyledTextButton type="button" onClick={() => handleRandomRace()}>
             randomise
           </StyledTextButton>{' '}
           it.
@@ -130,7 +137,8 @@ export const Race: React.FC<GenericComponentProps> = (props) => {
         )}
         <StyledButtonContainer>
           <StyledStepButton
-            onClick={props.handleStepForward}
+            type="button"
+            onClick={handleStepForward}
             disabled={!selectedRace}
           >
             Next: Class &#8594;
@@ -153,8 +161,9 @@ export const Race: React.FC<GenericComponentProps> = (props) => {
                   <StyledListItem key={bonus.ability_score.index}>
                     Your{' '}
                     <StyledTextButton
+                      type="button"
                       onClick={() =>
-                        props.setModalData(bonus.ability_score.url, 'race')
+                        setModalData(bonus.ability_score.url, 'race')
                       }
                     >
                       {AbilityMapEnum[bonus.ability_score.name]}
@@ -187,7 +196,8 @@ export const Race: React.FC<GenericComponentProps> = (props) => {
                     {detailedRace.traits.map((trait) => (
                       <StyledListItem key={trait.index}>
                         <StyledTextButton
-                          onClick={() => props.setModalData(trait.url, 'race')}
+                          type="button"
+                          onClick={() => setModalData(trait.url, 'race')}
                         >
                           {trait.name}
                         </StyledTextButton>
@@ -203,7 +213,8 @@ export const Race: React.FC<GenericComponentProps> = (props) => {
                 {detailedRace.languages.map((language) => (
                   <StyledListItem key={language.index}>
                     <StyledTextButton
-                      onClick={() => props.setModalData(language.url, 'race')}
+                      type="button"
+                      onClick={() => setModalData(language.url, 'race')}
                     >
                       {language.name}
                     </StyledTextButton>
@@ -219,7 +230,8 @@ export const Race: React.FC<GenericComponentProps> = (props) => {
                     {detailedRace.starting_proficiencies.map((item) => (
                       <StyledListItem key={item.index}>
                         <StyledTextButton
-                          onClick={() => props.setModalData(item.url, 'race')}
+                          type="button"
+                          onClick={() => setModalData(item.url, 'race')}
                         >
                           {item.name}
                         </StyledTextButton>
@@ -244,9 +256,8 @@ export const Race: React.FC<GenericComponentProps> = (props) => {
                           item.name && (
                             <StyledListItem key={item.index}>
                               <StyledTextButton
-                                onClick={() =>
-                                  props.setModalData(item.url, 'race')
-                                }
+                                type="button"
+                                onClick={() => setModalData(item.url, 'race')}
                               >
                                 {item.name}
                               </StyledTextButton>
