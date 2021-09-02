@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Formik, Form } from 'formik';
+import { Formik, Form, FormikHelpers } from 'formik';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 import { TEXT_COLOR_PRIMARY, StyledTextButton } from '../styles';
 import { characterBuilderActions } from '../../store/slices/characterBuilder';
 import { Race } from '../characterComponents/race';
@@ -17,6 +18,7 @@ import { Background } from '../characterComponents/background';
 import { Details } from '../characterComponents/details';
 import { Modal } from '../components/modal';
 import { useAppDispatch } from '../../store';
+import { useCharacterSavingSuccess } from '../../store/selectors/characterBuilder';
 
 const StyledCharacterBuilderContainer = styled.div`
   display: flex;
@@ -57,6 +59,16 @@ const StyledSelectedOptions = styled.div`
   justify-content: space-between;
 `;
 
+const StyledOption = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0 3px;
+  @media only screen and (max-width: 480px) {
+    padding: 0;
+    flex-direction: column;
+  }
+`;
+
 const initialValues: FormInputs = {
   race: '',
   subRace: '',
@@ -77,6 +89,7 @@ const initialValues: FormInputs = {
 
 export const CharacterBuilder: React.FC = () => {
   const dispatch = useAppDispatch();
+  const history = useHistory();
   const [stepNum, setStepNum] = React.useState(1);
   const [displayModal, setDisplayModal] = React.useState(false);
   const [modalApiUrl, setModalApiUrl] = React.useState<string | undefined>(
@@ -85,14 +98,32 @@ export const CharacterBuilder: React.FC = () => {
   const [modalType, setModalType] = React.useState<string | undefined>(
     undefined
   );
+
   const handleApiModal = (apiUrl: string, type: string) => {
     setDisplayModal(true);
     setModalApiUrl(apiUrl);
     setModalType(type);
   };
 
-  const handleSubmit = (form: FormInputs) => {
-    dispatch(characterBuilderActions.saveCharacter({ character: form }));
+  const handleSubmit = async (
+    form: FormInputs,
+    formikHelpers: FormikHelpers<FormInputs>
+  ) => {
+    return new Promise<void>((resolve, reject) => {
+      dispatch(
+        characterBuilderActions.saveCharacter({
+          character: form,
+          resolve,
+          reject,
+        })
+      );
+    })
+      .then(() => {
+        history.push('/character-sheet');
+      })
+      .catch(() => {
+        formikHelpers.setSubmitting(false);
+      });
   };
 
   return (
@@ -103,10 +134,7 @@ export const CharacterBuilder: React.FC = () => {
         </StyledCharacterBuilderTitle>
         <StyledP>Build your character step by step</StyledP>
       </StyledCharacterBuilderTitleContainer>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={(values: FormInputs) => handleSubmit(values)}
-      >
+      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         {({ setFieldValue, values, errors }) => (
           <>
             <StyledSelectedOptions>
@@ -129,52 +157,64 @@ export const CharacterBuilder: React.FC = () => {
             </StyledSelectedOptions>
             <StyledSelectedOptions>
               {values.abilityScores?.strength && (
-                <span>
-                  <strong>STR</strong>:{' '}
+                <StyledOption>
+                  <span>
+                    <strong>STR</strong>:{' '}
+                  </span>
                   <StyledTextButton role="button" onClick={() => setStepNum(3)}>
                     {values.abilityScores.strength}
                   </StyledTextButton>
-                </span>
+                </StyledOption>
               )}
               {values.abilityScores?.dexterity && (
-                <span>
-                  <strong>DEX</strong>:{' '}
+                <StyledOption>
+                  <span>
+                    <strong>DEX</strong>:{' '}
+                  </span>
                   <StyledTextButton role="button" onClick={() => setStepNum(3)}>
                     {values.abilityScores.dexterity}
                   </StyledTextButton>
-                </span>
+                </StyledOption>
               )}
               {values.abilityScores?.constitution && (
-                <span>
-                  <strong>CON</strong>:{' '}
+                <StyledOption>
+                  <span>
+                    <strong>CON</strong>:{' '}
+                  </span>
                   <StyledTextButton role="button" onClick={() => setStepNum(3)}>
                     {values.abilityScores.constitution}
                   </StyledTextButton>
-                </span>
+                </StyledOption>
               )}
               {values.abilityScores?.intelligence && (
-                <span>
-                  <strong>INT</strong>:{' '}
+                <StyledOption>
+                  <span>
+                    <strong>INT</strong>:{' '}
+                  </span>
                   <StyledTextButton role="button" onClick={() => setStepNum(3)}>
                     {values.abilityScores.intelligence}
                   </StyledTextButton>
-                </span>
+                </StyledOption>
               )}
               {values.abilityScores?.wisdom && (
-                <span>
-                  <strong>WIS</strong>:{' '}
+                <StyledOption>
+                  <span>
+                    <strong>WIS</strong>:{' '}
+                  </span>
                   <StyledTextButton role="button" onClick={() => setStepNum(3)}>
                     {values.abilityScores.wisdom}
                   </StyledTextButton>
-                </span>
+                </StyledOption>
               )}
               {values.abilityScores?.charisma && (
-                <span>
-                  <strong>CHA</strong>:{' '}
+                <StyledOption>
+                  <span>
+                    <strong>CHA</strong>:{' '}
+                  </span>
                   <StyledTextButton role="button" onClick={() => setStepNum(3)}>
                     {values.abilityScores.charisma}
                   </StyledTextButton>
-                </span>
+                </StyledOption>
               )}
             </StyledSelectedOptions>
             <StyledSelectedOptions>

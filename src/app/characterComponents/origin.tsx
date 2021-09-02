@@ -2,14 +2,14 @@ import * as React from 'react';
 import { useFormikContext } from 'formik';
 import styled from 'styled-components';
 import { StyledStepsSubheader, StyledSection } from '../styles';
+import { FormInputs, AlignmentEnum, BackgroundEnum } from '../../types';
 import {
-  FormInputs,
-  SimpleComponentProps,
-  AlignmentEnum,
-  BackgroundEnum,
-} from '../../types';
-import { useBackgroundGeneral } from '../../store/selectors/common';
+  useAllAlignments,
+  useBackgroundGeneral,
+} from '../../store/selectors/common';
 import { RadioGroup, RadioInput } from '../components/formElements/radioGroup';
+import { commonActions } from '../../store/slices/common';
+import { useAppDispatch } from '../../helpers/hooks';
 
 const StyledOriginContainer = styled.div`
   display: flex;
@@ -18,15 +18,21 @@ const StyledOriginContainer = styled.div`
   width: 100%;
 `;
 
-export const Origins: React.FC<SimpleComponentProps> = (props) => {
-  const { values } = useFormikContext<FormInputs>();
+export const Origins: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const { values, setFieldValue } = useFormikContext<FormInputs>();
   const selectedBackground = values.background?.general?.background;
   const selectedAlignment = values.background?.general?.alignment;
   const generalDetails = useBackgroundGeneral();
+  const alignments = useAllAlignments();
 
   const handleChange = (field: string, value: string) => {
-    props.setFieldValue(field, value);
+    setFieldValue(field, value);
   };
+
+  React.useEffect(() => {
+    dispatch(commonActions.getAllAlignments());
+  }, [dispatch]);
 
   return (
     <StyledOriginContainer>
@@ -54,18 +60,21 @@ export const Origins: React.FC<SimpleComponentProps> = (props) => {
           Alignment: {selectedAlignment && AlignmentEnum[selectedAlignment]}
         </StyledStepsSubheader>
         <RadioGroup>
-          {generalDetails?.alignment.map((race) => (
-            <RadioInput
-              key={race.index}
-              label={race.name}
-              name="background.general.alignment"
-              value={race.index}
-              checked={race.index === values.background?.general?.alignment}
-              onChange={() =>
-                handleChange('background.general.alignment', race.index)
-              }
-            />
-          ))}
+          {alignments &&
+            alignments.results.map((alignment) => (
+              <RadioInput
+                key={alignment.index}
+                label={alignment.name}
+                name="background.general.alignment"
+                value={alignment.index}
+                checked={
+                  alignment.index === values.background?.general?.alignment
+                }
+                onChange={() =>
+                  handleChange('background.general.alignment', alignment.index)
+                }
+              />
+            ))}
         </RadioGroup>
       </StyledSection>
       {/* Siblings */}

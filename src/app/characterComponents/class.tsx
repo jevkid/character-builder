@@ -16,7 +16,6 @@ import {
   StyledListItem,
   StyledButtonContainer,
   StyledStepButton,
-  StyledRow,
 } from '../styles';
 import { handleRandomise } from '../../helpers/randomise';
 import { CommonModel, FormInputs, GenericComponentProps } from '../../types';
@@ -24,8 +23,9 @@ import { DropdownContainer } from '../components/dropdownContainer';
 
 export const Class: React.FC<GenericComponentProps> = (props) => {
   const dispatch = useAppDispatch();
+  const { values, setFieldValue } = useFormikContext<FormInputs>();
+  const { setModalData, handleStepForward, handleStepBack } = props;
   const allClasses = useAllClasses();
-  const { values } = useFormikContext<FormInputs>();
   const selectedClass = values.class;
   const selectedSubClass = values.subClass;
   const detailedClass = useDetailedClass();
@@ -40,14 +40,14 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
       (subClass) => subClass.index === index
     );
     if (selectedSubClass && selectedSubClass.length > 0) {
-      props.setFieldValue('subClass', selectedSubClass[0].index);
+      setFieldValue('subClass', selectedSubClass[0].index);
     }
   };
 
   const handleRandomClass = () => {
     if (allClasses?.results) {
       const randomClass = handleRandomise(allClasses?.results);
-      props.setFieldValue('class', randomClass.index);
+      setFieldValue('class', randomClass.index);
       dispatch(commonActions.getClassDetails({ index: randomClass.index }));
     }
   };
@@ -57,7 +57,7 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
       (item) => item.index === index
     );
     if (selectedClass && selectedClass.length > 0) {
-      props.setFieldValue('class', selectedClass[0].index);
+      setFieldValue('class', selectedClass[0].index);
       dispatch(
         commonActions.getClassDetails({ index: selectedClass[0].index })
       );
@@ -78,9 +78,9 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
 
   React.useEffect(() => {
     if (allSubClasses && allSubClasses.length > 0) {
-      props.setFieldValue('subClass', allSubClasses[0].index);
+      setFieldValue('subClass', allSubClasses[0].index);
     }
-  }, [allSubClasses]);
+  }, [setFieldValue, allSubClasses]);
 
   return (
     <StyledStepContainer>
@@ -132,12 +132,12 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
           </>
         )}
         <StyledButtonContainer>
-          <StyledStepButton type="button" onClick={props.handleStepBack}>
+          <StyledStepButton type="button" onClick={handleStepBack}>
             &#8592; Previous: Race
           </StyledStepButton>
           <StyledStepButton
             type="button"
-            onClick={props.handleStepForward}
+            onClick={handleStepForward}
             disabled={!selectedClass}
           >
             Next: Ability scores &#8594;
@@ -150,7 +150,7 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
           handleToggle={setDisplayClassDetails}
           displayContent={displayClassDetails}
         >
-          <StyledRow>
+          <>
             <StyledSection>
               <StyledP>
                 <strong>Hit points: </strong>
@@ -166,9 +166,7 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
                       <StyledListItem key={proficiency.index}>
                         <StyledTextButton
                           type="button"
-                          onClick={() =>
-                            props.setModalData(proficiency.url, 'class')
-                          }
+                          onClick={() => setModalData(proficiency.url, 'class')}
                         >
                           {proficiency.name}
                         </StyledTextButton>
@@ -191,9 +189,7 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
                         <StyledListItem key={item.index}>
                           <StyledTextButton
                             type="button"
-                            onClick={() =>
-                              props.setModalData(item.url, 'class')
-                            }
+                            onClick={() => setModalData(item.url, 'class')}
                           >
                             {item.name}
                           </StyledTextButton>
@@ -215,7 +211,7 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
                         <StyledTextButton
                           type="button"
                           onClick={() =>
-                            props.setModalData(item.equipment.url, 'class')
+                            setModalData(item.equipment.url, 'class')
                           }
                         >
                           {item.equipment.name}
@@ -241,7 +237,7 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
                             <StyledTextButton
                               type="button"
                               onClick={() =>
-                                props.setModalData(item.equipment.url, 'class')
+                                setModalData(item.equipment.url, 'class')
                               }
                             >
                               {item.equipment.name}
@@ -261,7 +257,7 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
                       <StyledListItem key={item.index}>
                         <StyledTextButton
                           type="button"
-                          onClick={() => props.setModalData(item.url, 'class')}
+                          onClick={() => setModalData(item.url, 'class')}
                         >
                           {item.name}
                         </StyledTextButton>
@@ -271,7 +267,7 @@ export const Class: React.FC<GenericComponentProps> = (props) => {
                 </>
               )}
             </StyledSection>
-          </StyledRow>
+          </>
         </DropdownContainer>
       )}
     </StyledStepContainer>

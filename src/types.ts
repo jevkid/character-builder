@@ -69,10 +69,6 @@ export interface GenericComponentProps {
   setModalData: (apiUrl: string, type: string) => void;
 }
 
-export interface SimpleComponentProps {
-  setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
-}
-
 export interface Race {
   index: string;
   name: string;
@@ -158,6 +154,13 @@ export interface SubClass {
   url: string;
 }
 
+export interface Alignment {
+  index: string;
+  name: string;
+  abbreviation: string;
+  desc: string;
+  url: string;
+}
 export interface Background {
   index: string;
   name: string;

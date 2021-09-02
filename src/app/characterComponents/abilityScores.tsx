@@ -28,7 +28,8 @@ const StyledScoresContainer = styled.div`
 `;
 
 export const AbilityScores: React.FC<GenericComponentProps> = (props) => {
-  const { values } = useFormikContext<FormInputs>();
+  const { values, setFieldValue } = useFormikContext<FormInputs>();
+  const { handleStepForward, handleStepBack } = props;
   const strength = values.abilityScores?.strength;
   const dexterity = values.abilityScores?.dexterity;
   const constitution = values.abilityScores?.constitution;
@@ -38,22 +39,22 @@ export const AbilityScores: React.FC<GenericComponentProps> = (props) => {
 
   const handleRandomScores = () => {
     const randomStrength = getRandomInt(MAX_SCORE, MIN_SCORE);
-    props.setFieldValue('abilityScores.strength', randomStrength);
+    setFieldValue('abilityScores.strength', randomStrength);
 
     const randomDexterity = getRandomInt(MAX_SCORE, MIN_SCORE);
-    props.setFieldValue('abilityScores.dexterity', randomDexterity);
+    setFieldValue('abilityScores.dexterity', randomDexterity);
 
     const randomConstitution = getRandomInt(MAX_SCORE, MIN_SCORE);
-    props.setFieldValue('abilityScores.constitution', randomConstitution);
+    setFieldValue('abilityScores.constitution', randomConstitution);
 
     const randomIntelligence = getRandomInt(MAX_SCORE, MIN_SCORE);
-    props.setFieldValue('abilityScores.intelligence', randomIntelligence);
+    setFieldValue('abilityScores.intelligence', randomIntelligence);
 
     const randomWisdom = getRandomInt(MAX_SCORE, MIN_SCORE);
-    props.setFieldValue('abilityScores.wisdom', randomWisdom);
+    setFieldValue('abilityScores.wisdom', randomWisdom);
 
     const randomCharisma = getRandomInt(MAX_SCORE, MIN_SCORE);
-    props.setFieldValue('abilityScores.charisma', randomCharisma);
+    setFieldValue('abilityScores.charisma', randomCharisma);
   };
 
   return (
@@ -126,12 +127,12 @@ export const AbilityScores: React.FC<GenericComponentProps> = (props) => {
           </StyledFieldContainer>
         </StyledScoresContainer>
         <StyledButtonContainer>
-          <StyledStepButton type="button" onClick={props.handleStepBack}>
+          <StyledStepButton type="button" onClick={handleStepBack}>
             &#8592; Previous: Class
           </StyledStepButton>
           <StyledStepButton
             type="button"
-            onClick={props.handleStepForward}
+            onClick={handleStepForward}
             disabled={
               !strength ||
               !charisma ||

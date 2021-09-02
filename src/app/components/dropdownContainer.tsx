@@ -10,6 +10,9 @@ interface DropdownContainerProps {
 
 const StyledContainer = styled.div`
   width: 700px;
+  @media only screen and (max-width: 480px) {
+    width: 350px;
+  }
 `;
 
 const StyledSectionHeader = styled.div`
@@ -21,10 +24,19 @@ const StyledSectionHeader = styled.div`
   &:hover {
     cursor: pointer;
   }
+  @media only screen and (max-width: 480px) {
+    padding: 8px 12px;
+  }
 `;
 
 const StyledSectionContent = styled.div`
+  display: flex;
   padding: 8px 24px;
+  margin-top: 12px;
+  @media only screen and (max-width: 480px) {
+    flex-direction: column;
+    padding: 8px 12px;
+  }
 `;
 
 const StyledArrow = styled.i<{ direction: 'up' | 'down' }>`

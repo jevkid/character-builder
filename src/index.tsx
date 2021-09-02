@@ -14,6 +14,7 @@ import {
   TEXT_COLOR_SECONDARY,
 } from './app/styles';
 import './index.css';
+import { CharacterSheet } from './app/pages/characterSheet';
 
 const StyledDesktopNavigation = styled.nav`
   display: flex;
@@ -82,6 +83,10 @@ ReactDOM.render(
             <Route exact path="/glossary/:term">
               <h1>glossary</h1>
               <Glossary />
+            </Route>
+            <Route exact path="/character-sheet">
+              <h1>Character sheet</h1>
+              <CharacterSheet />
             </Route>
           </Switch>
         </StyledAppContainer>

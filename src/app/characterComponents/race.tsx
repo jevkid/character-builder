@@ -16,7 +16,6 @@ import {
   StyledButtonContainer,
   StyledStepButton,
   StyledSection,
-  StyledRow,
 } from '../styles';
 import { handleRandomise } from '../../helpers/randomise';
 import {
@@ -29,9 +28,9 @@ import { DropdownContainer } from '../components/dropdownContainer';
 
 export const Race: React.FC<GenericComponentProps> = (props) => {
   const dispatch = useAppDispatch();
-  const { setFieldValue, setModalData, handleStepForward } = props;
+  const { values, setFieldValue } = useFormikContext<FormInputs>();
+  const { setModalData, handleStepForward } = props;
   const allRaces = useAllRaces();
-  const { values } = useFormikContext<FormInputs>();
   const selectedRace = values.race;
   const selectedSubRace = values.subRace;
   const detailedRace = useDetailedRace();
@@ -109,7 +108,7 @@ export const Race: React.FC<GenericComponentProps> = (props) => {
             - - - -
           </option>
           {allRaces &&
-            allRaces?.results?.map((race) => (
+            allRaces.results?.map((race) => (
               <option key={race.index} value={race.index}>
                 {race.name}
               </option>
@@ -151,7 +150,7 @@ export const Race: React.FC<GenericComponentProps> = (props) => {
           displayContent={displayRaceDetails}
           handleToggle={setDisplayRaceDetails}
         >
-          <StyledRow>
+          <>
             <StyledSection>
               <StyledP>
                 <strong>Ability score increase</strong>:
@@ -268,7 +267,7 @@ export const Race: React.FC<GenericComponentProps> = (props) => {
                 </>
               )}
             </StyledSection>
-          </StyledRow>
+          </>
         </DropdownContainer>
       )}
     </StyledStepContainer>

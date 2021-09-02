@@ -1,31 +1,8 @@
 import { AxiosResponse } from 'axios';
 import { call, put } from 'redux-saga/effects';
-import { getAllRaces, getAllSubRaces, getAllClasses, getAllSubClasses, getRaceDetails, getClassDetails, getAllBackgrounds } from '../../api';
-import { APIAllRacesResponse, APIAllSubRacesResponse, APIAllClassesResponse, APIAllSubClassesResponse, APIRacesResponse, APIClassesResponse } from '../../api/types';
+import { getAllRaces, getAllSubRaces, getAllClasses, getAllSubClasses, getRaceDetails, getClassDetails, getAllBackgrounds, getAllAlignments, getAlignmentDetails } from '../../api';
+import { APIAllRacesResponse, APIAllSubRacesResponse, APIAllClassesResponse, APIAllSubClassesResponse, APIRacesResponse, APIClassesResponse, APIAlignmentsResponse, APIAllAlignmentsResponse } from '../../api/types';
 import { commonActions } from '../slices/common';
-
-export function* returnRaceDetails(action: ReturnType<typeof commonActions.getRaceDetails>) {
-  const response: AxiosResponse<APIRacesResponse> = yield call(getRaceDetails, action.payload.index);
-  yield put(commonActions.getDetailedRaceLoading());
-
-  if (response.data) {
-    yield put(commonActions.getDetailedRaceSuccess(response.data));
-  } else {
-    yield put(commonActions.getDetailedRaceFailure());
-  }
-}
-
-
-export function* returnClassDetails(action: ReturnType<typeof commonActions.getClassDetails>) {
-  const response: AxiosResponse<APIClassesResponse> = yield call(getClassDetails, action.payload.index);
-  yield put(commonActions.getDetailedClassLoading());
-
-  if (response.data) {
-    yield put(commonActions.getDetailedClassSuccess(response.data));
-  } else {
-    yield put(commonActions.getDetailedClassFailure());
-  }
-}
 
 export function* returnAllRaces() {
   const response: AxiosResponse<APIAllRacesResponse> = yield call(getAllRaces);
@@ -35,6 +12,17 @@ export function* returnAllRaces() {
     yield put(commonActions.getAllRacesSuccess(response.data));
   } else {
     yield put(commonActions.getAllRacesFailure());
+  }
+}
+
+export function* returnRaceDetails(action: ReturnType<typeof commonActions.getRaceDetails>) {
+  const response: AxiosResponse<APIRacesResponse> = yield call(getRaceDetails, action.payload.index);
+  yield put(commonActions.getDetailedRaceLoading());
+
+  if (response.data) {
+    yield put(commonActions.getDetailedRaceSuccess(response.data));
+  } else {
+    yield put(commonActions.getDetailedRaceFailure());
   }
 }
 
@@ -60,6 +48,18 @@ export function* returnAllClasses() {
   }
 }
 
+
+export function* returnClassDetails(action: ReturnType<typeof commonActions.getClassDetails>) {
+  const response: AxiosResponse<APIClassesResponse> = yield call(getClassDetails, action.payload.index);
+  yield put(commonActions.getDetailedClassLoading());
+
+  if (response.data) {
+    yield put(commonActions.getDetailedClassSuccess(response.data));
+  } else {
+    yield put(commonActions.getDetailedClassFailure());
+  }
+}
+
 export function* returnAllSubClasses(action: ReturnType<typeof commonActions.getAllSubClasses>) {
   const response: AxiosResponse<APIAllSubClassesResponse> = yield call(getAllSubClasses, action.payload.index);
   yield put(commonActions.getAllSubClassesLoading());
@@ -79,5 +79,27 @@ export function* returnAllBackgrounds() {
     yield put(commonActions.getAllBackgroundsSuccess(response.data));
   } else {
     yield put(commonActions.getAllBackgroundsFailure());
+  }
+}
+
+export function* returnAllAlignments() {
+  const response: AxiosResponse<APIAllAlignmentsResponse> = yield call(getAllAlignments);
+  yield put(commonActions.getAllAlignmentsLoading());
+
+  if (response.data) {
+    yield put(commonActions.getAllAlignmentsSuccess(response.data));
+  } else {
+    yield put(commonActions.getAllAlignmentsFailure());
+  }
+}
+
+export function* returnAlignmentDetails(action: ReturnType<typeof commonActions.getAlignmentDetails>) {
+  const response: AxiosResponse<APIAlignmentsResponse> = yield call(getAlignmentDetails, action.payload.index);
+  yield put(commonActions.getAlignmentDetailsLoading());
+
+  if (response.data) {
+    yield put(commonActions.getAlignmentDetailsSuccess(response.data));
+  } else {
+    yield put(commonActions.getAlignmentDetailsFailure());
   }
 }

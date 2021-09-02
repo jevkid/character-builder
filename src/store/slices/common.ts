@@ -1,13 +1,12 @@
 import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit';
-import { APIAllRacesResponse, APIAllSubRacesResponse, APIAllClassesResponse, APIAllSubClassesResponse } from '../../api/types';
-import { BackgroundDetails, Class, Race } from '../../types';
+import { APIAllRacesResponse, APIAllSubRacesResponse, APIAllClassesResponse, APIAllSubClassesResponse, APIAlignmentsResponse, APIAllAlignmentsResponse } from '../../api/types';
+import { BackgroundDetails, Class, Race, Alignment } from '../../types';
 
 export interface CommonState {
   races: {
     loading: boolean;
     error: boolean;
     options?: APIAllRacesResponse;
-    selected?: string;
   },
   detailedRace: {
     loading: boolean;
@@ -18,13 +17,11 @@ export interface CommonState {
     loading: boolean;
     error: boolean;
     options?: APIAllSubRacesResponse;
-    selected?: string;
   },
   classes: {
     loading: boolean;
     error: boolean;
     options?: APIAllClassesResponse;
-    selected?: string;
   },
   detailedClass: {
     loading: boolean;
@@ -35,13 +32,22 @@ export interface CommonState {
     loading: boolean;
     error: boolean;
     options?: APIAllSubClassesResponse;
-    selected?: string;
   },
   backgrounds: {
     loading: boolean;
     error: boolean;
     details?: BackgroundDetails;
   },
+  alignments: {
+    loading: boolean;
+    error: boolean;
+    options?: APIAllAlignmentsResponse;
+  }
+  detailedAlignment: {
+    loading: boolean;
+    error: boolean;
+    details?: APIAlignmentsResponse;
+  }
 }
 
 const initialState: CommonState = {
@@ -70,6 +76,14 @@ const initialState: CommonState = {
     error: false,
   },
   backgrounds: {
+    loading: false,
+    error: false,
+  },
+  alignments: {
+    loading: false,
+    error: false,
+  },
+  detailedAlignment: {
     loading: false,
     error: false,
   },
@@ -165,6 +179,30 @@ const commonSlice = createSlice({
       state.backgrounds.loading = false;
       state.backgrounds.error = true;
     },
+    getAllAlignmentsLoading: (state) => {
+      state.alignments.loading = true;
+    },
+    getAllAlignmentsSuccess: (state, action: PayloadAction<APIAllAlignmentsResponse>) => {
+      state.alignments.loading = false;
+      state.alignments.error = false;
+      state.alignments.options = action.payload;
+    },
+    getAllAlignmentsFailure: (state) => {
+      state.alignments.loading = false;
+      state.alignments.error = true;
+    },
+    getAlignmentDetailsLoading: (state) => {
+      state.detailedAlignment.loading = true;
+    },
+    getAlignmentDetailsSuccess: (state, action: PayloadAction<Alignment>) => {
+      state.detailedAlignment.loading = false;
+      state.detailedAlignment.error = false;
+      state.detailedAlignment.details = action.payload;
+    },
+    getAlignmentDetailsFailure: (state) => {
+      state.detailedAlignment.loading = false;
+      state.detailedAlignment.error = true;
+    },
   },
 });
 
@@ -202,6 +240,13 @@ export const commonActions = {
   getAllBackgrounds: createAction(`${SLICE_NAME}/getAllBackgrounds`),
   getBackgroundDetails: createAction(
     `${SLICE_NAME}/getBackgroundDetails`,
+    (payload: { index: string }) => ({
+      payload,
+    }),
+  ),
+  getAllAlignments: createAction(`${SLICE_NAME}/getAllAlignments`),
+  getAlignmentDetails: createAction(
+    `${SLICE_NAME}/getAlignmentDetails`,
     (payload: { index: string }) => ({
       payload,
     }),

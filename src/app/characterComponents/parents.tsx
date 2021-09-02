@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useFormikContext } from 'formik';
 import styled from 'styled-components';
 import { StyledStepsSubheader, StyledSection } from '../styles';
-import { APIReference, FormInputs, SimpleComponentProps } from '../../types';
+import { APIReference, FormInputs } from '../../types';
 import { useBackgroundParents } from '../../store/selectors/common';
 import { RadioGroup, RadioInput } from '../components/formElements/radioGroup';
 
@@ -17,8 +17,8 @@ const StyledParentsContainer = styled.div`
   }
 `;
 
-export const Parents: React.FC<SimpleComponentProps> = (props) => {
-  const { values } = useFormikContext<FormInputs>();
+export const Parents: React.FC = () => {
+  const { values, setFieldValue } = useFormikContext<FormInputs>();
   const selectedRace = values.race;
   const parentsKnown = values.background?.parents?.knowledge;
   const parentDetails = useBackgroundParents();
@@ -27,11 +27,11 @@ export const Parents: React.FC<SimpleComponentProps> = (props) => {
   >([]);
 
   const handleParentsKnowledge = (index: string) => {
-    props.setFieldValue('background.parents.knowledge', index);
+    setFieldValue('background.parents.knowledge', index);
   };
 
   const handleParentsRace = (index: string) => {
-    props.setFieldValue('background.parents.race', index);
+    setFieldValue('background.parents.race', index);
   };
 
   React.useEffect(() => {

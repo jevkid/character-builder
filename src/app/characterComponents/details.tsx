@@ -28,11 +28,10 @@ const StyledFieldColumn = styled.div`
 `;
 
 export const Details: React.FC<GenericComponentProps> = (props) => {
-  const { values } = useFormikContext<FormInputs>();
+  const { values, setFieldValue } = useFormikContext<FormInputs>();
+  const { handleStepBack } = props;
   const [showGenerate, setShowGenerate] = React.useState(false);
   const [showGenderGenerate, setShowGenderGenerate] = React.useState(false);
-  const selectedName = values.details?.name;
-  const selectedAge = values.details?.age;
   const selectedGender = values.details?.gender;
   const [selectedNameRace, setSelectedNameRace] = React.useState('');
   const [selectedNameGender, setSelectedNameGender] = React.useState<
@@ -151,14 +150,14 @@ export const Details: React.FC<GenericComponentProps> = (props) => {
 
   const handleGenerator = () => {
     // Possible race options for generator: demon, dragon, drow, dwarf, elf, gnome, goblin, half-demon, halfling, high elf, human, ogre, orc
-    props.setFieldValue(
+    setFieldValue(
       'details.name',
       nameByRace(selectedNameRace, { gender: selectedNameGender })
     );
   };
 
   const handleGender = (value: string) => {
-    props.setFieldValue('details.gender', value);
+    setFieldValue('details.gender', value);
   };
 
   return (
@@ -240,7 +239,7 @@ export const Details: React.FC<GenericComponentProps> = (props) => {
 
           <StyledFieldContainer hideBorder>
             <StyledStepsSubheader isInline>Age:</StyledStepsSubheader>
-            <StyledNumberInput name="details.age" value={selectedAge} />
+            <StyledNumberInput name="details.age" />
           </StyledFieldContainer>
 
           <StyledFieldContainer hideBorder>
@@ -265,7 +264,7 @@ export const Details: React.FC<GenericComponentProps> = (props) => {
           </StyledFieldContainer>
         </StyledFieldColumn>
         <StyledButtonContainer>
-          <StyledStepButton type="button" onClick={props.handleStepBack}>
+          <StyledStepButton type="button" onClick={handleStepBack}>
             &#8592; Previous: Background
           </StyledStepButton>
           <StyledStepButton type="submit">Submit</StyledStepButton>

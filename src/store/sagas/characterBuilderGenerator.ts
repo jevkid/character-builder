@@ -17,8 +17,10 @@ export function* setCharacterToStorage(action: ReturnType<typeof characterBuilde
   yield put(characterBuilderActions.saveCharacterPending());
   const character = setCharacterToLocalStorage(action.payload.character);
   if (character) {
+    action.payload.resolve();
     yield put(characterBuilderActions.saveCharacterSuccess(character));
   } else {
+    action.payload.reject();
     yield put(characterBuilderActions.saveCharacterFailure());
   }
 }

@@ -27,3 +27,9 @@ export const useBackgroundParents = () =>
 
 export const useBackgroundGeneral = () =>
   useSelector((state: RootState) => state.common.backgrounds.details?.background, shallowEqual);
+
+export const useAllAlignments = () =>
+  useSelector((state: RootState) => state.common.alignments.options, shallowEqual);
+
+export const useDetailedAlignment = () =>
+  useSelector((state: RootState) => state.common.detailedAlignment.details, shallowEqual);

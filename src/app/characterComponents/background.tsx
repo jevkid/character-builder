@@ -49,7 +49,7 @@ export const Background: React.FC<GenericComponentProps> = (props) => {
           displayContent={displayParents}
           handleToggle={setDisplayParents}
         >
-          <Parents setFieldValue={props.setFieldValue} />
+          <Parents />
         </DropdownContainer> */}
 
         <DropdownContainer
@@ -57,7 +57,7 @@ export const Background: React.FC<GenericComponentProps> = (props) => {
           displayContent={displayOrigin}
           handleToggle={setDisplayOrigin}
         >
-          <Origins setFieldValue={props.setFieldValue} />
+          <Origins />
         </DropdownContainer>
 
         {/* <DropdownContainer

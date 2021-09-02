@@ -145,6 +145,9 @@ export const StyledButtonContainer = styled.div`
   margin-top: 32px;
   @media only screen and (max-width: 480px) {
     flex-direction: column;
+    align-items: center;
+    align-self: center;
+    width: 65%;
   }
 `;
 

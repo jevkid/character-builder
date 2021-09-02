@@ -65,7 +65,11 @@ export const characterBuilderActions = {
 
   saveCharacter: createAction(
     `${SLICE_NAME}/saveCharacter`,
-    (payload: { character: FormInputs }) => ({
+    (payload: {
+      character: FormInputs;
+      resolve: () => void;
+      reject: () => void;
+    }) => ({
       payload,
     }),
   ),
