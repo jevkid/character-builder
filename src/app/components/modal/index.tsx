@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { APP_BORDER_RADIUS, TEXT_COLOR_SECONDARY } from '../../styles';
+import { ClassContent } from './classContent';
 import { RaceContent } from './raceContent';
 
 interface ModalProps {
@@ -97,6 +98,7 @@ export const Modal: React.FC<ModalProps> = (props) => {
     return () => {
       document.removeEventListener('keyup', escapeKeyCallEvent);
     };
+    // eslint-disable-next-line
   }, []);
 
   React.useEffect(() => {
@@ -116,6 +118,9 @@ export const Modal: React.FC<ModalProps> = (props) => {
           </StyledModalClose>
           {props.modalType === 'race' && props.apiUrl && (
             <RaceContent apiUrl={props.apiUrl} />
+          )}
+          {props.modalType === 'class' && props.apiUrl && (
+            <ClassContent apiUrl={props.apiUrl} />
           )}
           {props.children}
         </StyledModalContent>

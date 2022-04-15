@@ -18,7 +18,6 @@ import { Background } from '../characterComponents/background';
 import { Details } from '../characterComponents/details';
 import { Modal } from '../components/modal';
 import { useAppDispatch } from '../../store';
-import { useCharacterSavingSuccess } from '../../store/selectors/characterBuilder';
 
 const StyledCharacterBuilderContainer = styled.div`
   display: flex;
@@ -218,11 +217,11 @@ export const CharacterBuilder: React.FC = () => {
               )}
             </StyledSelectedOptions>
             <StyledSelectedOptions>
-              {values.background?.general?.background && (
+              {values.background?.general?.origin && (
                 <span>
                   <strong>Background</strong>:{' '}
                   <StyledTextButton role="button" onClick={() => setStepNum(4)}>
-                    {BackgroundEnum[values.background?.general.background]}
+                    {BackgroundEnum[values.background?.general.origin]}
                   </StyledTextButton>
                 </span>
               )}

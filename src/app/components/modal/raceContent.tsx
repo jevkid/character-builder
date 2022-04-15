@@ -1,26 +1,12 @@
 import * as React from 'react';
 import { AxiosResponse } from 'axios';
 import { BaseAxiosInstance } from '../../../api';
-import styled from 'styled-components';
 import { StyledP } from '../../styles';
 import { RaceModalTypes } from '../../../types';
 
 interface ModalProps {
   apiUrl: string;
 }
-
-const StyledContent = styled.div`
-  display: flex;
-  align-items: center;
-  height: 100%;
-  justify-content: center;
-  left: 0;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 10001;
-  background-color: rgba(0, 0, 0, 0.8);
-`;
 
 export const RaceContent: React.FC<ModalProps> = (props) => {
   const [apiContent, setApiContent] = React.useState<RaceModalTypes | null>();
@@ -56,7 +42,7 @@ export const RaceContent: React.FC<ModalProps> = (props) => {
   }, [apiContent]);
 
   return (
-    <StyledContent>
+    <div>
       {apiContent && (
         <>
           {apiContent.name && (
@@ -69,7 +55,7 @@ export const RaceContent: React.FC<ModalProps> = (props) => {
             <>
               {typeof apiContent.desc !== 'string' &&
                 apiContent.desc.map((desc: string) => (
-                  <StyledP>{desc}</StyledP>
+                  <StyledP key={desc}>{desc}</StyledP>
                 ))}
               {apiContent.desc && typeof apiContent.desc === 'string' && (
                 <StyledP>{apiContent.desc}</StyledP>
@@ -84,7 +70,7 @@ export const RaceContent: React.FC<ModalProps> = (props) => {
               </StyledP>
               {typeof apiContent.typical_speakers !== 'string' &&
                 apiContent.typical_speakers.map((desc: string) => (
-                  <StyledP>{desc}</StyledP>
+                  <StyledP key={desc}>{desc}</StyledP>
                 ))}
               {apiContent.typical_speakers &&
                 typeof apiContent.typical_speakers === 'string' && (
@@ -92,24 +78,20 @@ export const RaceContent: React.FC<ModalProps> = (props) => {
                 )}
             </>
           )}
-          {additionalApiContent && (
+          {apiContent.skills && (
             <>
-              {additionalApiContent.category_range && (
-                <StyledP>
-                  <strong>Category range:</strong>{' '}
-                  {additionalApiContent.category_range}
-                </StyledP>
-              )}
-              {additionalApiContent.damage && (
-                <StyledP>
-                  <strong>Damage:</strong>{' '}
-                  {additionalApiContent.damage.damage_dice}
-                </StyledP>
-              )}
+              <StyledP>
+                <strong>Skills:</strong>
+              </StyledP>
+              {apiContent.skills.length > 0 &&
+                apiContent.skills.map((skill) => (
+                  <StyledP key={skill.index}>{skill.name}</StyledP>
+                ))}
             </>
           )}
+          {additionalApiContent && <></>}
         </>
       )}
-    </StyledContent>
+    </div>
   );
 };

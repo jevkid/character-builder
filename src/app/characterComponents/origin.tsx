@@ -8,8 +8,6 @@ import {
   useBackgroundGeneral,
 } from '../../store/selectors/common';
 import { RadioGroup, RadioInput } from '../components/formElements/radioGroup';
-import { commonActions } from '../../store/slices/common';
-import { useAppDispatch } from '../../helpers/hooks';
 
 const StyledOriginContainer = styled.div`
   display: flex;
@@ -19,20 +17,11 @@ const StyledOriginContainer = styled.div`
 `;
 
 export const Origins: React.FC = () => {
-  const dispatch = useAppDispatch();
   const { values, setFieldValue } = useFormikContext<FormInputs>();
-  const selectedBackground = values.background?.general?.background;
+  const selectedBackground = values.background?.general?.origin;
   const selectedAlignment = values.background?.general?.alignment;
   const generalDetails = useBackgroundGeneral();
   const alignments = useAllAlignments();
-
-  const handleChange = (field: string, value: string) => {
-    setFieldValue(field, value);
-  };
-
-  React.useEffect(() => {
-    dispatch(commonActions.getAllAlignments());
-  }, [dispatch]);
 
   return (
     <StyledOriginContainer>
@@ -45,11 +34,11 @@ export const Origins: React.FC = () => {
             <RadioInput
               key={item.index}
               label={item.name}
-              name="background.general.background"
+              name="background.general.origin"
               value={item.index}
-              checked={item.index === values.background?.general?.background}
+              checked={item.index === values.background?.general?.origin}
               onChange={() =>
-                handleChange('background.general.background', item.index)
+                setFieldValue('background.general.origin', item.index)
               }
             />
           ))}
@@ -71,7 +60,7 @@ export const Origins: React.FC = () => {
                   alignment.index === values.background?.general?.alignment
                 }
                 onChange={() =>
-                  handleChange('background.general.alignment', alignment.index)
+                  setFieldValue('background.general.alignment', alignment.index)
                 }
               />
             ))}

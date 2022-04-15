@@ -1,30 +1,17 @@
 import * as React from 'react';
 import { AxiosResponse } from 'axios';
 import { BaseAxiosInstance } from '../../../api';
-import styled from 'styled-components';
-import { StyledP } from '../../styles';
+import { StyledP, StyledList, StyledListItem } from '../../styles';
+import { ClassModalTypes } from '../../../types';
 
 interface ModalProps {
-  type: string;
   apiUrl: string;
 }
 
-const StyledContent = styled.div`
-  display: flex;
-  align-items: center;
-  height: 100%;
-  justify-content: center;
-  left: 0;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 10001;
-  background-color: rgba(0, 0, 0, 0.8);
-`;
-
 export const ClassContent: React.FC<ModalProps> = (props) => {
-  const [apiContent, setApiContent] = React.useState<any>();
-  const [additionalApiContent, setAdditionalApiContent] = React.useState<any>();
+  const [apiContent, setApiContent] = React.useState<ClassModalTypes | null>();
+  const [additionalApiContent, setAdditionalApiContent] =
+    React.useState<ClassModalTypes | null>();
 
   React.useEffect(() => {
     if (props.apiUrl) {
@@ -55,7 +42,7 @@ export const ClassContent: React.FC<ModalProps> = (props) => {
   }, [apiContent]);
 
   return (
-    <StyledContent>
+    <div>
       {apiContent && (
         <>
           {apiContent.name && (
@@ -76,19 +63,15 @@ export const ClassContent: React.FC<ModalProps> = (props) => {
               <br />
             </>
           )}
-          {apiContent.typical_speakers && (
+          {apiContent.races && apiContent.races.length > 0 && (
             <>
               <StyledP>
-                <strong>Typical speakers:</strong>
+                <strong>Races:</strong>
               </StyledP>
-              {typeof apiContent.typical_speakers !== 'string' &&
-                apiContent.typical_speakers.map((desc: string) => (
-                  <StyledP>{desc}</StyledP>
+              {apiContent.races.length > 0 &&
+                apiContent.races.map((race) => (
+                  <StyledP key={race.index}>{race.name}</StyledP>
                 ))}
-              {apiContent.typical_speakers &&
-                typeof apiContent.typical_speakers === 'string' && (
-                  <StyledP>{apiContent.typical_speakers}</StyledP>
-                )}
             </>
           )}
           {additionalApiContent && (
@@ -105,10 +88,26 @@ export const ClassContent: React.FC<ModalProps> = (props) => {
                   {additionalApiContent.damage.damage_dice}
                 </StyledP>
               )}
+              {additionalApiContent.properties &&
+                additionalApiContent.properties.length > 0 && (
+                  <>
+                    <StyledP>
+                      <strong>Properties:</strong>
+                    </StyledP>
+                    <StyledList>
+                      {additionalApiContent.properties.length > 0 &&
+                        additionalApiContent.properties.map((property) => (
+                          <StyledListItem key={property.index}>
+                            {property.name}
+                          </StyledListItem>
+                        ))}
+                    </StyledList>
+                  </>
+                )}
             </>
           )}
         </>
       )}
-    </StyledContent>
+    </div>
   );
 };

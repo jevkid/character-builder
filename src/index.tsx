@@ -85,7 +85,6 @@ ReactDOM.render(
               <Glossary />
             </Route>
             <Route exact path="/character-sheet">
-              <h1>Character sheet</h1>
               <CharacterSheet />
             </Route>
           </Switch>

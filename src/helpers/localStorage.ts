@@ -8,7 +8,8 @@ export const getCharacterFromLocalStorage = () => {
     if (character === null) {
       return undefined;
     }
-    return JSON.parse(character);
+    const characterObj = JSON.parse(character);
+    return characterObj.length > 0 ? characterObj[0] : characterObj;
   } catch (e) {
     console.error('There was an error getting data from local storage: ', e);
     return undefined;

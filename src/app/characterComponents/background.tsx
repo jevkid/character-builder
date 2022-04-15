@@ -8,27 +8,42 @@ import {
   StyledButtonContainer,
   StyledStepButton,
 } from '../styles';
-import { GenericComponentProps } from '../../types';
+import { FormInputs, GenericComponentProps } from '../../types';
 import { useAppDispatch } from '../../helpers/hooks';
 import { commonActions } from '../../store/slices/common';
 // import { Parents } from './parents';
 import { Origins } from './origin';
 import { DropdownContainer } from '../components/dropdownContainer';
+import {
+  useAllAlignments,
+  useBackgroundGeneral,
+} from '../../store/selectors/common';
+import { useFormikContext } from 'formik';
+import { handleRandomise } from '../../helpers/randomise';
 
 export const Background: React.FC<GenericComponentProps> = (props) => {
   const dispatch = useAppDispatch();
+  const { setFieldValue } = useFormikContext<FormInputs>();
   const [displayOrigin, setDisplayOrigin] = React.useState(true);
+  const generalDetails = useBackgroundGeneral();
+  const alignments = useAllAlignments();
   // const [displayParents, setDisplayParents] = React.useState(true);
   // const [displayDecisions, setDisplayDecisions] = React.useState(false);
   // const [displayLifeEvents, setDisplayLifeEvents] = React.useState(false);
 
+  const handleRandomBackground = () => {
+    if (generalDetails?.background && alignments) {
+      const randomBackground = handleRandomise(generalDetails?.background);
+      const randomAlignment = handleRandomise(alignments.results);
+      setFieldValue('background.general.origin', randomBackground.index);
+      setFieldValue('background.general.alignment', randomAlignment.index);
+    }
+  };
+
   React.useEffect(() => {
     dispatch(commonActions.getAllBackgrounds());
+    dispatch(commonActions.getAllAlignments());
   }, [dispatch]);
-
-  const handleRandomBackground = () => {
-    // do something random
-  };
 
   return (
     <StyledStepContainer>

@@ -7,7 +7,7 @@ export interface FormInputs {
   background?: {
     general?: {
       alignment: Alignments;
-      background: Backrounds;
+      origin: Backrounds;
     }
     parents?: {
       knowledge: 'known' | 'unknown' | 'na';
@@ -395,6 +395,14 @@ export interface RaceModalTypes {
   references:CommonModel[];
   typical_speakers: string[];
   script: string;
+  skills: CommonModel[];
+}
+
+export interface ClassModalTypes {
+  name: string;
+  index: string;
+  url?: string;
+  desc?: string[] | string;
   category_range?: string;
   cost?: {
     quantity: number;
@@ -417,6 +425,9 @@ export interface RaceModalTypes {
   weapon_category?: string;
   weapon_range?: string;
   weight?: number;
+  races: CommonModel[];
+  reference: CommonModel;
+  references:CommonModel[];
 }
 
 export interface RaceModal {

@@ -1,4 +1,4 @@
-import { CommonModel } from "../types";
+import { APIReference, CommonModel } from "../types";
 
 export const getRandomInt = (maxInt: number, minInt?: number) => {
   const min = minInt ? Math.ceil(minInt) : 0;
@@ -6,7 +6,7 @@ export const getRandomInt = (maxInt: number, minInt?: number) => {
   return Math.floor(Math.random() * (max - min) + min);
 };
 
-export const handleRandomise = (arr: Array<CommonModel>) => {
+export const handleRandomise = (arr: Array<any>) => {
   const randomInt = getRandomInt(arr.length);
   return arr[randomInt];
 };
