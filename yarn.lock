@@ -8046,9 +8046,9 @@ js-base64@^2.4.9:
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.6.4.tgz#f4e686c5de1ea1f867dbcad3d46d969428df98c4"
   integrity sha512-pZe//GGmwJndub7ZghVHz7vjb2LgC1m8B07Au3eYqeqv9emhESByMXxaEgkUkEqJe87oBbSniGYoQNIBklc7IQ==
 
-"js-sequence-diagrams@git://github.com/sergeyt/js-sequence-diagrams.git#modularity":
+"js-sequence-diagrams@https://github.com/sergeyt/js-sequence-diagrams.git#modularity":
   version "1.0.0"
-  resolved "git://github.com/sergeyt/js-sequence-diagrams.git#46704fc2ab281b4409a3bc3052ac571885afd597"
+  resolved "https://github.com/sergeyt/js-sequence-diagrams.git#46704fc2ab281b4409a3bc3052ac571885afd597"
   dependencies:
     lodash "^4.17.4"
     raphael "^2.2.7"
@@ -11009,7 +11009,7 @@ react-markdown2@^0.11.6:
     github-markdown-css "^2.4.1"
     hashtrie "^1.0.0"
     jquery "^3.1.1"
-    js-sequence-diagrams "git://github.com/sergeyt/js-sequence-diagrams.git#modularity"
+    js-sequence-diagrams "https://github.com/sergeyt/js-sequence-diagrams.git#modularity"
     katex "^0.7.1"
     linkify-it "^2.0.3"
     lodash "^4.17.4"
